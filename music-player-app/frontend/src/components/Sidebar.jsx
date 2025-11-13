@@ -1,7 +1,7 @@
 // components/Sidebar.jsx
 import { useState } from "react";
 
-export default function Sidebar({ playlists, onCreatePlaylist, onUpdatePlaylistCover }) {
+export default function Sidebar({ playlists, onCreatePlaylist, onUpdatePlaylistCover, onSelectPlaylist }) {
   const [showModal, setShowModal] = useState(false);
   const [input, setInput] = useState("");
 
@@ -31,7 +31,11 @@ export default function Sidebar({ playlists, onCreatePlaylist, onUpdatePlaylistC
             <p className="text-gray-500 text-xs text-center w-16">No playlists</p>
           ) : (
             playlists.map((playlist) => (
-              <div key={playlist.id} className="relative group">
+              <div
+                key={playlist.id}
+                className="relative group cursor-pointer"
+                onClick={() => onSelectPlaylist?.(playlist)} // ← CLICK TO SELECT
+              >
                 {/* Cover Image */}
                 <div className="relative">
                   <img
