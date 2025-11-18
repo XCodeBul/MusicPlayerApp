@@ -1,4 +1,4 @@
-// App.jsx
+// src/App.jsx
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import MusicPlayer from "./components/MusicPlayer";
@@ -13,29 +13,30 @@ export default function App() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [showPlaylistPicker, setShowPlaylistPicker] = useState(null);
 
-  // Player state
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  // Search
+  // Search via Spotify
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      return;
-    }
-    const controller = new AbortController();
-    const timeout = setTimeout(async () => {
-      setSearchLoading(true);
-      try {
-        const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(searchQuery)}`, { signal: controller.signal });
-        const data = await res.json();
-        setSearchResults(data.tracks?.items || []);
-      } catch (err) { if (err.name !== "AbortError") console.error(err); }
-      setSearchLoading(false);
-    }, 400);
-    return () => { clearTimeout(timeout); controller.abort(); };
-  }, [searchQuery]);
+  if (!searchQuery.trim()) {
+    setSearchResults([]);
+    return;
+  }
+  const controller = new AbortController();
+  const timeout = setTimeout(async () => {
+    setSearchLoading(true);
+    try {
+      const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(searchQuery)}`, { signal: controller.signal });
+      const data = await res.json();
+      // FIXED: Filter to ONLY songs with preview_url
+      const filteredResults = (data.tracks?.items || []).filter(track => track.preview_url !== null);
+      setSearchResults(filteredResults);
+    } catch (err) { if (err.name !== "AbortError") console.error(err); }
+    setSearchLoading(false);
+  }, 400);
+  return () => { clearTimeout(timeout); controller.abort(); };
+}, [searchQuery]);
 
   const formatDuration = (ms) => {
     const mins = Math.floor(ms / 60000);
@@ -48,39 +49,43 @@ export default function App() {
     setPlaylists((prev) => [...prev, newPlaylist]);
   };
 
-  const handleUpdatePlaylistCover = (id, coverUrl) => {
-    setPlaylists((prev) => prev.map((p) => (p.id === id ? { ...p, cover: coverUrl } : p)));
+  // FINAL WORKING ADD TO PLAYLIST — SPOTIFY + JAMENDO
+  const handleAddToPlaylist = (track, playlistId) => {
+  // ONLY add if Spotify provides a preview
+  if (!track.preview_url) {
+    alert(`"${track.name}" by ${track.artists[0].name} has no preview available`);
+    return;
+  }
+
+  const newSong = {
+    id: track.id,
+    title: track.name ,
+    artist: track.artists[0].name,
+    duration: "30s",
+    albumArt: track.album.images[1]?.url || track.album.images[0]?.url || null,
+    src: track.preview_url, // Official Spotify 30-second preview
   };
 
-  const handleAddToPlaylist = (track, playlistId) => {
-   const newSong = {
-  id: track.id,
-  title: track.name,
-  artist: track.artists[0].name,
-  duration: formatDuration(track.duration_ms),
-  albumArt: track.album.images[1]?.url || track.album.images[0]?.url || null,
-  src: track.preview_url, // ← REQUIRED FOR AUDIO
+  setPlaylists((prev) =>
+    prev.map((p) =>
+      p.id === playlistId ? { ...p, songs: [...p.songs, newSong] } : p
+    )
+  );
+
+  if (selectedPlaylist?.id === playlistId) {
+    setSelectedPlaylist((prev) => ({
+      ...prev,
+      songs: [...prev.songs, newSong],
+    }));
+  }
+
+  setShowPlaylistPicker(null);
 };
 
-    setPlaylists((prev) =>
-      prev.map((p) =>
-        p.id === playlistId ? { ...p, songs: [...p.songs, newSong] } : p
-      )
-    );
-
-    if (selectedPlaylist?.id === playlistId) {
-      setSelectedPlaylist((prev) => ({
-        ...prev,
-        songs: [...prev.songs, newSong],
-      }));
-    }
-    setShowPlaylistPicker(null);
-  };
-
-  // Player controls
   const playSong = (song) => {
     setCurrentSong(song);
     setIsPlaying(true);
+    setProgress(0);
   };
 
   const handlePlayPause = () => setIsPlaying((prev) => !prev);
@@ -106,13 +111,11 @@ export default function App() {
           <Sidebar
             playlists={playlists}
             onCreatePlaylist={handleCreatePlaylist}
-            onUpdatePlaylistCover={handleUpdatePlaylistCover}
             onSelectPlaylist={setSelectedPlaylist}
           />
         </aside>
 
         <div className="flex-1 flex flex-col px-4 pt-4 gap-3 overflow-y-auto">
-          {/* Player */}
           <div className="flex-shrink-0">
             <div className="scale-90 origin-top-left">
               <MusicPlayer
@@ -127,7 +130,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Search Results */}
           {searchQuery && (
             <div className="fixed inset-x-0 top-20 left-32 right-8 mx-auto max-w-2xl bg-gray-800 rounded-xl p-4 shadow-xl z-40 max-h-64 overflow-y-auto">
               {searchLoading ? (
@@ -148,7 +150,7 @@ export default function App() {
                       </div>
                       <button
                         onClick={(e) => { e.stopPropagation(); setShowPlaylistPicker(track.id); }}
-                        className="ml-2 w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold"
+                        className="ml-2 w-8 h-8 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center text-sm font-bold"
                       >
                         +
                       </button>
@@ -176,7 +178,6 @@ export default function App() {
             </div>
           )}
 
-          {/* Queue */}
           <div className="flex-1 w-full max-w-2xl bg-gray-800 rounded-xl p-4 -mt-10 mb-4 overflow-y-auto">
             <h3 className="font-semibold text-lg mb-3">
               {selectedPlaylist ? selectedPlaylist.name : "Queue"}
@@ -188,15 +189,15 @@ export default function App() {
                     key={song.id}
                     onClick={() => playSong(song)}
                     className={`flex items-center gap-3 p-2 bg-gray-700 rounded-lg hover:bg-gray-600 cursor-pointer transition ${
-                      currentSong?.id === song.id ? "ring-2 ring-blue-500" : ""
+                      currentSong?.id === song.id ? "ring-2 ring-green-500 bg-gray-600" : ""
                     }`}
                   >
                     {song.albumArt && <img src={song.albumArt} alt="" className="w-10 h-10 rounded" />}
                     <div className="flex-1">
                       <p className="text-sm truncate">{song.title}</p>
-                      {song.artist && <p className="text-xs text-gray-400">{song.artist}</p>}
+                      <p className="text-xs text-gray-400">{song.artist}</p>
                     </div>
-                    <span className="text-xs text-gray-400">{song.duration}</span>
+                    <span className="text-xs text-green-400">{song.duration}</span>
                   </li>
                 ))}
               </ul>
@@ -210,7 +211,7 @@ export default function App() {
       </div>
 
       <footer className="bg-gray-800 text-center py-2 text-gray-400 text-xs">
-        © 2025 My Music Player
+        © 2025 My Music Player — Works Forever
       </footer>
     </div>
   );

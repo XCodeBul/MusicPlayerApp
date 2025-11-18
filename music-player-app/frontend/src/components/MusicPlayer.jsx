@@ -5,13 +5,17 @@ function MusicPlayer({ currentSong, isPlaying, onPlayPause, onNext, onPrev, prog
   const audioRef = useRef(null);
 
   useEffect(() => {
-    if (!audioRef.current || !currentSong) return;
-    if (isPlaying) {
-      audioRef.current.play().catch(() => {});
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isPlaying, currentSong]);
+  if (!audioRef.current || !currentSong) return;
+
+  if (isPlaying) {
+    audioRef.current.play().catch(() => {
+      // sometimes browser blocks autoplay
+      setIsPlaying(false);
+    });
+  } else {
+    audioRef.current.pause();
+  }
+}, [isPlaying, currentSong]); // ← currentSong in deps = forces restart
 
   const handleTimeUpdate = () => {
     if (!audioRef.current || !currentSong) return;
@@ -87,11 +91,12 @@ function MusicPlayer({ currentSong, isPlaying, onPlayPause, onNext, onPrev, prog
       </div>
 
       <audio
-        ref={audioRef}
-        src={currentSong.src}
-        onTimeUpdate={handleTimeUpdate}
-        onEnded={onNext}
-      />
+  key={currentSong?.id}  // ← THIS IS THE FIX
+  ref={audioRef}
+  src={currentSong?.src}
+  onTimeUpdate={handleTimeUpdate}
+  onEnded={onNext}
+/>
     </div>
   );
 }
