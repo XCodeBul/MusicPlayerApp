@@ -107,13 +107,14 @@ export default function App() {
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <div className="flex flex-1 overflow-hidden">
-        <aside className="w-24 bg-gray-800 rounded-3xl flex flex-col items-center py-6 shadow-xl ml-0 mx-0 my-4">
-          <Sidebar
-            playlists={playlists}
-            onCreatePlaylist={handleCreatePlaylist}
-            onSelectPlaylist={setSelectedPlaylist}
-          />
-        </aside>
+       <aside className="w-24 bg-gray-900 rounded-3xl flex flex-col shadow-xl ml-4 my-4 max-h-screen">
+  <Sidebar
+    playlists={playlists}
+    onCreatePlaylist={handleCreatePlaylist}
+    
+    onSelectPlaylist={setSelectedPlaylist}
+  />
+</aside>
 
         <div className="flex-1 flex flex-col px-4 pt-4 gap-3 overflow-y-auto">
           <div className="flex-shrink-0">
