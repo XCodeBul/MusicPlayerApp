@@ -212,9 +212,10 @@ export default function App() {
               </div>
 
               {/* VISUALIZER */}
-              <div className="w-80 flex-shrink-0 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl flex items-center justify-center">
-                <Visualizer audioRef={musicAudioRef} currentSong={currentSong} />
-              </div>
+<div className="w-[400px] flex-shrink-0 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl flex items-center justify-center">
+  <Visualizer audioRef={musicAudioRef} currentSong={currentSong} />
+</div>
+
             </div>
 
             {/* SEARCH PANEL */}
