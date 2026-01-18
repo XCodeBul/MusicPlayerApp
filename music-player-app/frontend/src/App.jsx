@@ -5,6 +5,7 @@ import MusicPlayer from "./components/MusicPlayer";
 import Sidebar from "./components/Sidebar";
 import Visualizer from "./components/Visualizer";
 import ArtistInfo from "./components/ArtistInfo";
+import Lyrics from "./components/Lyrics"; 
 import "./index.css";
 
 export default function App() {
@@ -195,7 +196,7 @@ useEffect(() => {
   </div>
 
   {/* 2. ARTIST INFO WRAPPER - Динамичен (разтяга се надясно) */}
-  <div className="flex-1 -ml-6 py-[1.9%] -mt-9 flex flex-col transition-all duration-300 min-w-0 mr-4"> 
+  <div className="flex-1 -ml-6 py-[1.9%] -mt-9 flex flex-col transition-all duration-300 min-w-0 "> 
     <div className="bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl flex-1 flex flex-col justify-center overflow-hidden">
       
       {currentSong ? (
@@ -219,58 +220,65 @@ useEffect(() => {
 {/* ^ THIS IS THE CLOSING TAG FOR THE HEADER SECTION ROW */}
 
           {/* LOWER SECTION: QUEUE & VISUALIZER */}
-          <div className="flex-1 flex flex-col -mt-4 mb-4 overflow-hidden">
-            <div className="flex-1 flex gap-5 overflow-hidden">
-              
-              {/* QUEUE / PLAYLIST LIST */}
-              <div className="w-full max-w-2xl flex-1 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl overflow-y-auto custom-scrollbar">
-                <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="text-purple-500">#</span>
-                  {selectedPlaylist ? selectedPlaylist.name : "Your Queue"}
-                </h3>
+          {/* LOWER SECTION: QUEUE & VISUALIZER & LYRICS */}
+<div className="flex-1 flex flex-col -mt-4 mb-4 overflow-hidden">
+  <div className="flex-1 flex gap-5 overflow-hidden">
+    
+    {/* QUEUE / PLAYLIST LIST (НЕПРОМЕНЕН) */}
+    <div className="w-full max-w-2xl flex-1 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl overflow-y-auto custom-scrollbar">
+      <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+        <span className="text-purple-500">#</span>
+        {selectedPlaylist ? selectedPlaylist.name : "Your Queue"}
+      </h3>
 
-                {selectedPlaylist && selectedPlaylist.songs.length > 0 ? (
-                  <ul className="space-y-4">
-                    {selectedPlaylist.songs.map((song) => (
-                      <li
-                        key={song.id}
-                        onClick={() => playSong(song)}
-                        className={`flex items-center gap-5 p-5 rounded-2xl cursor-pointer transition-all duration-300 group ${
-                          currentSong?.id === song.id
-                            ? "bg-gradient-to-r from-purple-600/40 to-blue-600/40 ring-2 ring-purple-500 shadow-xl"
-                            : "bg-gray-700/50 hover:bg-gray-600/70"
-                        }`}
-                      >
-                        {song.albumArt ? (
-                          <img src={song.albumArt} className="w-14 h-14 rounded-xl shadow-lg" alt="" />
-                        ) : (
-                          <div className="w-14 h-14 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center text-2xl shadow-lg">
-                            🎵
-                          </div>
-                        )}
-                        <div className="flex-1">
-                          <p className="font-semibold text-lg group-hover:text-purple-300 transition-colors">{song.title}</p>
-                          <p className="text-gray-400">{song.artist}</p>
-                        </div>
-                        <span className="text-sm text-green-400 font-medium">30s</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className="text-center py-24 text-gray-500">
-                    <div className="text-5xl mb-4">🎶</div>
-                    <p className="text-xl font-medium">Your queue is empty</p>
-                    <p className="mt-2">Use the search bar to find and add tracks</p>
-                  </div>
-                )}
+      {selectedPlaylist && selectedPlaylist.songs.length > 0 ? (
+        <ul className="space-y-4">
+          {selectedPlaylist.songs.map((song) => (
+            <li
+              key={song.id}
+              onClick={() => playSong(song)}
+              className={`flex items-center gap-5 p-5 rounded-2xl cursor-pointer transition-all duration-300 group ${
+                currentSong?.id === song.id
+                  ? "bg-gradient-to-r from-purple-600/40 to-blue-600/40 ring-2 ring-purple-500 shadow-xl"
+                  : "bg-gray-700/50 hover:bg-gray-600/70"
+              }`}
+            >
+              {song.albumArt ? (
+                <img src={song.albumArt} className="w-14 h-14 rounded-xl shadow-lg" alt="" />
+              ) : (
+                <div className="w-14 h-14 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center text-2xl shadow-lg">
+                  🎵
+                </div>
+              )}
+              <div className="flex-1">
+                <p className="font-semibold text-lg group-hover:text-purple-300 transition-colors">{song.title}</p>
+                <p className="text-gray-400">{song.artist}</p>
               </div>
+              <span className="text-sm text-green-400 font-medium">30s</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-center py-24 text-gray-500">
+          <div className="text-5xl mb-4">🎶</div>
+          <p className="text-xl font-medium">Your queue is empty</p>
+          <p className="mt-2">Use the search bar to find and add tracks</p>
+        </div>
+      )}
+    </div>
 
-              {/* VISUALIZER SECTION */}
-              <div className="w-[400px] flex-shrink-0 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl flex items-center justify-center overflow-hidden">
-                <Visualizer audioRef={musicAudioRef} currentSong={currentSong} />
-              </div>
-            </div>
-          </div>
+    {/* VISUALIZER SECTION (НЕПРОМЕНЕН) */}
+    <div className="w-[400px] flex-shrink-0 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl flex items-center justify-center overflow-hidden">
+      <Visualizer audioRef={musicAudioRef} currentSong={currentSong} />
+    </div>
+
+    {/* LYRICS SECTION (ДОБАВЕНА В ПРАЗНОТО МЯСТО) */}
+    <div className="flex-1 min-w-[300px] flex flex-col overflow-hidden">
+      <Lyrics currentSong={currentSong} />
+    </div>
+
+  </div>
+</div>
         </div>
       </div>
 
