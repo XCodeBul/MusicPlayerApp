@@ -3,7 +3,7 @@ import { forwardRef, useEffect } from "react";
 const MusicPlayer = forwardRef(
   ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek }, ref) => {
 
-    // Handle play/pause
+
     useEffect(() => {
       if (!ref.current || !currentSong) return;
       if (isPlaying) {
@@ -13,7 +13,7 @@ const MusicPlayer = forwardRef(
       }
     }, [isPlaying, currentSong, ref]);
 
-    // Sync progress for seeking
+   
     useEffect(() => {
       if (ref.current && currentSong) {
         if (Math.abs(ref.current.currentTime - progress) > 0.5) {
@@ -35,7 +35,7 @@ const MusicPlayer = forwardRef(
     return (
   <div className="bg-gray-800 p-6 rounded-2xl shadow-2xl w-[380px] flex flex-col text-center h-full">
 
-    {/* TOP CONTENT */}
+ 
     <div className="flex flex-col items-center gap-4 w-full">
       <img
         src={currentSong.albumArt || "https://via.placeholder.com/224"}
@@ -60,7 +60,7 @@ const MusicPlayer = forwardRef(
       />
     </div>
 
-    {/* BOTTOM CONTROLS — THIS IS THE KEY */}
+   
     <div className="mt-auto pt-6 flex items-center justify-center gap-6">
       <button
         onClick={onPrev}

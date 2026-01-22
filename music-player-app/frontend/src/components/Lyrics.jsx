@@ -28,7 +28,7 @@ const Lyrics = ({ currentSong }) => {
  return (
     <div className="w-full h-full flex flex-col p-8 overflow-hidden bg-white/5 backdrop-blur-md rounded-[2.5rem] border border-white/10 relative">
       
-      {/* NEW DYNAMIC HEADER */}
+
       <div className="mb-6 shrink-0">
         <h3 className="text-[10px] font-black text-purple-500 uppercase tracking-[0.4em] mb-1 truncate">
           {currentSong?.artist || "Artist"}
@@ -38,7 +38,7 @@ const Lyrics = ({ currentSong }) => {
         </h2>
       </div>
 
-      {/* LYRICS CONTENT */}
+
       <div className="flex-1 overflow-y-auto custom-scrollbar pr-4 relative">
         {loading ? (
           <div className="text-gray-500 font-black animate-pulse py-10 uppercase tracking-widest text-center">

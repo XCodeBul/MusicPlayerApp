@@ -21,12 +21,12 @@ const ArtistInfo = ({ currentSong }) => {
   if (loading) return <div className="text-gray-400 p-10 animate-pulse text-center w-full font-bold text-xl tracking-tighter">LOADING ARTIST PROFILE...</div>;
   if (!artist) return null;
 
-  // Форматиране на жанровете (Първа главна буква и проверка за празно)
+
   const genresList = artist.genres && artist.genres.length > 0 
     ? artist.genres.slice(0, 3).map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(", ")
     : "Contemporary Music";
 
-  // REALISTIC CALCULATIONS
+
   const calculatedListeners = Math.floor(Math.pow(artist.popularity, 4.1) / 2.1); 
   const monthlyListeners = calculatedListeners.toLocaleString();
   const worldRank = Math.floor(2200 - (Math.pow(artist.popularity, 1.7)));
@@ -42,7 +42,7 @@ const ArtistInfo = ({ currentSong }) => {
   return (
     <div className="flex flex-row items-center w-full h-full px-8 gap-10 animate-in fade-in zoom-in-95 duration-500 overflow-hidden">
       
-      {/* 1. ARTIST IMAGE */}
+
       <div className="relative shrink-0">
         <div className="w-48 h-48 rounded-3xl overflow-hidden border-4 border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
           <img 
@@ -56,10 +56,10 @@ const ArtistInfo = ({ currentSong }) => {
         </div>
       </div>
 
-      {/* 2. VERTICAL DIVIDER */}
+
       <div className="w-[2px] h-40 bg-gradient-to-b from-transparent via-white/20 to-transparent shrink-0"></div>
 
-      {/* 3. MAIN CONTENT */}
+
       <div className="flex flex-col justify-center flex-1 space-y-6 min-w-0">
         
         <div>
@@ -74,7 +74,7 @@ const ArtistInfo = ({ currentSong }) => {
           </h2>
         </div>
 
-        {/* STATISTICS */}
+
         <div className="flex items-start gap-12">
           <div className="space-y-1">
             <p className="text-4xl font-black text-white leading-none">#{worldRank}</p>
@@ -96,7 +96,7 @@ const ArtistInfo = ({ currentSong }) => {
           </div>
         </div>
 
-        {/* BIOGRAPHY - FIXED GENRES */}
+ 
         <div className="max-w-3xl">
           <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 italic">
             {artist.name} is dominating the global charts with a unique and influential style in <span className="text-gray-300 font-bold not-italic">{genresList}</span>. 
@@ -105,7 +105,7 @@ const ArtistInfo = ({ currentSong }) => {
           </p>
         </div>
 
-        {/* ACTION BUTTONS */}
+
         <div className="flex gap-4 items-center">
           <a 
             href={artist.external_urls.spotify} 
@@ -121,7 +121,7 @@ const ArtistInfo = ({ currentSong }) => {
         </div>
       </div>
 
-      {/* 4. TOP CITIES */}
+
       <div className="w-80 h-[75%] shrink-0 bg-white/5 rounded-[2rem] p-6 border border-white/10 self-center flex flex-col justify-center">
         <h4 className="text-[11px] text-gray-400 font-black uppercase tracking-[0.25em] mb-6 border-b border-white/10 pb-3 text-center">
           Top Cities

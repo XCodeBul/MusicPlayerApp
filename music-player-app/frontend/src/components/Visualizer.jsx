@@ -7,7 +7,7 @@ export default function Visualizer({ audioRef, currentSong }) {
   const sourceRef = useRef(null);
   const animationRef = useRef(null);
 
-  // Изчисляваме точно: 400px - (2 * 24px padding) = 352px
+  
   const SIZE = 352;
 
   useEffect(() => {
@@ -40,18 +40,18 @@ export default function Visualizer({ audioRef, currentSong }) {
 
       analyser.getByteFrequencyData(dataArray);
 
-      // Прозрачен фон за мек шлейф
+      
       ctx.fillStyle = "rgba(17, 24, 39, 0.4)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const centerX = canvas.width / 2; 
       const centerY = canvas.height / 2; 
       
-      // --- НАСТРОЙКИ ЗА ПОВЕЧЕ ВЪЗДУХ (РАЗДАЛЕЧАВАНЕ) ---
+      
       const ringCount = 4;          
-      const circleCount = 22;       // По-малко точки = по-голямо разстояние между тях
-      const minRadius = 55;         // Празна зона в центъра
-      const safetyMargin = 50;      // Предпазва сиянието от изрязване по краищата
+      const circleCount = 22;       
+      const minRadius = 55;         
+      const safetyMargin = 50;      
       
       const maxRadius = Math.min(centerX, centerY) - safetyMargin; 
       const availableSpace = maxRadius - minRadius;
@@ -109,7 +109,7 @@ export default function Visualizer({ audioRef, currentSong }) {
       ref={canvasRef}
       width={SIZE}
       height={SIZE}
-      /* rounded-xl е "малко" заоблено. Ако е много, сложи rounded-lg */
+
       className="rounded-xl border border-white/5 bg-gray-900/50"
     />
   );

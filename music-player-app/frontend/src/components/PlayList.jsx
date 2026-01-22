@@ -17,14 +17,14 @@ function Playlist({ onSelectSong, currentSong }) {
                 isActive ? "bg-blue-600 text-white scale-101" : "bg-gray-800 hover:bg-gray-700"
               }`}
             >
-              {/* album cover - fixed size, won't shrink */}
+
               <img
                 src={song.cover}
                 alt={song.title}
                 className="w-16 h-16 object-cover rounded-md shadow-md flex-shrink-0"
               />
 
-              {/* text block: must be allowed to shrink/truncate */}
+
               <div className="flex flex-col w-full min-w-0">
                 <h4 className="text-lg font-semibold leading-tight truncate">
                   {song.title}
@@ -32,7 +32,7 @@ function Playlist({ onSelectSong, currentSong }) {
                 <p className="text-gray-400 text-sm mt-1">{song.artist}</p>
               </div>
 
-              {/* optional: duration or icon at the end */}
+
             </li>
           );
         })}

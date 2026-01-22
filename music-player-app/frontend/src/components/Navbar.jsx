@@ -1,4 +1,3 @@
-// components/Navbar.jsx — updated to respect clicks inside the search panel
 import { useRef, useEffect } from "react";
 
 export default function Navbar({
@@ -6,22 +5,16 @@ export default function Navbar({
   setSearchQuery,
   isSearchFocused,
   setIsSearchFocused,
-  searchPanelRef, // new prop: ref to search results panel
+  searchPanelRef,
 }) {
   const inputRef = useRef(null);
 
-  // Close search when clicking outside the input AND outside the search panel
   useEffect(() => {
     const handleClickOutside = (e) => {
       const inputEl = inputRef.current;
       const panelEl = searchPanelRef?.current;
-
-      // if click is inside input => keep open
       if (inputEl && inputEl.contains(e.target)) return;
-      // if panel exists and click is inside panel => keep open
       if (panelEl && panelEl.contains(e.target)) return;
-
-      // otherwise close
       setIsSearchFocused(false);
     };
 
@@ -35,14 +28,20 @@ export default function Navbar({
   }, [isSearchFocused, setIsSearchFocused, searchPanelRef]);
 
   return (
-    <nav className="w-full bg-gray-800/80 backdrop-blur-md px-6 py-4 flex items-center justify-between shadow-xl border-b border-gray-700">
-      <div className="flex items-center gap-3">
-        <span className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">Music Note</span>
+    <nav className="w-full bg-gray-900/40 backdrop-blur-xl px-8 py-4 flex items-center justify-between sticky top-0 z-50 border-b border-white/5 shadow-2xl">
+     
+      <div className="flex items-center gap-3 group cursor-pointer">
+        <div className="w-10 h-10 bg-gradient-to-tr from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:rotate-12 transition-transform duration-300">
+          <span className="text-white text-2xl">♪</span>
+        </div>
+        <span className="text-2xl font-black tracking-tighter bg-gradient-to-r from-white via-blue-200 to-gray-400 bg-clip-text text-transparent italic">
+          MUSICNOTE
+        </span>
       </div>
 
-      <div className="flex items-center gap-6">
-        {/* SEARCH BAR — CLICK TO ACTIVATE */}
-        <div className="relative" ref={inputRef}>
+      
+      <div className="flex items-center gap-8">
+        <div className="relative group" ref={inputRef}>
           <input
             type="text"
             placeholder="Search songs, artists..."
@@ -56,20 +55,27 @@ export default function Navbar({
                 inputRef.current?.blur();
               }
             }}
-            className="w-96 bg-gray-700/80 backdrop-blur-md text-white rounded-full px-6 py-3 pr-12 text-base outline-none focus:ring-4 focus:ring-blue-500/50 transition-all duration-300 placeholder-gray-400"
+            className={`
+              w-[450px] bg-white/5 border border-white/10 text-white rounded-2xl px-6 py-3 pr-12 text-sm 
+              outline-none transition-all duration-500 placeholder-gray-500
+              ${isSearchFocused 
+                ? "bg-gray-800/80 border-blue-500/50 ring-4 ring-blue-500/10 w-[500px]" 
+                : "hover:bg-white/10"
+              }
+            `}
           />
-          <svg
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+          <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${isSearchFocused ? 'text-blue-400' : 'text-gray-500'}`}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
         </div>
 
-        <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">
-          Login
+        <button className="relative overflow-hidden group bg-white text-black font-bold py-3 px-10 rounded-2xl transition-all duration-300 hover:pr-12 active:scale-95">
+          <span className="relative z-10">Login</span>
+          <span className="absolute right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+            →
+          </span>
         </button>
       </div>
     </nav>

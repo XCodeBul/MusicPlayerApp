@@ -24,7 +24,7 @@ export default function App() {
   const searchPanelRef = useRef(null);
   const musicAudioRef = useRef(null);
 
-  // Коригиране на корицата на плейлиста
+  
   const handleUpdatePlaylistCover = (playlistId, newCover) => {
     setPlaylists((prev) =>
       prev.map((p) => (p.id === playlistId ? { ...p, cover: newCover } : p))
@@ -34,7 +34,7 @@ export default function App() {
     }
   };
 
-  // Търсене на песни (Spotify API / Local Backend)
+  
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSearchResults([]);
@@ -66,11 +66,11 @@ export default function App() {
   }, [searchQuery]);
 
 
-  // Вътре в App.jsx
+
 useEffect(() => {
   const syncToken = async () => {
     try {
-      // Вече ще работи, защото добавихме маршрута в бекенда
+     
       const res = await fetch("http://localhost:5000/api/token");
       
       if (!res.ok) throw new Error("Server error " + res.status);
@@ -163,7 +163,7 @@ useEffect(() => {
       />
 
       <div className="flex flex-1 overflow-hidden">
-        {/* SIDEBAR */}
+        
         <aside className="w-24 bg-gray-900 rounded-3xl flex flex-col shadow-xl ml-4 my-4 flex-shrink-0">
           <Sidebar
             playlists={playlists}
@@ -173,15 +173,13 @@ useEffect(() => {
           />
         </aside>
 
-        {/* MAIN CONTENT AREA */}
+        
         <div className="flex-1 flex flex-col px-4 pt-4 overflow-hidden">
           
-{/* HEADER SECTION: PLAYER & ARTIST INFO */}
-{/* HEADER SECTION: PLAYER & ARTIST INFO */}
-{/* HEADER SECTION: PLAYER & ARTIST INFO */}
+
 <div className="flex flex-row items-stretch flex-shrink-0 w-full overflow-hidden">
   
-  {/* 1. MUSIC PLAYER WRAPPER - Фиксиран размер */}
+  
   <div className="scale-90 origin-top-left shrink-0">
     <MusicPlayer
       ref={musicAudioRef}
@@ -195,7 +193,7 @@ useEffect(() => {
     />
   </div>
 
-  {/* 2. ARTIST INFO WRAPPER - Динамичен (разтяга се надясно) */}
+
   <div className="flex-1 -ml-6 py-[1.9%] -mt-9 flex flex-col transition-all duration-300 min-w-0 "> 
     <div className="bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl flex-1 flex flex-col justify-center overflow-hidden">
       
@@ -217,14 +215,12 @@ useEffect(() => {
   </div>
 
 </div> 
-{/* ^ THIS IS THE CLOSING TAG FOR THE HEADER SECTION ROW */}
 
-          {/* LOWER SECTION: QUEUE & VISUALIZER */}
-          {/* LOWER SECTION: QUEUE & VISUALIZER & LYRICS */}
+
 <div className="flex-1 flex flex-col -mt-4 mb-4 overflow-hidden">
   <div className="flex-1 flex gap-5 overflow-hidden">
     
-    {/* QUEUE / PLAYLIST LIST (НЕПРОМЕНЕН) */}
+   
     <div className="w-full max-w-2xl flex-1 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl overflow-y-auto custom-scrollbar">
       <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
         <span className="text-purple-500">#</span>
@@ -267,12 +263,12 @@ useEffect(() => {
       )}
     </div>
 
-    {/* VISUALIZER SECTION (НЕПРОМЕНЕН) */}
+
     <div className="w-[400px] flex-shrink-0 bg-gray-800/90 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/50 shadow-2xl flex items-center justify-center overflow-hidden">
       <Visualizer audioRef={musicAudioRef} currentSong={currentSong} />
     </div>
 
-    {/* LYRICS SECTION (ДОБАВЕНА В ПРАЗНОТО МЯСТО) */}
+
     <div className="flex-1 min-w-[300px] flex flex-col overflow-hidden">
       <Lyrics currentSong={currentSong} />
     </div>
@@ -282,7 +278,7 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* SEARCH PANEL OVERLAY */}
+      
       {isSearchFocused && (
         <>
           <div
@@ -402,10 +398,42 @@ useEffect(() => {
         </>
       )}
 
-      {/* FOOTER */}
-      <footer className="bg-gray-800/50 backdrop-blur text-center py-3 text-gray-400 text-sm border-t border-gray-700 flex-shrink-0">
-        © 2025 Music Note — Built with love and magic
-      </footer>
+    
+      <footer className="bg-gray-900/60 backdrop-blur-xl px-12 py-5 border-t border-white/5 flex-shrink-0">
+  <div className="max-w-7xl mx-auto flex items-center justify-between">
+    
+    {/* LEFT: Live Waveform Animation */}
+    <div className="flex items-center gap-4">
+      <div className="flex items-end gap-[3px] h-4">
+        <div className="w-1 bg-blue-500 animate-[bounce_1s_infinite_0.1s] rounded-full" style={{ height: '60%' }}></div>
+        <div className="w-1 bg-purple-500 animate-[bounce_1.2s_infinite_0.3s] rounded-full" style={{ height: '100%' }}></div>
+        <div className="w-1 bg-blue-400 animate-[bounce_0.8s_infinite_0.2s] rounded-full" style={{ height: '40%' }}></div>
+        <div className="w-1 bg-purple-400 animate-[bounce_1.1s_infinite_0.5s] rounded-full" style={{ height: '80%' }}></div>
+      </div>
+      <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500">
+        Audio Engine Active
+      </span>
+    </div>
+
+    {/* RIGHT: Local Time & Date */}
+    <div className="flex items-center gap-8">
+      <div className="flex flex-col items-end border-r border-white/10 pr-8">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Local Time</span>
+        <span className="text-sm font-medium text-white tabular-nums tracking-tight">
+          {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        </span>
+      </div>
+      
+      <div className="flex flex-col items-end">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Current Date</span>
+        <span className="text-sm font-medium text-white tracking-tight">
+          {new Date().toLocaleDateString([], { day: '2-digit', month: 'short', year: 'numeric' })}
+        </span>
+      </div>
+    </div>
+
+  </div>
+</footer>
     </div>
   );
 }
