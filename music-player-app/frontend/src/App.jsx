@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 import Visualizer from "./components/Visualizer";
 import ArtistInfo from "./components/ArtistInfo";
 import Lyrics from "./components/Lyrics"; 
+import LoginForm from "./components/LoginForm";
 import "./index.css";
 
 export default function App() {
@@ -23,6 +24,10 @@ export default function App() {
 
   const searchPanelRef = useRef(null);
   const musicAudioRef = useRef(null);
+
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
 
   
   const handleUpdatePlaylistCover = (playlistId, newCover) => {
@@ -152,6 +157,17 @@ useEffect(() => {
     playSong(prev);
   };
 
+  const handleLoginSuccess = (userData) => {
+  setUser(userData); // Save user info (name, email, etc.)
+  setIsAuthOpen(false); // Close the modal
+};
+
+const handleLogout = () => {
+  setUser(null);
+  // Optional: clear any local storage if you have it
+  console.log("Logged out successfully");
+};
+
   return (
     <div className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white flex flex-col overflow-hidden font-sans">
       <Navbar
@@ -160,6 +176,9 @@ useEffect(() => {
         isSearchFocused={isSearchFocused}
         setIsSearchFocused={setIsSearchFocused}
         searchPanelRef={searchPanelRef}
+        onLoginClick={() => setIsAuthOpen(true)}
+        user={user}
+        onLogout={handleLogout}
       />
 
       <div className="flex flex-1 overflow-hidden">
@@ -434,6 +453,14 @@ useEffect(() => {
 
   </div>
 </footer>
+
+<LoginForm 
+      isOpen={isAuthOpen} 
+      onClose={() => setIsAuthOpen(false)}
+      onSuccess={handleLoginSuccess} // Pass the success handler
+    />
+
+
     </div>
   );
 }
