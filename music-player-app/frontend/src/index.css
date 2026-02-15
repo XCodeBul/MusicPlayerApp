@@ -80,19 +80,25 @@ html, body, #root {
 }
 
 /* Smooth thin scrollbar */
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
+/* Custom Scrollbar for Lyrics and Queue */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
-.scrollbar-thin::-webkit-scrollbar-track {
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px; /* Thin and technical */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: #4b5563;
-  border-radius: 3px;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: #6b7280;
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
 }
