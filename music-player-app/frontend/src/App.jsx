@@ -303,7 +303,7 @@ export default function App() {
 
       <div className="flex flex-1 overflow-hidden">
         
-        <aside className="w-24 bg-gray-900 rounded-3xl flex flex-col shadow-xl ml-4 my-4 flex-shrink-0">
+        <aside className="hidden md:flex w-20 lg:w-24 bg-gray-900/50 rounded-3xl flex-col shadow-xl ml-4 my-4 flex-shrink-0">
           <Sidebar
             playlists={playlists}
             onCreatePlaylist={handleCreatePlaylist}
@@ -629,7 +629,7 @@ export default function App() {
       )}
 
     
-      <footer className="bg-gray-900/40 backdrop-blur-2xl px-12 py-5 border-t border-purple-500/20 flex-shrink-0 relative transition-colors duration-700">
+      <footer className="hidden sm:flex bg-gray-900/40 backdrop-blur-2xl px-12 py-5 border-t border-purple-500/20 flex-shrink-0 relative transition-colors duration-700">
  
   <div className={`absolute top-0 left-0 right-0 h-[1px] transition-opacity duration-1000 ${
     isPlaying ? "bg-gradient-to-r from-transparent via-purple-500/50 to-transparent opacity-100" : "bg-white/5 opacity-50"

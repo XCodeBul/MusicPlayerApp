@@ -22,19 +22,18 @@ export default function LoginForm({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 z-[1000000] flex items-center justify-center p-4">
-      {/* 1. BACKDROP: Deep Glass */}
+  
       <div 
         className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-500"
         onClick={onClose}
       />
 
-      {/* 2. MAIN CARD: The Purple Pattern Core */}
+  
       <div className="relative w-full max-w-md bg-gray-950 border border-purple-500/20 rounded-[3rem] p-12 shadow-[0_0_80px_-20px_rgba(168,85,247,0.2)] animate-in zoom-in-95 duration-300 overflow-hidden">
         
-        {/* Ambient background glow */}
+
         <div className="absolute -top-24 -left-24 w-48 h-48 bg-purple-600/10 blur-[100px] pointer-events-none" />
-        
-        {/* Logo & Header */}
+
         <div className="text-center mb-10 relative z-10">
           <div className="inline-flex w-16 h-16 bg-transparent border-2 border-purple-500/40 rounded-2xl items-center justify-center mb-6 shadow-[0_0_20px_rgba(168,85,247,0.2)] group hover:border-purple-400 transition-colors">
             <span className="text-purple-400 text-4xl font-light">♪</span>
@@ -47,7 +46,7 @@ export default function LoginForm({ isOpen, onClose, onSuccess }) {
           </p>
         </div>
 
-        {/* Input Fields */}
+
         <div className="space-y-4 relative z-10">
           <div className="group">
             <input 
@@ -73,14 +72,14 @@ export default function LoginForm({ isOpen, onClose, onSuccess }) {
           </button>
         </div>
 
-        {/* Divider */}
+  
         <div className="flex items-center my-10 gap-4 relative z-10">
           <div className="h-[1px] flex-1 bg-purple-500/10"></div>
           <span className="text-[9px] font-black text-purple-900 uppercase tracking-[0.4em]">External Links</span>
           <div className="h-[1px] flex-1 bg-purple-500/10"></div>
         </div>
 
-        {/* Social Logins: Minimalist Hollow Style */}
+
         <div className="grid grid-cols-2 gap-4 relative z-10">
           <button 
             onClick={handleEmailAuth}
@@ -96,7 +95,7 @@ export default function LoginForm({ isOpen, onClose, onSuccess }) {
           </button>
         </div>
 
-        {/* 3. TOGGLE LOGIN/SIGNUP: Overhauled to Glass Pill */}
+
         <div className="mt-12 flex justify-center relative z-10">
           <button 
             onClick={() => setIsLogin(!isLogin)}
