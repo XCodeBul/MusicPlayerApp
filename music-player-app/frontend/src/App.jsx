@@ -8,6 +8,8 @@ import Lyrics from "./components/Lyrics";
 import LoginForm from "./components/LoginForm";
 import "./index.css";
 import { supabase } from "./supabaseClient";
+import { translations } from "./locales/translations";
+
 
 export default function App() {
   const [playlists, setPlaylists] = useState([]);
@@ -27,6 +29,15 @@ export default function App() {
 
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [language, setLanguage] = useState(localStorage.getItem('appLanguage') || 'BG');
+  const t = translations[language];
+
+  const toggleLanguage = () => {
+  const newLang = language === 'EN' ? 'BG' : 'EN';
+  setLanguage(newLang);
+  localStorage.setItem('appLanguage', newLang); 
+};
+  
 
   const handleUpdatePlaylistCover = (playlistId, newCover) => {
     setPlaylists((prev) =>
@@ -291,6 +302,8 @@ export default function App() {
   return (
     <div className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white flex flex-col overflow-hidden font-sans">
       <Navbar
+
+        t={t}     
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         isSearchFocused={isSearchFocused}
@@ -299,6 +312,8 @@ export default function App() {
         onLoginClick={() => setIsAuthOpen(true)}
         user={user}
         onLogout={handleLogout}
+        language={language}
+        setLanguage={setLanguage}
       />
 
       <div className="flex flex-1 overflow-hidden">
@@ -330,6 +345,7 @@ export default function App() {
       onPrev={handlePrev}
       progress={progress}
       onSeek={(newProgress) => setProgress(newProgress)}
+      t={t}
     />
   </div>
 
@@ -342,7 +358,7 @@ export default function App() {
     <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
 
     {currentSong ? (
-      <ArtistInfo currentSong={currentSong} />
+      <ArtistInfo currentSong={currentSong} t={t} />
     ) : (
       <div className="flex-1 flex flex-row items-center justify-center text-center gap-6">
         
@@ -352,14 +368,14 @@ export default function App() {
         <div className="text-left">
           
           <h3 className="text-purple-500/50 font-black text-[10px] uppercase tracking-[0.4em] mb-1">
-            System Detail
-          </h3>
-          <h2 className="text-white font-bold text-lg leading-tight uppercase tracking-tight">
-            Artist Details
-          </h2>
-          <p className="text-gray-500 text-xs font-medium">
-            Select a track for full biography and stats
-          </p>
+  {t.systemDetail}
+</h3>
+<h2 className="text-white font-bold text-lg leading-tight uppercase tracking-tight">
+  {t.artistDetails}
+</h2>
+<p className="text-gray-500 text-xs font-medium">
+  {t.selectTrack}
+</p>
         </div>
       </div>
     )}
@@ -379,10 +395,10 @@ export default function App() {
   <div className="mb-8 flex items-center justify-between shrink-0">
     <h3 className="text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
       <span className="text-purple-500 opacity-50">#</span>
-      {selectedPlaylist ? selectedPlaylist.name : "Your Queue"}
+      {selectedPlaylist ? selectedPlaylist.name : t.queue}
     </h3>
     <span className="text-[10px] font-black text-purple-500/40 uppercase tracking-[0.3em]">
-      {selectedPlaylist?.songs?.length || 0} Tracks
+      {selectedPlaylist?.songs?.length || 0} {t.tracks}
     </span>
   </div>
 
@@ -438,8 +454,8 @@ export default function App() {
       <div className="w-16 h-16 rounded-full border border-purple-500/20 flex items-center justify-center mb-4">
         <span className="text-2xl grayscale">🎶</span>
       </div>
-      <p className="text-purple-500 text-[10px] font-black uppercase tracking-[0.4em]">Queue Empty</p>
-      <p className="mt-2 text-gray-600 text-[10px] font-medium uppercase tracking-widest">Awaiting Input Signal</p>
+      <p className="text-purple-500 text-[10px] font-black uppercase tracking-[0.4em]">{language === 'EN' ? 'Queue Empty' : 'Опашката е празна'}</p>
+      <p className="mt-2 text-gray-600 text-[10px] font-medium uppercase tracking-widest">{t.awaitingSignal}</p>
     </div>
   )}
 
@@ -448,7 +464,7 @@ export default function App() {
 </div>
 
 
-<div className="w-[400px] flex-shrink-0 bg-gray-900/40 backdrop-blur-xl rounded-[2.5rem] p-6 border border-purple-500/20 shadow-2xl flex items-center justify-center overflow-hidden relative group">
+<div className="w-[400px] flex-shrink-0 bg-gray-900/40 backdrop-blur-xl rounded-[2.5rem] border border-purple-500/20 shadow-2xl flex items-center justify-center overflow-hidden relative group">
   
  
   <div className="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -459,10 +475,10 @@ export default function App() {
     <div className="text-center relative z-10">
       <div className="flex flex-col items-center gap-2">
         <span className="text-purple-500/40 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">
-          Signal Offline
+          {t.signalOffline}
         </span>
         <div className="text-gray-600 font-bold tracking-widest text-xs">
-          SYSTEM IDLE
+          {t.systemIdle}
         </div>
       </div>
     </div>
@@ -489,10 +505,10 @@ export default function App() {
         </div>
         <div className="flex flex-col items-center gap-2">
           <p className="text-purple-500/40 text-[10px] font-black uppercase tracking-[0.4em]">
-            System Standby
+            {language === 'EN' ? 'System Standby' : 'Системен режим на готовност'}
           </p>
           <p className="text-gray-600 text-xs font-medium uppercase tracking-widest">
-            Lyrics Off-line
+            {language === 'EN' ? 'Lyrics Off-line' : 'Текстовете са офлайн'}
           </p>
         </div>
       </div>
@@ -528,7 +544,7 @@ export default function App() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="What do you want to listen to?"
+                placeholder={t.searchLong}
                 autoFocus
                 className="flex-1 bg-transparent text-white text-lg outline-none placeholder-gray-500"
               />
@@ -540,7 +556,7 @@ export default function App() {
                   }}
                   className="text-gray-500 hover:text-white transition"
                 >
-                  Clear
+                  {t.clear}
                 </button>
               )}
             </div>
@@ -549,7 +565,7 @@ export default function App() {
               {searchLoading ? (
                 <div className="py-20 text-center">
                   <div className="inline-block animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-500"></div>
-                  <p className="mt-4 text-gray-400">Searching Spotify...</p>
+                  <p className="mt-4 text-gray-400">{t.searching}</p>
                 </div>
               ) : searchResults.length > 0 ? (
                 <div className="p-4 space-y-2">
@@ -616,11 +632,11 @@ export default function App() {
                 </div>
               ) : searchQuery.trim() ? (
                 <div className="py-20 text-center text-gray-500">
-                  <p className="text-xl">No results found</p>
+                  <p className="text-xl">{t.noResults}</p>
                 </div>
               ) : (
                 <div className="py-20 text-center text-gray-500">
-                  <p className="text-xl">Start typing to search songs</p>
+                  <p className="text-xl">{t.startTyping}</p>
                 </div>
               )}
             </div>
@@ -659,7 +675,7 @@ export default function App() {
       <span className={`text-[10px] font-black uppercase tracking-[0.5em] transition-all duration-700 ${
         isPlaying ? "text-purple-500" : "text-gray-600 opacity-40"
       }`}>
-        {isPlaying ? "Signal Processor Active" : "Core Idle"}
+        {isPlaying ? t.signalActive : t.coreIdle}
       </span>
     </div>
 
@@ -668,14 +684,14 @@ export default function App() {
       isPlaying ? "opacity-100 blur-0" : "opacity-30 blur-[1px]"
     }`}>
       <div className="flex flex-col items-end border-r border-purple-500/10 pr-10">
-        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-500/40 mb-1">Local Time</span>
+        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-500/40 mb-1">{t.localTime}</span>
         <span className="text-sm font-bold text-white tabular-nums tracking-widest uppercase italic">
           {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
         </span>
       </div>
       
       <div className="flex flex-col items-end">
-        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-500/40 mb-1">System Date</span>
+        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-purple-500/40 mb-1">{t.systemDate}</span>
         <span className="text-sm font-bold text-white tracking-widest uppercase italic">
           {new Date().toLocaleDateString([], { day: '2-digit', month: 'short', year: 'numeric' })}
         </span>
@@ -688,6 +704,7 @@ export default function App() {
 <LoginForm 
       isOpen={isAuthOpen} 
       onClose={() => setIsAuthOpen(false)}
+      t={t}
       
     />
 

@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 
 export default function Navbar({
+  t,
   searchQuery,
   setSearchQuery,
   isSearchFocused,
@@ -8,7 +9,9 @@ export default function Navbar({
   searchPanelRef,
   onLoginClick,
   user, 
-  onLogout
+  onLogout,
+  language,
+  setLanguage,
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -47,7 +50,7 @@ export default function Navbar({
         <div className="relative group" ref={inputRef}>
           <input
             type="text"
-            placeholder="Search frequency, artist, signals..."
+            placeholder={t.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
@@ -85,7 +88,7 @@ export default function Navbar({
               </button>
 
 {showDropdown && (
-  <div className="absolute right-0 mt-4 w-72 bg-gray-900/40 backdrop-blur-2xl rounded-[2.5rem] border border-purple-500/20 shadow-[0_25px_70px_rgba(0,0,0,0.6)] overflow-hidden animate-in fade-in zoom-in-95 duration-300 z-[60]">
+  <div className="absolute right-0 mt-4 w-72 bg-gray-900/95 backdrop-blur-2xl rounded-[2.5rem] border border-purple-500/20 shadow-[0_25px_70px_rgba(0,0,0,0.6)] overflow-hidden animate-in fade-in zoom-in-95 duration-300 z-[60]">
     
  
     <div className="p-6 bg-gradient-to-b from-purple-500/10 to-transparent border-b border-purple-500/10">
@@ -95,7 +98,7 @@ export default function Navbar({
         </div>
         <div className="min-w-0">
           <p className="text-sm font-black text-white truncate uppercase tracking-tight italic">{user.name}</p>
-          <p className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Premium Member</p>
+          <p className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">{t.premiumMember}</p>
         </div>
       </div>
     </div>
@@ -108,11 +111,37 @@ export default function Navbar({
           <span className="text-lg">✨</span>
         </div>
         <div className="flex-1">
-          <p className="text-xs font-black uppercase tracking-widest">Appearance</p>
-          <p className="text-[10px] text-gray-500">Change Theme</p>
+          <p className="text-xs font-black uppercase tracking-widest">{t.appearance}</p>
+          <p className="text-[10px] text-gray-500">{t.changeTheme}</p>
         </div>
         <span className="text-[9px] bg-purple-500/20 text-purple-400 px-2 py-1 rounded-lg font-black tracking-tighter">SOON</span>
       </button>
+
+
+
+      <div className="w-full flex flex-col gap-2 px-4 py-3 rounded-[1.8rem] bg-purple-500/5 border border-purple-500/10">
+            <p className="text-[9px] font-black text-purple-400/60 uppercase tracking-[0.2em] ml-1">
+              {language === 'EN' ? 'System Language' : 'Системен език'}
+            </p>
+            <div className="flex bg-black/40 p-1 rounded-xl border border-white/5">
+              <button 
+                onClick={() => setLanguage('EN')}
+                className={`flex-1 py-1.5 rounded-lg text-[10px] font-black transition-all ${
+                  language === 'EN' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"
+                }`}
+              >
+                EN
+              </button>
+              <button 
+                onClick={() => setLanguage('BG')}
+                className={`flex-1 py-1.5 rounded-lg text-[10px] font-black transition-all ${
+                  language === 'BG' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"
+                }`}
+              >
+                BG
+              </button>
+            </div>
+          </div>
 
       <button 
         onClick={() => {
@@ -125,8 +154,8 @@ export default function Navbar({
           <span className="text-lg group-hover:-translate-x-1 transition-transform">↪</span>
         </div>
         <div className="flex-1">
-          <p className="text-xs font-black uppercase tracking-widest">Logout</p>
-          <p className="text-[10px] text-gray-500">End session</p>
+          <p className="text-xs font-black uppercase tracking-widest">{t.logout}</p>
+          <p className="text-[10px] text-gray-500">{t.endSession}</p>
         </div>
       </button>
     </div>
@@ -147,7 +176,7 @@ export default function Navbar({
               onClick={onLoginClick} 
               className="bg-transparent border border-purple-500/50 text-purple-400 font-black py-2.5 px-8 rounded-xl transition-all duration-300 hover:bg-purple-600 hover:text-white hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] active:scale-95 text-xs uppercase tracking-widest"
             >
-              Initialize Login
+             {t.initLogin}
             </button>
           )}
         </div>

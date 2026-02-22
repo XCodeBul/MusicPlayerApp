@@ -110,7 +110,7 @@ export default function Visualizer({ audioRef, currentSong }) {
       width={SIZE}
       height={SIZE}
 
-      className="rounded-xl border border-white/5 bg-gray-900/50"
+      className="w-full h-full object-cover rounded-[2rem] scale-[0.97] bg-transparent"
     />
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const ArtistInfo = ({ currentSong }) => {
+const ArtistInfo = ({ currentSong ,t }) => {
   const [artist, setArtist] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -32,12 +32,12 @@ const ArtistInfo = ({ currentSong }) => {
   const worldRank = Math.floor(2200 - (Math.pow(artist.popularity, 1.7)));
 
   const topCities = [
-    { name: "London, GB", count: Math.floor(calculatedListeners * 0.021).toLocaleString() },
-    { name: "Chicago, US", count: Math.floor(calculatedListeners * 0.018).toLocaleString() },
-    { name: "Los Angeles, US", count: Math.floor(calculatedListeners * 0.015).toLocaleString() },
-    { name: "New York City, US", count: Math.floor(calculatedListeners * 0.014).toLocaleString() },
-    { name: "Houston, US", count: Math.floor(calculatedListeners * 0.012).toLocaleString() },
-  ];
+  { name: t?.cityLondon || "London, GB", count: Math.floor(calculatedListeners * 0.021).toLocaleString() },
+  { name: t?.cityChicago || "Chicago, US", count: Math.floor(calculatedListeners * 0.018).toLocaleString() },
+  { name: t?.cityLA || "Los Angeles, US", count: Math.floor(calculatedListeners * 0.015).toLocaleString() },
+  { name: t?.cityNY || "New York City, US", count: Math.floor(calculatedListeners * 0.014).toLocaleString() },
+  { name: t?.cityHouston || "Houston, US", count: Math.floor(calculatedListeners * 0.012).toLocaleString() },
+];
 
   return (
     <div className="flex flex-row items-center w-full h-full px-8 gap-10 animate-in fade-in zoom-in-95 duration-500 overflow-hidden">
@@ -78,32 +78,31 @@ const ArtistInfo = ({ currentSong }) => {
         <div className="flex items-start gap-12">
           <div className="space-y-1">
             <p className="text-4xl font-black text-white leading-none">#{worldRank}</p>
-            <p className="text-[11px] text-gray-500 uppercase font-bold tracking-widest text-nowrap">In the World</p>
+            <p className="text-[11px] text-gray-500 uppercase font-bold tracking-widest text-nowrap">{t.inTheWorld}</p>
           </div>
           
           <div className="space-y-1 border-l border-white/10 pl-12">
             <p className="text-4xl font-black text-purple-400 leading-none">
               {artist.followers.total.toLocaleString()}
             </p>
-            <p className="text-[11px] text-gray-500 uppercase font-bold tracking-widest">Followers</p>
+            <p className="text-[11px] text-gray-500 uppercase font-bold tracking-widest">{t.followers}</p>
           </div>
 
           <div className="space-y-1 border-l border-white/10 pl-12">
             <p className="text-4xl font-black text-white leading-none">
               {monthlyListeners}
             </p>
-            <p className="text-[11px] text-gray-500 uppercase font-bold tracking-widest text-nowrap">Monthly Listeners</p>
+            <p className="text-[11px] text-gray-500 uppercase font-bold tracking-widest text-nowrap">{t.monthlyListenersTitle}</p>
           </div>
         </div>
 
  
         <div className="max-w-3xl">
-          <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 italic">
-            {artist.name} is dominating the global charts with a unique and influential style in <span className="text-gray-300 font-bold not-italic">{genresList}</span>. 
-            With over {monthlyListeners} listeners tuning in monthly, the artist has solidified their position as a powerhouse 
-            in modern music, backed by a loyal fanbase of {artist.followers.total.toLocaleString()} followers.
-          </p>
-        </div>
+  <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 italic">
+    {artist.name} {t.artistBio} <span className="text-gray-300 font-bold not-italic">{genresList}</span>. 
+    {" "}{t.monthlyPart} {monthlyListeners} {t.listenersPart} {artist.followers.total.toLocaleString()} {t.followersPart}
+  </p>
+</div>
 
 
         <div className="flex gap-4 items-center">
@@ -124,7 +123,7 @@ const ArtistInfo = ({ currentSong }) => {
 
       <div className="w-80 h-[75%] shrink-0 bg-white/5 rounded-[2rem] p-6 border border-white/10 self-center flex flex-col justify-center">
         <h4 className="text-[11px] text-gray-400 font-black uppercase tracking-[0.25em] mb-6 border-b border-white/10 pb-3 text-center">
-          Top Cities
+          {t.topCities}
         </h4>
         <div className="space-y-4">
           {topCities.map((city, idx) => (

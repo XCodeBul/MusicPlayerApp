@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 
-export default function LoginForm({ isOpen, onClose, onSuccess }) {
+export default function LoginForm({ isOpen, onClose, onSuccess , t }) {
   const [isLogin, setIsLogin] = useState(true);
 
   const handleGoogleLogin = async () => {
@@ -39,19 +39,20 @@ export default function LoginForm({ isOpen, onClose, onSuccess }) {
             <span className="text-purple-400 text-4xl font-light">♪</span>
           </div>
           <h2 className="text-3xl font-black tracking-tighter text-white uppercase italic">
-            {isLogin ? "System Login" : "Initialize Account"}
+          {isLogin ? t.systemLogin : t.initAccount}
           </h2>
-          <p className="text-purple-500/50 text-[10px] font-black uppercase tracking-[0.4em] mt-2">
-            {isLogin ? "Verify Identity" : "Establish Signal"}
-          </p>
-        </div>
+
+           <p className="text-purple-500/50 text-[10px] font-black uppercase tracking-[0.4em] mt-2">
+           {isLogin ? t.verifyIdentity : t.establishSignal}
+           </p>
+          </div>
 
 
         <div className="space-y-4 relative z-10">
           <div className="group">
             <input 
               type="email" 
-              placeholder="IDENTITY@EMAIL.COM"
+              placeholder={t.emailPlaceholder}
               className="w-full bg-white/5 border border-purple-500/10 rounded-2xl px-6 py-4 text-white outline-none focus:bg-purple-900/10 focus:border-purple-500/50 transition-all duration-300 placeholder-purple-900 font-mono text-sm"
             />
           </div>
@@ -59,23 +60,23 @@ export default function LoginForm({ isOpen, onClose, onSuccess }) {
           <div className="group">
             <input 
               type="password" 
-              placeholder="ACCESS_KEY"
+              placeholder={t.passPlaceholder}
               className="w-full bg-white/5 border border-purple-500/10 rounded-2xl px-6 py-4 text-white outline-none focus:bg-purple-900/10 focus:border-purple-500/50 transition-all duration-300 placeholder-purple-900 font-mono text-sm"
             />
           </div>
 
           <button 
-            onClick={handleEmailAuth}
-            className="w-full bg-transparent border border-purple-500 text-purple-400 hover:bg-purple-600 hover:text-white font-black py-4 rounded-2xl mt-4 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all active:scale-95 uppercase text-xs tracking-[0.3em]"
-          >
-            {isLogin ? "Execute Entry" : "Finalize Config"}
-          </button>
+  onClick={handleEmailAuth}
+  className="w-full bg-transparent border border-purple-500 text-purple-400 hover:bg-purple-600 hover:text-white font-black py-4 rounded-2xl mt-4 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all active:scale-95 uppercase text-xs tracking-[0.3em]"
+>
+  {isLogin ? t.executeEntry : t.finalizeConfig}
+</button>
         </div>
 
   
         <div className="flex items-center my-10 gap-4 relative z-10">
           <div className="h-[1px] flex-1 bg-purple-500/10"></div>
-          <span className="text-[9px] font-black text-purple-900 uppercase tracking-[0.4em]">External Links</span>
+          <span className="text-[9px] font-black text-purple-900 uppercase tracking-[0.4em]">{t.externalLinks}</span>
           <div className="h-[1px] flex-1 bg-purple-500/10"></div>
         </div>
 
@@ -102,11 +103,12 @@ export default function LoginForm({ isOpen, onClose, onSuccess }) {
             className="group relative flex flex-col items-center gap-1 transition-all duration-300"
           >
             <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-600 group-hover:text-purple-500 transition-colors">
-              {isLogin ? "Need a core ID?" : "Already verified?"}
+            {isLogin ? t.needId : t.alreadyVerified}
             </span>
+
             <span className="text-xs font-black uppercase tracking-[0.2em] text-white border-b border-purple-500/50 group-hover:border-purple-500 transition-all">
-              {isLogin ? "Create Account" : "Return to Login"}
-            </span>
+            {isLogin ? t.createAccount : t.returnLogin}
+           </span>
           </button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { forwardRef, useEffect } from "react";
 
 const MusicPlayer = forwardRef(
-  ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek }, ref) => {
+  ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek, t }, ref) => {
 
     useEffect(() => {
       if (!ref.current || !currentSong) return;
@@ -27,7 +27,7 @@ const MusicPlayer = forwardRef(
           <div className="w-56 h-56 bg-purple-500/5 rounded-2xl flex items-center justify-center border border-purple-500/10">
             <span className="text-purple-500/20 text-4xl grayscale">🎵</span>
           </div>
-          <p className="text-purple-500/40 font-black uppercase tracking-[0.3em] text-[10px]">Select a track</p>
+          <p className="text-purple-500/40 font-black uppercase tracking-[0.3em] text-[10px]">{t.selectTrack}</p>
         </div>
       );
 
