@@ -29,9 +29,6 @@ const AppLayout = () => {
         syncToken();
     }, []);
 
-
-
-
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) {
