@@ -26,27 +26,23 @@ const Player = () => {
     const handlePlayPause = () => setIsPlaying((prev) => !prev)
 
     const handleNext = () => {
-        if (!selectedPlaylist || selectedPlaylist.songs.length === 0) return;
-        const idx = selectedPlaylist.songs.findIndex((s) => s.id === currentSong?.id);
-        const next = selectedPlaylist.songs[(idx + 1) % selectedPlaylist.songs.length];
+        if (!selectedPlaylist || selectedPlaylist.songs.length === 0) return
+        const idx = selectedPlaylist.songs.findIndex((s) => s.id === currentSong?.id)
+        const next = selectedPlaylist.songs[(idx + 1) % selectedPlaylist.songs.length]
         playSong(next)
     }
 
     const handlePrev = () => {
-        if (!selectedPlaylist || selectedPlaylist.songs.length === 0) return;
-        const idx = selectedPlaylist.songs.findIndex((s) => s.id === currentSong?.id);
-        const prev = selectedPlaylist.songs[(idx - 1 + selectedPlaylist.songs.length) % selectedPlaylist.songs.length];
+        if (!selectedPlaylist || selectedPlaylist.songs.length === 0) return
+        const idx = selectedPlaylist.songs.findIndex((s) => s.id === currentSong?.id)
+        const prev = selectedPlaylist.songs[(idx - 1 + selectedPlaylist.songs.length) % selectedPlaylist.songs.length]
         playSong(prev)
     }
-
-    useEffect(() => {
-        console.log(selectedPlaylist?.songs)
-    }, [selectedPlaylist]);
 
     return (
         <div className="flex flex-1 overflow-hidden">
             <aside
-                className="hidden md:flex w-20 lg:w-24 bg-gray-900/50 rounded-3xl flex-col shadow-xl
+                className="md:flex w-20 lg:w-24 bg-gray-900/50 rounded-3xl flex-col shadow-xl
                 ml-4 my-4 flex-shrink-0">
                 <PlaylistManager/>
             </aside>
@@ -106,8 +102,8 @@ const Player = () => {
                 <div className="flex-1 flex flex-col -mt-4 mb-4 overflow-hidden">
                     <div className="flex-1 flex gap-5 overflow-hidden">
                         {/* TrackQueue Section */}
-                        <div className="w-full max-w-2xl flex-1 bg-gray-900/40 backdrop-blur-xl rounded-[2.5rem]
-                            p-8 border border-purple-500/20 shadow-2xl relative group">
+                        <div className="w-full max-w-2xl flex-1 lg:bg-gray-900/40 lg:backdrop-blur-xl lg:rounded-[2.5rem]
+                            lg:p-8 lg:border lg:border-purple-500/20 lg:shadow-2xl relative group">
                             <div className="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100
                                  transition-opacity duration-700 pointer-events-none"/>
                             <TrackQueue/>

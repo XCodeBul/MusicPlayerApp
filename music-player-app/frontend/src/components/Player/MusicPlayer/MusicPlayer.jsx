@@ -25,7 +25,8 @@ const MusicPlayer = forwardRef(
 
         if (!currentSong)
             return (
-                <div className="bg-gray-900/40 h-[260px] lg:h-[421px] backdrop-blur-xl p-6 rounded-[2.5rem] border border-purple-500/20 shadow-2xl w-[380px] flex flex-col items-center text-center gap-4">
+                <div className="bg-gray-900/40 h-[260px] lg:h-[421px] backdrop-blur-xl p-6 rounded-[2.5rem]
+                border border-purple-500/20 shadow-2xl w-[272px] lg:w-[380px] flex flex-col items-center text-center gap-4">
                     <div className="w-56 h-56 mt-10 bg-purple-500/5 rounded-2xl flex items-center justify-center border border-purple-500/10">
                         <span className="text-purple-500/20 text-4xl grayscale">🎵</span>
                     </div>
@@ -35,7 +36,7 @@ const MusicPlayer = forwardRef(
 
         return (
             <div className="bg-gray-900/40 backdrop-blur-xl p-6 rounded-[2.5rem] border border-purple-500/20 shadow-2xl
-                w-[380px] flex flex-col text-center h-full relative overflow-hidden">
+                w-[272px] lg:w-[380px] flex flex-col text-center h-full relative overflow-hidden">
                 <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-600/10 blur-[50px] pointer-events-none" />
                 <div className="flex flex-col items-center gap-4 w-full relative z-10">
                     <img
@@ -73,7 +74,8 @@ const MusicPlayer = forwardRef(
                         onClick={onPrev}
                         className="bg-white/5 hover:bg-purple-500/20 text-white/70 hover:text-purple-300 px-4 py-2 rounded-full transition-all text-[10px] font-black uppercase tracking-widest border border-white/5"
                     >
-                        Prev
+                        <span className={'hidden md:block'}>Prev</span>
+                        <i className="fa fa-chevron-left block md:hidden"></i>
                     </button>
 
                     <button
@@ -87,7 +89,8 @@ const MusicPlayer = forwardRef(
                         onClick={onNext}
                         className="bg-white/5 hover:bg-purple-500/20 text-white/70 hover:text-purple-300 px-4 py-2 rounded-full transition-all text-[10px] font-black uppercase tracking-widest border border-white/5"
                     >
-                        Next
+                        <span className={'hidden md:block'}>Next</span>
+                        <i className="fa fa-chevron-right block md:hidden"></i>
                     </button>
                 </div>
 
