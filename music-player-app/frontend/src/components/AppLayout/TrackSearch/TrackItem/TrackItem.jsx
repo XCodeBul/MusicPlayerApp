@@ -6,7 +6,7 @@ const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) =
 
     const handleAddToPlaylist = async (track, playlistId) => {
         if (!track.preview_url) {
-            alert(`"${track.name}" by ${track.artists[0].name} has no preview available`);
+            alert(`"${track.name}" by ${track.artists[0].name} has no preview available`)
             return
         }
 
@@ -18,10 +18,10 @@ const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) =
             duration: "30s",
             albumArt: track.album.images[1]?.url || track.album.images[0]?.url || null,
             src: track.preview_url,
-        };
+        }
 
-        const targetPlaylist = playlists.find((p) => p.id === playlistId);
-        const updatedSongs = [...(targetPlaylist?.songs || []), newSong];
+        const targetPlaylist = playlists.find((p) => p.id === playlistId)
+        const updatedSongs = [...(targetPlaylist?.songs || []), newSong]
 
         updateSongList(playlistId, updatedSongs).then(() => playlistsReload())
 
@@ -73,7 +73,7 @@ const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) =
                             <p className="px-6 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
                                 Add to playlist
                             </p>
-                            {playlists.length > 0 ? (
+                            {!!playlists && playlists.length > 0 ? (
                                 playlists.map((p) => (
                                     <div
                                         key={p.id}

@@ -3,9 +3,8 @@ import MusicPlayer from "./MusicPlayer/MusicPlayer.jsx";
 import {usePlayerContext} from "../../contexts/PlayerContext.jsx";
 import {useLocalization} from "../../hooks/useLocalization.js";
 import Visualizer from "./Visualizer/Visualizer.jsx";
-import Lyrics from "../Lyrics.jsx";
+import Lyrics from "./Lyrics/Lyrics.jsx";
 import {useAuthUserContext} from "../../contexts/AuthUserContext.jsx";
-import {useEffect} from "react";
 import ArtistDetails from "./ArtistDetails/ArtistDetails.jsx";
 import TrackQueue from "./TrackQueue/TrackQueue.jsx";
 
@@ -42,8 +41,7 @@ const Player = () => {
     return (
         <div className="flex flex-1 overflow-hidden">
             <aside
-                className="md:flex w-20 lg:w-24 bg-gray-900/50 rounded-3xl flex-col shadow-xl
-                ml-4 my-4 flex-shrink-0">
+                className="md:flex w-20 lg:w-24 bg-gray-900/50 rounded-3xl flex-col shadow-xl ml-4 my-4 flex-shrink-0">
                 <PlaylistManager/>
             </aside>
 

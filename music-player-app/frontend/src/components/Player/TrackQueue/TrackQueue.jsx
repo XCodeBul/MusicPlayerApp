@@ -21,7 +21,7 @@ const TrackQueue = () => {
                 </span>
             </div>
 
-            <div className={'h-96 overflow-y-auto custom-scrollbar'}>
+            <div className={'h-[270px] overflow-y-auto custom-scrollbar'}>
                 {selectedPlaylist && selectedPlaylist.songs.length > 0 ? (
                     <ul className="space-y-3 pr-1 lg:pr-2">
                         {selectedPlaylist.songs.map((song) => (

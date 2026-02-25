@@ -54,10 +54,10 @@ const Lyrics = ({currentSong}) => {
 
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-4">
                 <div className="py-2 space-y-2">
-                    {!!lines && lines.length > 0 ? (
+                    {!!lines && lines?.length ? (
                         lines.map((line, index) => (
                             <p key={index}
-                                className="xl:text-[20px] md:text-2xl font-bold leading-snug tracking-tight
+                               className="xl:text-[20px] md:text-2xl font-bold leading-snug tracking-tight
                                 text-white/90
                                 hover:text-purple-400 hover:translate-x-2 transition-all duration-300 cursor-default"
                             >

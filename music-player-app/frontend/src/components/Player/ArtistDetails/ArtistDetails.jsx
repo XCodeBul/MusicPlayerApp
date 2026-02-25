@@ -6,6 +6,7 @@ const ArtistDetails = ({currentSong}) => {
     const [artist, setArtist] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // TODO: for refactoring
     useEffect(() => {
         const fetchArtist = async () => {
             if (!currentSong?.artistId) return;

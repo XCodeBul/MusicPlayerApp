@@ -6,9 +6,14 @@ import {usePlayerContext} from "../../../contexts/PlayerContext.jsx";
 
 const PlaylistManager = () => {
     const {playlists} = usePlaylistContext()
-    const {setSelectedPlaylist} = usePlayerContext()
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [tooltip, setTooltip] = useState(null);
+    const {setSelectedPlaylist, setCurrentSong} = usePlayerContext()
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+    const [tooltip, setTooltip] = useState(null)
+
+    const handleOnChangePlaylist = (playlist) => {
+        setSelectedPlaylist(playlist)
+        setCurrentSong(null)
+    }
 
     return (
         <div className="flex flex-col h-full relative border-r border-purple-500/10">
@@ -32,7 +37,7 @@ const PlaylistManager = () => {
                         <div
                             key={playlist.id}
                             className="relative group cursor-pointer"
-                            onClick={() => setSelectedPlaylist(playlist)}
+                            onClick={() => handleOnChangePlaylist(playlist)}
                             onMouseEnter={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect()
                                 setTooltip({

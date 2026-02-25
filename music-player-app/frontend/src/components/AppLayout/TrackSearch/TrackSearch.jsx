@@ -39,7 +39,7 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
         return () => {
             clearTimeout(timeout)
             controller.abort()
-        };
+        }
     }, [searchQuery])
 
     return (

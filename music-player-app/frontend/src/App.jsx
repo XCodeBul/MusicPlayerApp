@@ -9,11 +9,11 @@ const App = () => {
     return (
         <BrowserRouter>
             <AuthUserProvider>
-                <PlaylistProvider>
-                    <PlayerProvider>
+                <PlayerProvider>
+                    <PlaylistProvider>
                         <Router/>
-                    </PlayerProvider>
-                </PlaylistProvider>
+                    </PlaylistProvider>
+                </PlayerProvider>
             </AuthUserProvider>
         </BrowserRouter>
     )
