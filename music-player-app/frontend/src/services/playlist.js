@@ -34,3 +34,14 @@ export const deleteUserPlaylist = async (playlistId) => {
 
     if (error) console.error("Playlist fetch error:", error)
 }
+
+export const updateSongList = async (playlistId, songs) => {
+    const { data, error } = await supabase
+        .from("playlists")
+        .update({ songs: songs })
+        .eq("id", playlistId)
+
+    if (error) console.error("Playlist fetch error:", error)
+}
+
+

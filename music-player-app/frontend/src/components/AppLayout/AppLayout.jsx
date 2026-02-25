@@ -14,7 +14,6 @@ const AppLayout = () => {
         getSpotifyToken().then(data => {
             if (data.access_token) {
                 localStorage.setItem("spotify_access_token", data.access_token)
-                console.log("Spotify Token Synced Successfully!") // TODO: remove
             }
         })
     }, [])
@@ -51,8 +50,6 @@ const AppLayout = () => {
         initializeAuth();
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log("Supabase Auth Event:", event);
-
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                 if (session) {
                     updateUserInfo(session.user);

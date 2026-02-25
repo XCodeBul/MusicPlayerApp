@@ -2,9 +2,11 @@ import {useState} from "react";
 import CreatePlaylistForm from "./CreatePlaylistForm/CreatePlaylistForm.jsx";
 import {usePlaylistContext} from "../../../contexts/PlaylistContext.jsx";
 import DeletePlaylist from "./DeletePlaylist/DeletePlaylist.jsx";
+import {usePlayerContext} from "../../../contexts/PlayerContext.jsx";
 
 const PlaylistManager = () => {
     const {playlists} = usePlaylistContext()
+    const {setSelectedPlaylist} = usePlayerContext()
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [tooltip, setTooltip] = useState(null);
 
@@ -24,21 +26,20 @@ const PlaylistManager = () => {
                 </button>
             </div>
 
-
             <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 custom-scrollbar">
                 <div className="flex flex-col items-center gap-4 py-2">
                     {!!playlists.length && playlists.map((playlist) => (
                         <div
                             key={playlist.id}
                             className="relative group cursor-pointer"
-                            onClick={() => console.log(playlist)}
+                            onClick={() => setSelectedPlaylist(playlist)}
                             onMouseEnter={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect()
                                 setTooltip({
                                     name: playlist.name,
                                     x: rect.right + 16,
                                     y: rect.top + rect.height / 2,
-                                });
+                                })
                             }}
                             onMouseLeave={() => setTooltip(null)}
                         >
@@ -74,7 +75,7 @@ const PlaylistManager = () => {
                                         const file = e.target.files?.[0];
                                         if (file) {
                                             const reader = new FileReader();
-                                            reader.onload = () => onUpdatePlaylistCover(playlist.id, reader.result);
+                                            // reader.onload = () => onUpdatePlaylistCover(playlist.id, reader.result);
                                             reader.readAsDataURL(file);
                                         }
                                     }}

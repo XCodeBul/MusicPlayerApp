@@ -1,6 +1,9 @@
-import {supabase} from "../../../../supabaseClient.js";
+import {updateSongList} from "../../../../services/playlist.js";
+import {usePlaylistContext} from "../../../../contexts/PlaylistContext.jsx";
 
-const TrackItem = ({searchResults, playlists, showPlaylistPicker, setShowPlaylistPicker}) => {
+const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) => {
+    const {playlistsReload, playlists} = usePlaylistContext()
+
     const handleAddToPlaylist = async (track, playlistId) => {
         if (!track.preview_url) {
             alert(`"${track.name}" by ${track.artists[0].name} has no preview available`);
@@ -20,22 +23,9 @@ const TrackItem = ({searchResults, playlists, showPlaylistPicker, setShowPlaylis
         const targetPlaylist = playlists.find((p) => p.id === playlistId);
         const updatedSongs = [...(targetPlaylist?.songs || []), newSong];
 
-        const { error } = await supabase
-            .from("playlists")
-            .update({ songs: updatedSongs })
-            .eq("id", playlistId);
+        updateSongList(playlistId, updatedSongs).then(() => playlistsReload())
 
-        if (error) {
-            console.error("Error adding song to Supabase:", error.message);
-            alert("Could not save song to database.");
-            return;
-        }
-
-        // setPlaylists((prev) =>
-        //     prev.map((p) => (p.id === playlistId ? { ...p, songs: updatedSongs } : p))
-        // );
-
-        setShowPlaylistPicker(null);
+        setShowPlaylistPicker(null)
     };
 
     const formatDuration = (ms) => {

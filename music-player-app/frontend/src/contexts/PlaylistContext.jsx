@@ -24,6 +24,7 @@ export function PlaylistProvider({children}) {
 
     const playlistsReload = () => {
         setPlaylistData()
+        console.log('Playlist reload')
     }
 
     const setPlaylistData = () => {

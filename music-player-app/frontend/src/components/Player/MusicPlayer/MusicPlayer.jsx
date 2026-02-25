@@ -1,12 +1,14 @@
 import { forwardRef, useEffect } from "react";
+import {useLocalization} from "../../../hooks/useLocalization.js";
 
 const MusicPlayer = forwardRef(
-    ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek, t }, ref) => {
+    ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek}, ref) => {
+        const {t} = useLocalization()
 
         useEffect(() => {
             if (!ref.current || !currentSong) return;
             if (isPlaying) {
-                ref.current.play().catch(e => console.error("Play error:", e));
+                ref.current.play().catch(e => console.log("Play error:", e));
             } else {
                 ref.current.pause();
             }

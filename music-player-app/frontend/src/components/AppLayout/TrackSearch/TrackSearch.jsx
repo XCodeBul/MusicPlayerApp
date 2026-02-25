@@ -1,11 +1,9 @@
 import {useEffect, useRef, useState} from "react";
 import TrackItem from "./TrackItem/TrackItem.jsx";
 import {useLocalization} from "../../../hooks/useLocalization.js";
-import {usePlaylistContext} from "../../../contexts/PlaylistContext.jsx";
 
 const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
     const {t} = useLocalization()
-    const {playlists} = usePlaylistContext()
     const [searchQuery, setSearchQuery] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [searchLoading, setSearchLoading] = useState(false)
@@ -93,7 +91,6 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
                             ) : searchResults.length > 0 ? (
                                 <TrackItem
                                     searchResults={searchResults}
-                                    playlists={playlists}
                                     showPlaylistPicker={showPlaylistPicker}
                                     setShowPlaylistPicker={setShowPlaylistPicker}
                                 />
