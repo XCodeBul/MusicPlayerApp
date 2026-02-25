@@ -1,10 +1,11 @@
 import {useEffect, useRef, useState} from "react";
-import {translations} from "../../../locales/translations.js";
-import {supabase} from "../../../supabaseClient.js";
 import TrackItem from "./TrackItem/TrackItem.jsx";
+import {useLocalization} from "../../../hooks/useLocalization.js";
+import {usePlaylistContext} from "../../../contexts/PlaylistContext.jsx";
 
 const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
-    const [playlists, setPlaylists] = useState([]);
+    const {t} = useLocalization()
+    const {playlists} = usePlaylistContext()
     const [searchQuery, setSearchQuery] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [searchLoading, setSearchLoading] = useState(false)
@@ -12,9 +13,7 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
 
     const searchPanelRef = useRef(null)
 
-    const [language, setLanguage] = useState(localStorage.getItem('appLanguage') || 'BG')
-    const t = translations[language]
-
+    // TODO: for refactoring
     useEffect(() => {
         if (!searchQuery.trim()) {
             setSearchResults([])
@@ -26,7 +25,7 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
             try {
                 const res = await fetch(
                     `http://localhost:5000/api/search?q=${encodeURIComponent(searchQuery)}`,
-                    { signal: controller.signal }
+                    {signal: controller.signal}
                 )
                 const data = await res.json();
                 const filteredResults = (data.tracks?.items || []).filter(
@@ -57,11 +56,12 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
                         ref={searchPanelRef}
                         onClick={(e) => e.stopPropagation()}
                         className="fixed left-1/2 top-28 -translate-x-1/2 w-full max-w-2xl
-                       bg-gray-900/95 backdrop-blur-3xl rounded-3xl shadow-2xl
-                       border border-gray-700/50 overflow-hidden
-                       z-[999999] animate-in slide-in-from-top-4 duration-300"
+                           bg-gray-900/95 backdrop-blur-3xl rounded-3xl shadow-2xl
+                           border border-gray-700/50 overflow-hidden
+                           z-[999999] animate-in slide-in-from-top-4 duration-300"
                     >
-                        <div className="flex items-center gap-4 px-8 py-6 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-b border-gray-700/50">
+                        <div className="flex items-center gap-4 px-8 py-6 bg-gradient-to-r from-purple-900/20
+                            to-blue-900/20 border-b border-gray-700/50">
                             <input
                                 type="text"
                                 value={searchQuery}
@@ -73,8 +73,8 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
                             {searchQuery && (
                                 <button
                                     onClick={() => {
-                                        setSearchQuery("");
-                                        setSearchResults([]);
+                                        setSearchQuery('')
+                                        setSearchResults([])
                                     }}
                                     className="text-gray-500 hover:text-white transition"
                                 >
@@ -86,7 +86,8 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
                         <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
                             {searchLoading ? (
                                 <div className="py-20 text-center">
-                                    <div className="inline-block animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-500"></div>
+                                    <div className="inline-block animate-spin rounded-full h-10 w-10 border-t-2
+                                    border-b-2 border-purple-500"></div>
                                     <p className="mt-4 text-gray-400">{t.searching}</p>
                                 </div>
                             ) : searchResults.length > 0 ? (

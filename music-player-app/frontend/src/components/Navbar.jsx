@@ -1,37 +1,29 @@
 import {useRef, useEffect, useState} from "react";
 import TrackSearch from "./AppLayout/TrackSearch/TrackSearch.jsx";
 import LoginForm from "./LoginForm.jsx";
+import {useLocalization} from "../hooks/useLocalization.js";
 
-export default function Navbar(
-    {
-        t,
-        searchPanelRef,
-        user,
-        onLogout,
-        language,
-        setLanguage,
-    }
-) {
+export default function Navbar({user, onLogout}) {
     const [showDropdown, setShowDropdown] = useState(false)
     const [isSearchFocused, setIsSearchFocused] = useState(false)
     const [isAuthOpen, setIsAuthOpen] = useState(false)
     const dropdownRef = useRef(null)
     const inputRef = useRef(null)
 
+    const {t, language, changeLanguage} = useLocalization()
+
     useEffect(() => {
         const handleClickOutside = (e) => {
             const inputEl = inputRef.current;
-            const panelEl = searchPanelRef?.current;
             if (inputEl && inputEl.contains(e.target)) return;
-            if (panelEl && panelEl.contains(e.target)) return;
             // setIsSearchFocused(false);
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setShowDropdown(false);
             }
-        };
+        }
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isSearchFocused, setIsSearchFocused, searchPanelRef]);
+    }, [isSearchFocused, setIsSearchFocused]);
 
     return (
         <>
@@ -54,14 +46,12 @@ export default function Navbar(
                             type="text"
                             placeholder={t.searchPlaceholder}
                             onFocus={() => setIsSearchFocused(true)}
-                            className={`
-              w-[450px] bg-white/5 border border-purple-500/10 text-white rounded-2xl px-6 py-3 pr-12 text-sm 
-              outline-none transition-all duration-500 placeholder-gray-600 font-medium
-              ${isSearchFocused
-                                ? "bg-purple-900/20 border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.15)] w-[500px]"
-                                : "hover:bg-white/10"
-                            }
-            `}
+                            className={`w-[450px] bg-white/5 border border-purple-500/10 text-white rounded-2xl px-6 py-3 pr-12 text-sm outline-none transition-all duration-500 placeholder-gray-600 font-medium
+                                ${isSearchFocused
+                                    ? "bg-purple-900/20 border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.15)] w-[500px]"
+                                    : "hover:bg-white/10"
+                                }
+                            `}
                         />
                         <div
                             className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${isSearchFocused ? 'text-purple-400' : 'text-gray-500'}`}>
@@ -132,7 +122,7 @@ export default function Navbar(
                                                 </p>
                                                 <div className="flex bg-black/40 p-1 rounded-xl border border-white/5">
                                                     <button
-                                                        onClick={() => setLanguage('EN')}
+                                                        onClick={() => changeLanguage('EN')}
                                                         className={`flex-1 py-1.5 rounded-lg text-[10px] font-black transition-all ${
                                                             language === 'EN' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"
                                                         }`}
@@ -140,7 +130,7 @@ export default function Navbar(
                                                         EN
                                                     </button>
                                                     <button
-                                                        onClick={() => setLanguage('BG')}
+                                                        onClick={() => changeLanguage('BG')}
                                                         className={`flex-1 py-1.5 rounded-lg text-[10px] font-black transition-all ${
                                                             language === 'BG' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"
                                                         }`}
@@ -152,8 +142,8 @@ export default function Navbar(
 
                                             <button
                                                 onClick={() => {
-                                                    onLogout();
-                                                    setShowDropdown(false);
+                                                    onLogout()
+                                                    setShowDropdown(false)
                                                 }}
                                                 className="w-full group flex items-center gap-4 px-4 py-4 rounded-[1.8rem] text-gray-400 hover:text-red-400 hover:bg-red-500/5 transition-all duration-300 text-left"
                                             >

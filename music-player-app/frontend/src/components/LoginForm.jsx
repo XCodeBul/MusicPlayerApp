@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 
-export default function LoginForm({ isOpen, onClose, onSuccess , t }) {
+export default function LoginForm({ isOpen, onClose, t }) {
   const [isLogin, setIsLogin] = useState(true);
 
   const handleGoogleLogin = async () => {

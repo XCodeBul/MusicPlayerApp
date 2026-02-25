@@ -1,50 +1,31 @@
 import Navbar from "../Navbar.jsx";
-import {useEffect, useRef, useState} from "react";
-import {translations} from "../../locales/translations.js";
+import {useEffect} from "react";
 import {supabase} from "../../supabaseClient.js";
 import {Outlet} from "react-router-dom";
+import {getSpotifyToken} from "../../services/spotify.js";
+import {useAuthUserContext} from "../../contexts/AuthUserContext.jsx";
+import {usePlaylistContext} from "../../contexts/PlaylistContext.jsx";
 
 const AppLayout = () => {
-    const searchPanelRef = useRef(null);
-    const musicAudioRef = useRef(null);
-    const [user, setUser] = useState(null);
-    const [language, setLanguage] = useState(localStorage.getItem('appLanguage') || 'BG');
-    const t = translations[language];
-
+    const {user, setAuthUser} = useAuthUserContext()
+    const {setPlaylists} = usePlaylistContext()
 
     useEffect(() => {
-        const syncToken = async () => {
-            try {
-                const res = await fetch("http://localhost:5000/api/token");
-                if (!res.ok) throw new Error("Server error " + res.status);
-                const data = await res.json();
-                if (data.access_token) {
-                    localStorage.setItem("spotify_access_token", data.access_token);
-                    console.log("✅ Spotify Token Synced Successfully!");
-                }
-            } catch (err) {
-                console.error("❌ Token sync error:", err);
+        getSpotifyToken().then(data => {
+            if (data.access_token) {
+                localStorage.setItem("spotify_access_token", data.access_token)
+                console.log("Spotify Token Synced Successfully!") // TODO: remove
             }
-        };
-        syncToken();
-    }, []);
+        })
+    }, [])
 
     const handleLogout = async () => {
-        const { error } = await supabase.auth.signOut();
+        const { error } = await supabase.auth.signOut()
         if (error) {
-            console.error("Logout error:", error.message);
+            console.error("Logout error:", error.message)
         } else {
-
-            setUser(null);
-
-
-            if (musicAudioRef.current) {
-                musicAudioRef.current.pause();
-                musicAudioRef.current.src = "";
-                musicAudioRef.current.load();
-
-            }
-            console.log("UI Cleaned");
+            setPlaylists([])
+            setAuthUser(null)
         }
     };
 
@@ -59,23 +40,13 @@ const AppLayout = () => {
         };
 
         const updateUserInfo = (supabaseUser) => {
-            setUser({
+            setAuthUser({
                 id: supabaseUser.id,
                 name: supabaseUser.user_metadata?.full_name || "User",
                 email: supabaseUser.email,
                 avatar: supabaseUser.user_metadata?.avatar_url,
             });
         };
-
-        // const fetchUserPlaylists = async (userId) => {
-        //     const { data, error } = await supabase
-        //         .from('playlists')
-        //         .select('*')
-        //         .eq('user_id', userId)
-        //         .order('created_at', { ascending: true });
-        //     if (data) setPlaylists(data);
-        //     if (error) console.error("Playlist fetch error:", error);
-        // };
 
         initializeAuth();
 
@@ -89,7 +60,7 @@ const AppLayout = () => {
                     // setIsAuthOpen(false);
                 }
             } else if (event === 'SIGNED_OUT') {
-                setUser(null);
+                setAuthUser(null)
             }
         });
 
@@ -102,12 +73,8 @@ const AppLayout = () => {
             <div
                 className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white flex flex-col overflow-hidden font-sans">
                 <Navbar
-                    t={t}
-                    searchPanelRef={searchPanelRef}
                     user={user}
                     onLogout={handleLogout}
-                    language={language}
-                    setLanguage={setLanguage}
                 />
 
                 <Outlet/>
