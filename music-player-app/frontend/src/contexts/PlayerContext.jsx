@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useRef, useState} from "react";
+import {createContext, useContext, useRef, useState} from "react";
 
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -16,6 +16,12 @@ export function PlayerProvider({children}) {
     const [isPlaying, setIsPlaying] = useState(false)
     const [progress, setProgress] = useState(0)
 
+    const playSong = (song) => {
+        setCurrentSong(song)
+        setIsPlaying(true)
+        setProgress(0)
+    }
+
     return (
         <PlayerContext.Provider
             value={{
@@ -28,6 +34,7 @@ export function PlayerProvider({children}) {
                 setIsPlaying,
                 progress,
                 setProgress,
+                playSong
             }}
         >
             {children}

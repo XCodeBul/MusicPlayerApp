@@ -47,11 +47,15 @@ const PlaylistManager = () => {
                                 <img
                                     src={playlist.cover || "https://pixsector.com/cache/8955ccde/avea0c6d1234636825bd6.png"}
                                     alt={playlist.name}
-                                    className="w-14 h-14 rounded-2xl object-cover shadow-lg border border-white/5 transition-all duration-500 group-hover:scale-110"
+                                    className="w-14 h-14 rounded-2xl object-cover shadow-lg border border-white/5
+                                        transition-all duration-500 group-hover:scale-110"
                                 />
 
-                                <div className="absolute inset-0 bg-purple-900/60 backdrop-blur-md rounded-2xl border border-purple-400/50 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden">
-                                    <div className="absolute inset-0 opacity-20 pointer-events-none bg-[linear-gradient(45deg,transparent_25%,rgba(168,85,247,0.5)_50%,transparent_75%)] bg-[length:4px_4px]" />
+                                <div className="absolute inset-0 bg-purple-900/60 backdrop-blur-md rounded-2xl
+                                    border border-purple-400/50 opacity-0 group-hover:opacity-100 transition-all
+                                    duration-300 flex items-center justify-center gap-2 overflow-hidden">
+                                    <div className="absolute inset-0 opacity-20 pointer-events-none
+                                        bg-[linear-gradient(45deg,transparent_25%,rgba(168,85,247,0.5)_50%,transparent_75%)] bg-[length:4px_4px]" />
 
                                     <DeletePlaylist playlist={playlist}/>
 

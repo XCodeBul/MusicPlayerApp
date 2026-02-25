@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect} from "react";
 import useLocalStorageState from "../hooks/useLocalStorageState.js";
 import {useAuthUserContext} from "./AuthUserContext.jsx";
-import {getUserPlaylist} from "../services/playlist.js";
+import {getUserPlaylists} from "../services/playlist.js";
 
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -28,7 +28,7 @@ export function PlaylistProvider({children}) {
     }
 
     const setPlaylistData = () => {
-        getUserPlaylist(user.id).then(data => {
+        getUserPlaylists(user.id).then(data => {
             setPlaylists(data)
         }).catch(err => console.log(err))
     }

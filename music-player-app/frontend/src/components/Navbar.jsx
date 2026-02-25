@@ -28,28 +28,33 @@ export default function Navbar({user, onLogout}) {
     return (
         <>
             <nav
-                className="w-full bg-black/20 backdrop-blur-xl px-8 py-4 flex items-center justify-between sticky top-0 z-50 border-b border-purple-500/10 shadow-2xl">
+                className="w-full bg-black/20 backdrop-blur-xl px-4 lg:px-8 py-4 flex items-center justify-between sticky
+                top-0 z-50 border-b border-purple-500/10 shadow-2xl">
                 <div className="flex items-center gap-3 group cursor-pointer">
                     <div
-                        className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:rotate-12 transition-transform duration-300 border border-purple-400/30">
+                        className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center
+                        shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:rotate-12 transition-transform duration-300
+                        border border-purple-400/30 mr-2 md:mr-0">
                         <span className="text-white text-2xl">♪</span>
                     </div>
-                    <span
-                        className="text-2xl font-black tracking-tighter bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent italic uppercase">
+                    <span className="hidden md:inline text-2xl font-black tracking-tighter bg-gradient-to-r from-white via-purple-200
+                      to-purple-400 bg-clip-text text-transparent italic uppercase">
                       MusicNote
                     </span>
                 </div>
 
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-6 lg:gap-8">
                     <div className="relative group" ref={inputRef}>
                         <input
                             type="text"
                             placeholder={t.searchPlaceholder}
                             onFocus={() => setIsSearchFocused(true)}
-                            className={`w-[450px] bg-white/5 border border-purple-500/10 text-white rounded-2xl px-6 py-3 pr-12 text-sm outline-none transition-all duration-500 placeholder-gray-600 font-medium
+                            className={`w-[200px] bg-white/5 border border-purple-500/10 text-white rounded-2xl px-6
+                             py-3 pr-12 text-sm outline-none transition-all duration-500 placeholder-gray-600
+                              font-medium
                                 ${isSearchFocused
-                                    ? "bg-purple-900/20 border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.15)] w-[500px]"
-                                    : "hover:bg-white/10"
+                                    ? "bg-purple-900/20 border-purple-500/50 shadow-[0_0_20px_rgba(168,85,247,0.15)] lg:w-[500px]"
+                                    : "hover:bg-white/10 lg:w-[450px]"
                                 }
                             `}
                         />
@@ -67,7 +72,7 @@ export default function Navbar({user, onLogout}) {
                             <>
                                 <button
                                     onClick={() => setShowDropdown(!showDropdown)}
-                                    className="flex items-center gap-3 bg-purple-500/5 hover:bg-purple-500/10 p-1 pr-5 rounded-full border border-purple-500/20 transition-all group"
+                                    className="flex items-center gap-3 bg-purple-500/5 hover:bg-purple-500/10 p-1 lg:pr-5 rounded-full border border-purple-500/20 transition-all group"
                                 >
                                     <div
                                         className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center font-black text-white shadow-[0_0_10px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform duration-300 border border-purple-400/30">

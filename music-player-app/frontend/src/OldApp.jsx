@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Navbar from "./components/Navbar.jsx";
 import MusicPlayer from "./components/MusicPlayer.jsx";
 import Sidebar from "./components/Sidebar.jsx";
-import Visualizer from "./components/Visualizer.jsx";
+import Visualizer from "./components/Player/Visualizer/Visualizer.jsx";
 import ArtistInfo from "./components/ArtistInfo.jsx";
 import Lyrics from "./components/Lyrics.jsx";
 import LoginForm from "./components/LoginForm.jsx";

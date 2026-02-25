@@ -53,7 +53,7 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
                     <div
                         ref={searchPanelRef}
                         onClick={(e) => e.stopPropagation()}
-                        className="fixed left-1/2 top-28 -translate-x-1/2 w-full max-w-2xl
+                        className="fixed left-1/2 top-28 -translate-x-1/2 lg:w-full w-[90%] max-w-2xl
                            bg-gray-900/95 backdrop-blur-3xl rounded-3xl shadow-2xl
                            border border-gray-700/50 overflow-hidden
                            z-[999999] animate-in slide-in-from-top-4 duration-300"
