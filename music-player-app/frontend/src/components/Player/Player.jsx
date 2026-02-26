@@ -46,10 +46,10 @@ const Player = () => {
             </aside>
 
             <div className="flex-1 flex flex-col px-4 pt-4 overflow-hidden">
-                <div className="flex flex-row lg:h-[420px] items-stretch flex-shrink-0 w-full overflow-hidden">
+                <div className="flex flex-row lg:h-[330px] items-stretch flex-shrink-0 w-full overflow-hidden">
                     <div className="scale-90 origin-top-left shrink-0 group">
                         <div className="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100
-                                 transition-opacity duration-700 pointer-events-none"/>
+                            transition-opacity duration-700 pointer-events-none"/>
                         <MusicPlayer
                             ref={musicAudioRef}
                             currentSong={currentSong}
@@ -62,8 +62,8 @@ const Player = () => {
                         />
                     </div>
 
-                    <div className="hidden md:flex flex-1 -ml-6 h-[380px] flex-col transition-all duration-300">
-                        <div className="bg-gray-900/40 backdrop-blur-xl rounded-3xl p-6 border border-purple-500/20
+                    <div className="hidden md:flex flex-1 -ml-6 h-[300px] flex-col transition-all duration-300">
+                        <div className="bg-gray-900/40 backdrop-blur-xl rounded-3xl p-2 border border-purple-500/20
                             shadow-2xl flex-1 flex flex-col justify-center overflow-hidden relative group">
                             <div className="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100
                                  transition-opacity duration-700 pointer-events-none"/>

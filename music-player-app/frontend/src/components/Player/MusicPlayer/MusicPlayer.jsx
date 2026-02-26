@@ -25,8 +25,8 @@ const MusicPlayer = forwardRef(
 
         if (!currentSong)
             return (
-                <div className="bg-gray-900/40 h-[260px] lg:h-[421px] backdrop-blur-xl p-6 rounded-[2.5rem]
-                border border-purple-500/20 shadow-2xl w-[272px] lg:w-[380px] flex flex-col items-center text-center gap-4">
+                <div className="bg-gray-900/40 h-[260px] lg:h-[334px] backdrop-blur-xl p-6 rounded-[2.5rem]
+                border border-purple-500/20 shadow-2xl w-[100%] lg:w-[380px] flex flex-col items-center text-center gap-4">
                     <div className="w-56 h-56 mt-10 bg-purple-500/5 rounded-2xl flex items-center justify-center border border-purple-500/10">
                         <span className="text-purple-500/20 text-4xl grayscale">🎵</span>
                     </div>
@@ -36,13 +36,13 @@ const MusicPlayer = forwardRef(
 
         return (
             <div className="bg-gray-900/40 backdrop-blur-xl p-6 rounded-[2.5rem] border border-purple-500/20 shadow-2xl
-                w-[272px] lg:w-[380px] flex flex-col text-center h-full relative overflow-hidden">
+                w-[96%] lg:w-[380px] flex flex-col text-center h-full relative overflow-hidden">
                 <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-600/10 blur-[50px] pointer-events-none" />
                 <div className="flex flex-col items-center gap-4 w-full relative z-10">
                     <img
                         src={currentSong.albumArt || "https://via.placeholder.com/224"}
                         alt={currentSong.title}
-                        className="w-16 h-16 md:w-56 md:h-56 object-cover rounded-2xl shadow-2xl border border-white/5"
+                        className="w-16 h-16 md:w-[9rem] md:h-[9rem] object-cover rounded-2xl shadow-2xl border border-white/5"
                     />
 
                     <div className="space-y-1">

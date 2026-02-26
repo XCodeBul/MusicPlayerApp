@@ -26,7 +26,7 @@ const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) =
         updateSongList(playlistId, updatedSongs).then(() => playlistsReload())
 
         setShowPlaylistPicker(null)
-    };
+    }
 
     const formatDuration = (ms) => {
         const mins = Math.floor(ms / 60000)
@@ -57,12 +57,15 @@ const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) =
                     <span className="text-sm text-gray-500 px-3">{formatDuration(track.duration_ms)}</span>
                     <button
                         onClick={(e) => {
-                            e.stopPropagation();
-                            setShowPlaylistPicker(track.id);
+                            e.stopPropagation()
+                            setShowPlaylistPicker(showPlaylistPicker === track.id ? null : track.id)
                         }}
-                        className="opacity-0 group-hover:opacity-100 w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 rounded-full flex items-center justify-center text-2xl font-bold shadow-xl transition-all duration-300 transform hover:scale-110"
+                            className="opacity-0 group-hover:opacity-100 w-12 h-12 bg-gradient-to-r from-green-500
+                            to-emerald-500 hover:from-green-400 hover:to-emerald-400 rounded-full flex items-center
+                            justify-center text-xl font-bold shadow-xl transition-all duration-300 transform
+                            hover:scale-110"
                     >
-                        +
+                        <i className={'fa fa-plus'}/>
                     </button>
 
                     {showPlaylistPicker === track.id && (

@@ -41,11 +41,11 @@ const ArtistDetails = ({currentSong}) => {
     ]
 
     return (
-        <div className="flex flex-row items-center w-full h-full px-8 gap-10 animate-in fade-in zoom-in-95
+        <div className="flex flex-row items-center w-full h-full px-[3%] gap-10 animate-in fade-in zoom-in-95
         duration-500 overflow-hidden">
             <div className="relative shrink-0">
                 <div
-                    className="w-48 h-48 rounded-3xl overflow-hidden border-4 border-white/10
+                    className="w-48 h-48 rounded-3xl overflow-hidden border-2 border-white/10
                     shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                     <img
                         src={artist.images[0]?.url}
@@ -63,20 +63,23 @@ const ArtistDetails = ({currentSong}) => {
             <div className="w-[2px] h-40 bg-gradient-to-b from-transparent via-white/20 to-transparent shrink-0"></div>
 
             <div className="flex flex-col justify-center flex-1 space-y-6 min-w-0">
+                <div className="flex items-center gap-4">
+                    <h2 className="xl:text-4xl lg:text-6xl font-black text-white tracking-tighter leading-none truncate">
+                        {artist.name}
+                    </h2>
 
-                <div>
-                    <div className="flex items-center gap-3 mb-1">
+                    <div className="flex items-center gap-3 pt-3">
                         <span className="text-blue-400">
-                          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path
-                              d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7l-3.3-3.3 1.4-1.4 1.9 1.9 4.8-4.8 1.4 1.4-6.2 6.2z"/></svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7l-3.3-3.3 1.4-1.4 1.9 1.9 4.8-4.8 1.4 1.4-6.2 6.2z"/>
+                            </svg>
                         </span>
+
                         <span className="text-gray-500 uppercase font-black text-xs tracking-[0.2em]">
                             Verified Artist
                         </span>
                     </div>
-                    <h2 className="xl:text-4xl lg:text-6xl font-black text-white tracking-tighter leading-none truncate">
-                        {artist.name}
-                    </h2>
                 </div>
 
                 <div className="flex items-start xl:gap-3 lg:gap-12">
@@ -117,27 +120,24 @@ const ArtistDetails = ({currentSong}) => {
                     <a
                         href={artist.external_urls.spotify}
                         target="_blank"
-                        className="bg-white text-black text-sm font-black px-8 py-3 rounded-full
+                        className="bg-white text-black text-sm font-black px-8 py-2 rounded-full
                         hover:scale-105 transition active:scale-95 shadow-xl uppercase"
                     >
                         Follow on Spotify
                     </a>
                     <div className="flex gap-6 ml-4">
-                        <span
-                            className="text-xs font-bold text-gray-500 hover:text-white cursor-pointer
+                        <span className="text-xs font-bold text-gray-500 hover:text-white cursor-pointer
                             transition tracking-widest">INSTAGRAM</span>
-                        <span
-                            className="text-xs font-bold text-gray-500 hover:text-white cursor-pointer
+                        <span className="text-xs font-bold text-gray-500 hover:text-white cursor-pointer
                             transition tracking-widest">X</span>
                     </div>
                 </div>
             </div>
 
-            <div
-                className="hidden 2xl:flex w-80 h-[75%] shrink-0 bg-white/5 rounded-[2rem] p-6 border border-white/10 self-center
-                    flex-col justify-center">
+            <div className="hidden 2xl:flex w-80 h-[85%] shrink-0 bg-white/5 rounded-[2rem] p-6 border border-white/10
+                    self-center flex-col justify-center">
                 <h4 className="text-[11px] text-gray-400 font-black uppercase tracking-[0.25em] mb-6 border-b
-                border-white/10 pb-3 text-center">
+                    border-white/10 pb-3 text-center">
                     {t.topCities}
                 </h4>
                 <div className="space-y-4">

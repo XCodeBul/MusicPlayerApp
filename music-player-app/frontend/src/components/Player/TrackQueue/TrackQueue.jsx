@@ -11,7 +11,7 @@ const TrackQueue = () => {
 
     return (
         <>
-            <div className="mb-2 lg:mb-8 flex items-center justify-between shrink-0">
+            <div className="mb-2 lg:mb-8 py-3 md:py-0 flex items-center justify-between shrink-0">
                 <h3 className="text-lg md:text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
                     <span className="text-purple-500 opacity-50">#</span>
                     {selectedPlaylist ? selectedPlaylist.name : t.queue}
@@ -74,7 +74,7 @@ const TrackQueue = () => {
                         ))}
                     </ul>
                 ) : (
-                    <div className="text-center xl:py-10 lg:py-24 flex flex-col items-center justify-center opacity-40">
+                    <div className="text-center py-6 xl:py-10 lg:py-24 flex flex-col items-center justify-center opacity-40">
                         <div
                             className="w-16 h-16 rounded-full border border-purple-500/20 flex items-center
                             justify-center mb-4">
