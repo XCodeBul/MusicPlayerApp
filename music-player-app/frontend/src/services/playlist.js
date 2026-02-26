@@ -44,3 +44,14 @@ export const deleteUserPlaylist = async (playlistId) => {
 
     if (error) console.error("Playlist fetch error:", error)
 }
+
+export const getArtistInfo = async (artistId) => {
+    try {
+        const response = await fetch(`http://localhost:5000/api/artist/${artistId}`);
+        return await response.json()
+
+    } catch (err) {
+        console.error(err)
+    }
+
+}

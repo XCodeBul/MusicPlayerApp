@@ -1,4 +1,4 @@
-import Navbar from "../Navbar.jsx";
+import Navbar from "./Navbar/Navbar.jsx";
 import {useEffect} from "react";
 import {supabase} from "../../supabaseClient.js";
 import {Outlet} from "react-router-dom";
@@ -26,7 +26,7 @@ const AppLayout = () => {
             setPlaylists([])
             setAuthUser(null)
         }
-    };
+    }
 
     useEffect(() => {
         const initializeAuth = async () => {

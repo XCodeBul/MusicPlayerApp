@@ -1,6 +1,5 @@
 import {Routes, Route} from "react-router-dom";
 import Player from "../Player/Player.jsx";
-import OldApp from "../../OldApp.jsx";
 import AppLayout from "../AppLayout/AppLayout.jsx";
 
 const Router = () => (
@@ -10,8 +9,6 @@ const Router = () => (
 
             <Route path={'player'} element={<Player/>} />
         </Route>
-
-        <Route path={'old'} element={<OldApp/>} />
     </Routes>
 )
 

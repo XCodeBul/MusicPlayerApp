@@ -1,27 +1,20 @@
 import {useEffect, useState} from "react";
 import {useLocalization} from "../../../hooks/useLocalization.js";
+import {getArtistInfo} from "../../../services/playlist.js";
 
 const ArtistDetails = ({currentSong}) => {
     const {t} = useLocalization()
-    const [artist, setArtist] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [artist, setArtist] = useState(null)
+    const [loading, setLoading] = useState(false)
 
-    // TODO: for refactoring
     useEffect(() => {
-        const fetchArtist = async () => {
-            if (!currentSong?.artistId) return;
-            setLoading(true);
-            try {
-                const response = await fetch(`http://localhost:5000/api/artist/${currentSong.artistId}`);
-                const data = await response.json();
-                setArtist(data);
-            } catch (err) {
-                console.error(err);
-            }
-            setLoading(false);
-        };
-        fetchArtist();
-    }, [currentSong]);
+        if (!currentSong?.artistId) return
+        setLoading(true)
+        getArtistInfo(currentSong.artistId)
+            .then(data => setArtist(data))
+            .catch(err => console.log(err))
+        setLoading(false)
+    }, [currentSong])
 
     if (loading) return (
         <div
@@ -29,16 +22,15 @@ const ArtistDetails = ({currentSong}) => {
             LOADING ARTIST PROFILE...
         </div>
     )
-    if (!artist) return null;
-
+    if (!artist) return null
 
     const genresList = artist.genres && artist.genres.length > 0
         ? artist.genres.slice(0, 3).map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(", ")
         : "Contemporary Music"
 
-    const calculatedListeners = Math.floor(Math.pow(artist.popularity, 4.1) / 2.1);
-    const monthlyListeners = calculatedListeners.toLocaleString();
-    const worldRank = Math.floor(2200 - (Math.pow(artist.popularity, 1.7)));
+    const calculatedListeners = Math.floor(Math.pow(artist.popularity, 4.1) / 2.1)
+    const monthlyListeners = calculatedListeners.toLocaleString()
+    const worldRank = Math.floor(2200 - (Math.pow(artist.popularity, 1.7)))
 
     const topCities = [
         {name: t?.cityLondon || "London, GB", count: Math.floor(calculatedListeners * 0.021).toLocaleString()},

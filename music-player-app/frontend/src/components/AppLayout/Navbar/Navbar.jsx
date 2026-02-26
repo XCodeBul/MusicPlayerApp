@@ -1,7 +1,7 @@
 import {useRef, useEffect, useState} from "react";
-import TrackSearch from "./AppLayout/TrackSearch/TrackSearch.jsx";
-import LoginForm from "./LoginForm.jsx";
-import {useLocalization} from "../hooks/useLocalization.js";
+import TrackSearch from "../TrackSearch/TrackSearch.jsx";
+import Login from "../../Auth/Login/Login.jsx";
+import {useLocalization} from "../../../hooks/useLocalization.js";
 
 export default function Navbar({user, onLogout}) {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -14,16 +14,15 @@ export default function Navbar({user, onLogout}) {
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            const inputEl = inputRef.current;
-            if (inputEl && inputEl.contains(e.target)) return;
-            // setIsSearchFocused(false);
+            const inputEl = inputRef.current
+            if (inputEl && inputEl.contains(e.target)) return
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setShowDropdown(false);
+                setShowDropdown(false)
             }
         }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isSearchFocused, setIsSearchFocused]);
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [isSearchFocused, setIsSearchFocused])
 
     return (
         <>
@@ -191,11 +190,10 @@ export default function Navbar({user, onLogout}) {
 
             <TrackSearch isSearchFocused={isSearchFocused} setIsSearchFocused={setIsSearchFocused}/>
 
-            <LoginForm
+            <Login
                 isOpen={isAuthOpen}
                 onClose={() => setIsAuthOpen(false)}
                 t={t}
-
             />
         </>
     )
