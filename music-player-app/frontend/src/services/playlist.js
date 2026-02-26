@@ -1,4 +1,5 @@
 import {supabase} from "../supabaseClient.js";
+import {API_BASE_URL} from "../config/app.js";
 
 export const getUserPlaylists = async (userId) => {
     const {data, error} = await supabase
@@ -47,11 +48,29 @@ export const deleteUserPlaylist = async (playlistId) => {
 
 export const getArtistInfo = async (artistId) => {
     try {
-        const response = await fetch(`http://localhost:5000/api/artist/${artistId}`);
+        const response = await fetch(`${API_BASE_URL}/api/artist/${artistId}`);
         return await response.json()
 
     } catch (err) {
         console.error(err)
     }
 
+}
+
+export const getTracks = async (signal, searchQuery) => {
+    const res = await fetch(
+        `${API_BASE_URL}/api/search?q=${encodeURIComponent(searchQuery)}`,
+        {signal}
+    )
+    const data = await res.json()
+    return (data.tracks?.items || []).filter(
+        track => track.preview_url !== null
+    )
+}
+
+export const getLyrics = async (currentSong) => {
+    const response = await fetch(
+        `${API_BASE_URL}/api/lyrics?artist=${encodeURIComponent(currentSong.artist)}&title=${encodeURIComponent(currentSong.title)}`
+    )
+    return await response.json()
 }

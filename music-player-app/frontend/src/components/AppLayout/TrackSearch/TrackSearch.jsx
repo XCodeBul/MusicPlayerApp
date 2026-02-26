@@ -1,9 +1,10 @@
 import {useEffect, useRef, useState} from "react";
 import TrackItem from "./TrackItem/TrackItem.jsx";
-import {useLocalization} from "../../../hooks/useLocalization.js";
+import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
+import {getTracks} from "../../../services/playlist.js";
 
 const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
-    const {t} = useLocalization()
+    const {t} = useLocalizationContext()
     const [searchQuery, setSearchQuery] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [searchLoading, setSearchLoading] = useState(false)
@@ -11,36 +12,26 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
 
     const searchPanelRef = useRef(null)
 
-    // TODO: for refactoring
     useEffect(() => {
+        const controller = new AbortController()
         if (!searchQuery.trim()) {
             setSearchResults([])
             return
         }
-        const controller = new AbortController();
-        const timeout = setTimeout(async () => {
-            setSearchLoading(true)
-            try {
-                const res = await fetch(
-                    `http://localhost:5000/api/search?q=${encodeURIComponent(searchQuery)}`,
-                    {signal: controller.signal}
-                )
-                const data = await res.json();
-                const filteredResults = (data.tracks?.items || []).filter(
-                    (track) => track.preview_url !== null
-                )
-                setSearchResults(filteredResults)
-            } catch (err) {
-                if (err.name !== "AbortError") console.error(err)
-            }
-            setSearchLoading(false);
-        }, 400)
+        const timeout = setTimeout(async () => search(controller.signal), 400)
 
         return () => {
             clearTimeout(timeout)
             controller.abort()
         }
     }, [searchQuery])
+
+    const search = signal => {
+        setSearchLoading(true)
+        getTracks(signal, searchQuery).then(data => setSearchResults(data)).catch(err => {
+            if (err.name !== 'AbortError') console.error(err)
+        }).finally(() => setSearchLoading(false))
+    }
 
     return (
         <>

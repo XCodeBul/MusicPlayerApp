@@ -5,6 +5,7 @@ import {Outlet} from "react-router-dom";
 import {getSpotifyToken} from "../../services/spotify.js";
 import {useAuthUserContext} from "../../contexts/AuthUserContext.jsx";
 import {usePlaylistContext} from "../../contexts/PlaylistContext.jsx";
+import Footer from "./Footer/Footer.jsx";
 
 const AppLayout = () => {
     const {user, setAuthUser} = useAuthUserContext()
@@ -64,7 +65,6 @@ const AppLayout = () => {
         return () => subscription.unsubscribe();
     }, []);
 
-
     return (
         <>
             <div
@@ -75,6 +75,8 @@ const AppLayout = () => {
                 />
 
                 <Outlet/>
+
+                <Footer/>
             </div>
         </>
     )

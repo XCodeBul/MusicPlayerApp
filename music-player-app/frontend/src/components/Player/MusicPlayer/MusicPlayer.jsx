@@ -1,9 +1,9 @@
 import { forwardRef, useEffect } from "react";
-import {useLocalization} from "../../../hooks/useLocalization.js";
+import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 
 const MusicPlayer = forwardRef(
     ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek}, ref) => {
-        const {t} = useLocalization()
+        const {t} = useLocalizationContext()
 
         useEffect(() => {
             if (!ref.current || !currentSong) return;

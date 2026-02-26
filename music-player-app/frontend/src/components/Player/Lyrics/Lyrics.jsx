@@ -1,26 +1,16 @@
 import React, {useState, useEffect} from "react";
+import {getLyrics} from "../../../services/playlist.js";
 
 const Lyrics = ({currentSong}) => {
     const [lyrics, setLyrics] = useState("");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const fetchLyrics = async () => {
-            if (!currentSong?.title) return
-            setLoading(true)
-            try {
-                const response = await fetch(
-                    `http://localhost:5000/api/lyrics?artist=${encodeURIComponent(currentSong.artist)}&title=${encodeURIComponent(currentSong.title)}`
-                )
-                const data = await response.json()
-                setLyrics(data.lyrics || "Lyrics not available.")
-            } catch (err) {
-                setLyrics("Could not load lyrics.")
-            }
-            setLoading(false)
-        };
-
-        fetchLyrics()
+        if (!currentSong?.title) return
+        setLoading(true)
+        getLyrics(currentSong).then(data => setLyrics(data.lyrics || 'Lyrics not available'))
+            .catch(() => setLyrics("Could not load lyrics."))
+            .finally(() => setLoading(false))
     }, [currentSong])
 
     const lines = lyrics ? lyrics.split('\n').filter(line => line.trim() !== "") : []

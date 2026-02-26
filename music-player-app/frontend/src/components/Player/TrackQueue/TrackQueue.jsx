@@ -1,8 +1,8 @@
-import {useLocalization} from "../../../hooks/useLocalization.js";
 import {usePlayerContext} from "../../../contexts/PlayerContext.jsx";
+import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 
 const TrackQueue = () => {
-    const {t, language} = useLocalization()
+    const {t, language} = useLocalizationContext()
     const {
         selectedPlaylist,
         currentSong,

@@ -1,7 +1,7 @@
 import {useRef, useEffect, useState} from "react";
 import TrackSearch from "../TrackSearch/TrackSearch.jsx";
 import Login from "../../Auth/Login/Login.jsx";
-import {useLocalization} from "../../../hooks/useLocalization.js";
+import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 
 export default function Navbar({user, onLogout}) {
     const [showDropdown, setShowDropdown] = useState(false)
@@ -10,7 +10,7 @@ export default function Navbar({user, onLogout}) {
     const dropdownRef = useRef(null)
     const inputRef = useRef(null)
 
-    const {t, language, changeLanguage} = useLocalization()
+    const {t, language, changeLanguage} = useLocalizationContext()
 
     useEffect(() => {
         const handleClickOutside = (e) => {

@@ -1,12 +1,12 @@
 import PlaylistManager from "./PlaylistManager/PlaylistManager.jsx";
 import MusicPlayer from "./MusicPlayer/MusicPlayer.jsx";
 import {usePlayerContext} from "../../contexts/PlayerContext.jsx";
-import {useLocalization} from "../../hooks/useLocalization.js";
 import Visualizer from "./Visualizer/Visualizer.jsx";
 import Lyrics from "./Lyrics/Lyrics.jsx";
 import {useAuthUserContext} from "../../contexts/AuthUserContext.jsx";
 import ArtistDetails from "./ArtistDetails/ArtistDetails.jsx";
 import TrackQueue from "./TrackQueue/TrackQueue.jsx";
+import {useLocalizationContext} from "../../contexts/LocalizationContext.jsx";
 
 const Player = () => {
     const {
@@ -19,7 +19,7 @@ const Player = () => {
         progress,
         setProgress
     } = usePlayerContext()
-    const {t, language} = useLocalization()
+    const {t, language} = useLocalizationContext()
     const {user} = useAuthUserContext()
 
     const handlePlayPause = () => setIsPlaying((prev) => !prev)
