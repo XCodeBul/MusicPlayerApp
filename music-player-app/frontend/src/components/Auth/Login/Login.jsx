@@ -1,13 +1,15 @@
 import {useState} from "react";
-import {googleLogin} from "../../../services/user.js";
+import {googleLogin} from "../../../services/auth.js";
+import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 
-export default function Login({isOpen, onClose, t}) {
+export default function Login({isOpen, onClose}) {
+    const {t} = useLocalizationContext()
     const [isLogin, setIsLogin] = useState(true)
 
     const handleGoogleLogin = async () => googleLogin()
 
     const handleEmailAuth = async () => {
-        alert("Email auth requires state variables. Use Google for the fastest test!");
+        alert("Email auth requires state variables. Use Google for the fastest test!")
     }
 
     if (!isOpen) return null
@@ -70,7 +72,6 @@ export default function Login({isOpen, onClose, t}) {
                     </button>
                 </div>
 
-
                 <div className="flex items-center my-10 gap-4 relative z-10">
                     <div className="h-[1px] flex-1 bg-purple-500/10"></div>
                     <span className="text-[9px] font-black text-purple-900 uppercase tracking-[0.4em]">
@@ -78,7 +79,6 @@ export default function Login({isOpen, onClose, t}) {
                     </span>
                     <div className="h-[1px] flex-1 bg-purple-500/10"></div>
                 </div>
-
 
                 <div className="grid grid-cols-2 gap-4 relative z-10">
                     <button
@@ -98,7 +98,6 @@ export default function Login({isOpen, onClose, t}) {
                                 tracking-widest transition-colors">Google</span>
                     </button>
                 </div>
-
 
                 <div className="mt-12 flex justify-center relative z-10">
                     <button
