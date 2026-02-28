@@ -61,9 +61,9 @@ const MusicPlayer = forwardRef(
                         max={30}
                         value={progress || 0}
                         onChange={(e) => {
-                            const val = Number(e.target.value);
-                            onSeek(val);
-                            if (ref.current) ref.current.currentTime = val;
+                            const val = Number(e.target.value)
+                            onSeek(val)
+                            if (ref.current) ref.current.currentTime = val
                         }}
                         className="w-full h-1.5 rounded-full cursor-pointer accent-purple-500 appearance-none
                             bg-white/10 transition-all"

@@ -95,7 +95,6 @@ const PlaylistManager = () => {
                 </div>
             </div>
 
-
             {tooltip && (
                 <div
                     className="fixed z-[100000] bg-purple-600 text-white text-[10px] font-black uppercase tracking-[0.2em] px-3 py-2 rounded-xl pointer-events-none shadow-[0_0_20px_rgba(168,85,247,0.3)] -translate-y-1/2 whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-200"

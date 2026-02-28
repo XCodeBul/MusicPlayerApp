@@ -91,7 +91,7 @@ const TrackQueue = () => {
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r
-                                from-transparent via-purple-500/20 to-transparent"/>
+                from-transparent via-purple-500/20 to-transparent"/>
         </>
     )
 }

@@ -44,8 +44,8 @@ const AppLayout = () => {
 
     return (
         <>
-            <div
-                className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white flex flex-col overflow-hidden font-sans">
+            <div className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800
+                    text-white flex flex-col overflow-hidden font-sans">
                 <Navbar/>
 
                 <Outlet/>
