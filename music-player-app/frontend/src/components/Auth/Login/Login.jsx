@@ -12,14 +12,17 @@ export default function Login({isOpen, onClose}) {
         alert("Email auth requires state variables. Use Google for the fastest test!")
     }
 
-    if (!isOpen) return null
+    const isModal = onClose !== undefined;
+    if (isModal && !isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[1000000] flex items-center justify-center p-4">
-            <div
-                className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-500"
-                onClick={onClose}
-            />
+        <div className={isModal ? "fixed inset-0 z-[1000000] flex items-center justify-center p-4" : "flex-1 flex items-center justify-center p-4"}>
+            {isModal && (
+                <div
+                    className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-500"
+                    onClick={onClose}
+                />
+            )}
 
             <div className="relative w-full max-w-md bg-gray-950 border border-purple-500/20 rounded-[3rem]
                 p-12 shadow-[0_0_80px_-20px_rgba(168,85,247,0.2)] animate-in zoom-in-95 duration-300 overflow-hidden">
