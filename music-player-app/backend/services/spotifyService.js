@@ -2,6 +2,11 @@ const axios = require("axios")
 const {SPOTIFY_API_URL, SPOTIFY_AUTH_API} = require("../config/consts")
 const {SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET} = require("../config/app")
 
+/**
+ * Get Spotify authentication token
+ *
+ * @returns {Promise<any>}
+ */
 exports.getSpotifyToken = async () => {
     const auth = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString("base64")
     try {
@@ -17,6 +22,12 @@ exports.getSpotifyToken = async () => {
     }
 }
 
+/**
+ * Get Spotify track list
+ *
+ * @param q
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
 exports.getTracks = async (q) => {
     const spotifyToken = await this.getSpotifyToken()
     return await axios.get(`${SPOTIFY_API_URL}/search`, {
@@ -31,6 +42,12 @@ exports.getTracks = async (q) => {
     })
 }
 
+/**
+ * Get artist details by artist id
+ *
+ * @param id
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
 exports.getArtistData = async (id) => {
     const spotifyToken = await this.getSpotifyToken()
     return await axios.get(`${SPOTIFY_API_URL}/artists/${id}`, {

@@ -1,6 +1,13 @@
 const {getSpotifyToken, getTracks, getArtistData} = require("../services/spotifyService")
 const {getTrack} = require("../services/deezerService")
 
+/**
+ * Search tracks in Spotify ans Deezer API
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 exports.searchTracks = async (req, res) => {
     const { q } = req.query
     if (!q) return res.json({ tracks: { items: [] } })
@@ -25,6 +32,13 @@ exports.searchTracks = async (req, res) => {
     }
 }
 
+/**
+ * Get artist details
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 exports.getArtist = async (req, res) => {
     try {
         const result = await getArtistData(req.params.id)
@@ -34,6 +48,13 @@ exports.getArtist = async (req, res) => {
     }
 }
 
+/**
+ * Get Spotify authentication token
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
 exports.getToken = async (req, res) => {
     try {
         const spotifyToken = await getSpotifyToken()

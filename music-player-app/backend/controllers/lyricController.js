@@ -1,5 +1,12 @@
 const {getLyrics} = require("genius-lyrics-api")
 
+/**
+ * Get track lyrics
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 exports.getLyrics = async (req, res) => {
     const { artist, title } = req.query
     if (!artist || !title) return res.json({ lyrics: "Select a song." })
