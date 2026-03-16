@@ -10,6 +10,7 @@ const HomePage = ({ t }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [glowColor, setGlowColor] = useState("rgba(168, 85, 247, 0.15)");
   const audioRef = useRef(new Audio());
+  const [popularTracks, setPopularTracks] = useState([]);
 
   
   const staticArtists = [
@@ -19,6 +20,13 @@ const HomePage = ({ t }) => {
     { id: 4, name: 'Dua Lipa', imageUrl: '/covers/dualipa.webp', deezerId: '8706544' },
     { id: 5, name: 'Drake', imageUrl: '/covers/drake.jpg', deezerId: '246791' },
     { id: 6, name: 'Bruno Mars', imageUrl: '/covers/brunomars.jpeg', deezerId: '429675' },
+
+    { id: 7, name: 'Travis Scott', imageUrl: '/covers/travis.jpg', deezerId: '4495513' },
+  { id: 8, name: 'Young Thug', imageUrl: '/covers/youngthug.jpg', deezerId: '1590752' },
+  { id: 9, name: 'Rihanna', imageUrl: '/covers/rihanna.jpg', deezerId: '564' },
+  { id: 10, name: '21 Savage', imageUrl: '/covers/21savage.jpg', deezerId: '6853403' },
+  { id: 11, name: 'Kanye West', imageUrl: '/covers/kanye.jpg', deezerId: '230' },
+  { id: 12, name: 'Lil Uzi Vert', imageUrl: '/covers/liluzivert.jpg', deezerId: '7101343' },
   ];
 
   const handleStartClick = () => {
@@ -71,7 +79,41 @@ const HomePage = ({ t }) => {
     } catch (error) {
       console.error("Грешка:", error);
     }
+
+    
   };
+
+
+React.useEffect(() => {
+  const fetchTopTracks = async () => {
+    try {
+  
+      const promises = staticArtists.map(artist =>
+        fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/artist/${artist.deezerId}/top?limit=20`)}`)
+          .then(res => res.json())
+      );
+
+      const results = await Promise.all(promises);
+
+  
+      const allTracks = results.flatMap(data => data.data || []);
+
+  
+      const shuffled = [...allTracks] 
+        .filter(t => t.preview)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 20);
+
+      setPopularTracks(shuffled);
+      
+      console.log("Заредени песни:", shuffled.length); 
+    } catch (error) {
+      console.error("Грешка при зареждане на хитовете:", error);
+    }
+  };
+
+  fetchTopTracks();
+}, []); 
 
   return (
     <div className="flex-1 w-full flex flex-col items-center relative px-6 overflow-y-auto pt-24 pb-32 custom-scrollbar">
@@ -113,31 +155,44 @@ const HomePage = ({ t }) => {
       </div>
 
       
-      <div className="relative z-20 w-full max-w-7xl px-4 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-        <h2 className="text-2xl md:text-4xl font-black italic text-white uppercase tracking-tighter mb-12 border-b border-white/5 pb-6">
-          Популярни <span className="text-purple-500">Изпълнители</span>
-        </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-10">
-          {staticArtists.map((artist) => (
-            <div 
-              key={artist.id} 
-              onClick={() => handleArtistClick(artist)} 
-              className="group flex flex-col items-center cursor-pointer transition-all duration-500 hover:-translate-y-3"
-            >
-              <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:border-purple-500/50 shadow-2xl overflow-hidden">
-                <img src={artist.imageUrl} alt={artist.name} className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-purple-900/10">
-                  <div className="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                    <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                  </div>
-                </div>
-              </div>
-              <span className="mt-6 text-base font-black text-white uppercase italic group-hover:text-purple-400 transition-colors">{artist.name}</span>
+<div className="relative z-20 w-full max-w-7xl px-4 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+  <h2 className="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter mb-8 border-b border-white/5 pb-4">
+    Популярни <span className="text-purple-500">Изпълнители</span>
+  </h2>
+
+
+  <div className="flex overflow-x-auto gap-6 md:gap-10 py-6 px-2 -mx-2 custom-scrollbar-hide snap-x snap-mandatory select-none">
+    {staticArtists.map((artist) => (
+      <div 
+        key={artist.id} 
+        onClick={() => handleArtistClick(artist)} 
+        className="group flex flex-col items-center cursor-pointer transition-all duration-500 hover:-translate-y-2 shrink-0 snap-start"
+      >
+
+        <div className="relative w-28 h-28 md:w-40 md:h-40 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:border-purple-500/50 shadow-lg group-hover:shadow-[0_15px_40px_rgba(168,85,247,0.2)] overflow-hidden transition-all duration-500">
+          <img 
+            src={artist.imageUrl} 
+            alt={artist.name} 
+            className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" 
+          />
+
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all bg-purple-900/20 backdrop-blur-[1px]">
+            <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
             </div>
-          ))}
+          </div>
         </div>
+
+        <span className="mt-5 text-[11px] md:text-xs font-black text-white uppercase italic group-hover:text-purple-400 transition-colors tracking-[0.15em]">
+          {artist.name}
+        </span>
       </div>
+    ))}
+  </div>
+</div>
 
       
       {currentTrack && (
@@ -176,6 +231,52 @@ const HomePage = ({ t }) => {
     </div>
   </div>
 )}
+
+
+<div className="relative z-20 w-full max-w-7xl px-4 mt-32 mb-20">
+  <h2 className="text-2xl md:text-4xl font-black italic text-white uppercase tracking-tighter mb-12 border-b border-white/5 pb-6">
+    Топ <span className="text-purple-500">Хитове</span>
+  </h2>
+
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-4">
+    {popularTracks.map((track, index) => (
+      <div 
+        key={`${track.id}-${index}`}
+        onClick={() => {
+          const trackData = {
+            title: track.title,
+            artist: track.artist.name,
+            audioUrl: track.preview,
+            cover: track.album.cover_medium,
+          };
+
+          audioRef.current.pause();
+          audioRef.current.src = trackData.audioUrl;
+          audioRef.current.play();
+          setCurrentTrack(trackData);
+          setIsPlaying(true);
+          setGlowColor("rgba(168, 85, 247, 0.4)");
+        }}
+        className="group flex items-center gap-4 p-2 rounded-2xl hover:bg-white/[0.03] transition-all cursor-pointer border border-transparent hover:border-white/5"
+      >
+        <span className="text-gray-700 font-black italic text-sm w-6 group-hover:text-purple-500">
+          {(index + 1).toString().padStart(2, '0')}
+        </span>
+        
+        <img src={track.album.cover_medium} alt="" className="w-14 h-14 rounded-lg object-cover shadow-lg group-hover:scale-105 transition-transform" />
+
+        <div className="flex-1 min-w-0">
+          <h3 className="text-white text-[14px] font-black uppercase italic truncate">{track.title}</h3>
+          <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">{track.artist.name}</p>
+        </div>
+
+        <div className="text-[10px] font-bold text-gray-600 tabular-nums">
+          {Math.floor(track.duration / 60)}:{(track.duration % 60).toString().padStart(2, '0')}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
     </div>
   );
 };
