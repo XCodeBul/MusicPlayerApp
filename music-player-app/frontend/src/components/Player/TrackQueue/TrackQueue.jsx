@@ -6,7 +6,8 @@ const TrackQueue = () => {
     const {
         selectedPlaylist,
         currentSong,
-        playSong
+        playSong,
+        removeSongFromPlaylist 
     } = usePlayerContext()
 
     return (
@@ -28,7 +29,8 @@ const TrackQueue = () => {
                             <li
                                 key={song.id}
                                 onClick={() => playSong(song)}
-                                className={`flex items-center gap-5 p-4 rounded-2xl cursor-pointer transition-all duration-300 group border ${
+                        
+                                className={`flex items-center gap-5 p-4 rounded-2xl cursor-pointer transition-all duration-300 group relative border ${
                                     currentSong?.id === song.id
                                         ? "bg-purple-600/20 border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.15)]"
                                         : "bg-white/5 border-transparent hover:bg-white/10 hover:border-purple-500/10"
@@ -57,27 +59,36 @@ const TrackQueue = () => {
                                 </div>
 
                                 <div className="flex items-center gap-3">
-                                    {currentSong?.id === song.id && (
-                                        <div className="flex gap-[2px] items-end h-3">
-                                            <div
-                                                className="w-[2px] bg-purple-500 animate-[bounce_1s_infinite_0.1s] h-full"></div>
-                                            <div
-                                                className="w-[2px] bg-purple-500 animate-[bounce_1.2s_infinite_0.3s] h-2/3"></div>
-                                            <div
-                                                className="w-[2px] bg-purple-500 animate-[bounce_0.8s_infinite_0.2s] h-1/2"></div>
-                                        </div>
-                                    )}
-                                    <span
-                                        className="text-[10px] text-purple-400 font-black tracking-widest opacity-50 uppercase">30s</span>
-                                </div>
+
+    {currentSong?.id === song.id && (
+        <div className="flex gap-[2px] items-end h-3 mr-2">
+            <div className="w-[2px] bg-purple-500 animate-[bounce_1s_infinite_0.1s] h-full"></div>
+            <div className="w-[2px] bg-purple-500 animate-[bounce_1.2s_infinite_0.3s] h-2/3"></div>
+            <div className="w-[2px] bg-purple-500 animate-[bounce_0.8s_infinite_0.2s] h-1/2"></div>
+        </div>
+    )}
+
+
+    <button 
+        onClick={(e) => {
+            e.stopPropagation(); 
+            removeSongFromPlaylist(song.id);
+        }}
+        className="opacity-100 lg:opacity-0 group-hover:opacity-100 p-1.5 bg-red-500/10 lg:bg-transparent hover:bg-red-500/20 text-red-500 lg:text-gray-500 lg:hover:text-red-500 rounded-lg transition-all duration-200 z-10"
+    >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <span className="text-[10px] text-purple-400 font-black tracking-widest opacity-50 uppercase">30s</span>
+</div>
                             </li>
                         ))}
                     </ul>
                 ) : (
                     <div className="text-center py-6 xl:py-10 lg:py-24 flex flex-col items-center justify-center opacity-40">
-                        <div
-                            className="w-16 h-16 rounded-full border border-purple-500/20 flex items-center
-                            justify-center mb-4">
+                        <div className="w-16 h-16 rounded-full border border-purple-500/20 flex items-center justify-center mb-4">
                             <span className="text-2xl grayscale">🎶</span>
                         </div>
                         <p className="text-purple-500 text-[10px] font-black uppercase tracking-[0.4em]">
@@ -90,8 +101,7 @@ const TrackQueue = () => {
                 )}
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r
-                from-transparent via-purple-500/20 to-transparent"/>
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"/>
         </>
     )
 }

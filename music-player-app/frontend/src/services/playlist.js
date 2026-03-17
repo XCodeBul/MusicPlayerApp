@@ -28,6 +28,24 @@ export const storeUserPlaylist = async (userId, name) => {
     return data
 }
 
+
+export const updatePlaylist = async (playlistId, updatedData) => {
+    const { x, y, ...dataToSave } = updatedData;
+
+    const { data, error } = await supabase
+        .from("playlists")
+        .update(dataToSave)
+        .eq("id", playlistId)
+        .select();
+
+    if (error) {
+        console.error("Грешка при обновяване на плейлиста:", error);
+        throw error;
+    }
+
+    return data;
+};
+
 export const updateSongList = async (playlistId, songs) => {
     const {error} = await supabase
         .from("playlists")
@@ -74,3 +92,15 @@ export const getLyrics = async (currentSong) => {
     )
     return await response.json()
 }
+
+export const removeSongFromUserPlaylist = async (playlistId, songs) => {
+    const { error } = await supabase
+        .from("playlists")
+        .update({ songs: songs }) 
+        .eq("id", playlistId);
+
+    if (error) {
+        console.error("Грешка при обновяване на базата:", error);
+        throw error;
+    }
+};

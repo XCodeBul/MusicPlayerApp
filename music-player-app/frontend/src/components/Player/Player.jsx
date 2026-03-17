@@ -99,7 +99,7 @@ const Player = () => {
 
                 <div className="flex-1 flex flex-col -mt-4 mb-4 overflow-hidden">
                     <div className="flex-1 flex gap-5 overflow-hidden">
-                        {/* TrackQueue Section */}
+                        
                         <div className="w-full max-w-2xl flex-1 lg:bg-gray-900/40 lg:backdrop-blur-xl lg:rounded-[2.5rem]
                             lg:p-8 lg:border lg:border-purple-500/20 lg:shadow-2xl relative group">
                             <div className="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100
@@ -107,7 +107,7 @@ const Player = () => {
                             <TrackQueue/>
                         </div>
 
-                        {/* Visualizer Section */}
+                       
                         <div className="hidden md:flex w-[400px] flex-shrink-0 bg-gray-900/40 backdrop-blur-xl rounded-[2.5rem]
                             border border-purple-500/20 shadow-2xl items-center justify-center overflow-hidden
                             relative group">
@@ -135,7 +135,7 @@ const Player = () => {
                                 from-transparent via-purple-500/20 to-transparent"/>
                         </div>
 
-                        {/* Lyrics Section */}
+                    
                         <div className="hidden md:flex flex-1 min-w-[300px] flex-col overflow-hidden">
                             {currentSong ? (
                                 <Lyrics currentSong={currentSong}/>
