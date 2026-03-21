@@ -23,8 +23,10 @@ const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) =
         const targetPlaylist = playlists.find((p) => p.id === playlistId)
         const updatedSongs = [...(targetPlaylist?.songs || []), newSong]
 
+        // Извикваме услугата и обновяваме контекста
         updateSongList(playlistId, updatedSongs).then(() => playlistsReload())
 
+        // Затваряме избора на плейлист след успешно добавяне
         setShowPlaylistPicker(null)
     }
 
@@ -41,60 +43,84 @@ const TrackItem = ({searchResults, showPlaylistPicker, setShowPlaylistPicker}) =
                     key={track.id}
                     className="relative group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition-all duration-200 cursor-default"
                 >
+                    {/* Обложка на песента от Spotify */}
                     {track.album.images[2]?.url ? (
                         <img src={track.album.images[2].url} alt=""
-                             className="w-14 h-14 rounded-xl shadow-lg flex-shrink-0"/>
+                             className="w-14 h-14 rounded-xl shadow-lg flex-shrink-0 object-cover"/>
                     ) : (
-                        <div
-                            className="w-14 h-14 bg-gray-700 rounded-xl flex items-center justify-center text-2xl shadow-lg">
+                        <div className="w-14 h-14 bg-gray-700 rounded-xl flex items-center justify-center text-2xl shadow-lg">
                             🎵
                         </div>
                     )}
+
                     <div className="flex-1 min-w-0">
                         <p className="font-semibold text-white truncate">{track.name}</p>
-                        <p className="text-sm text-gray-400 truncate">{track.artists.map(a => a.name).join(", ")}</p>
+                        <p className="text-sm text-gray-400 truncate">
+                            {track.artists.map(a => a.name).join(", ")}
+                        </p>
                     </div>
+
                     <span className="text-sm text-gray-500 px-3">{formatDuration(track.duration_ms)}</span>
+
+                    {/* Бутон за добавяне (+) */}
                     <button
-                        onClick={(e) => {
+                        onMouseDown={(e) => {
                             e.stopPropagation()
                             setShowPlaylistPicker(showPlaylistPicker === track.id ? null : track.id)
                         }}
-                            className="opacity-0 group-hover:opacity-100 w-12 h-12 bg-gradient-to-r from-green-500
+                        className="opacity-0 group-hover:opacity-100 w-12 h-12 bg-gradient-to-r from-green-500
                             to-emerald-500 hover:from-green-400 hover:to-emerald-400 rounded-full flex items-center
                             justify-center text-xl font-bold shadow-xl transition-all duration-300 transform
-                            hover:scale-110"
+                            hover:scale-110 text-white"
                     >
-                        <i className={'fa fa-plus'}/>
+                        <i className="fa fa-plus"/>
                     </button>
 
+                    {/* Контейнер за избор на плейлист (Picker) */}
                     {showPlaylistPicker === track.id && (
                         <div
                             onClick={(e) => e.stopPropagation()}
-                            className="absolute right-12 top-16 bg-gray-800/98 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-600 z-[9999999] min-w-[200px] py-2 overflow-hidden"
+                            className="absolute right-12 top-16 bg-gray-900/98 backdrop-blur-2xl rounded-2xl 
+                                       shadow-2xl border border-white/10 z-[9999999] min-w-[220px] py-2 
+                                       overflow-hidden animate-in fade-in zoom-in-95 duration-100"
                         >
-                            <p className="px-6 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">
+                            <p className="px-6 py-2 text-[10px] uppercase tracking-wider text-gray-500 font-bold">
                                 Add to playlist
                             </p>
-                            {!!playlists && playlists.length > 0 ? (
-                                playlists.map((p) => (
-                                    <div
-                                        key={p.id}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleAddToPlaylist(track, p.id);
-                                        }}
-                                        className="px-6 py-3 hover:bg-purple-600/20 cursor-pointer text-sm
-                                           flex items-center gap-3 transition"
-                                    >
-                                        {p.cover ? <img src={p.cover} className="w-8 h-8 rounded" alt=""/> : <div
-                                            className="w-8 h-8 bg-gray-700 rounded flex items-center justify-center text-[10px]">PL</div>}
-                                        <span className="truncate">{p.name}</span>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="px-6 py-3 text-sm text-gray-400 italic">No playlists found</p>
-                            )}
+                            
+                            <div className="max-h-[250px] overflow-y-auto custom-scrollbar">
+                                {!!playlists && playlists.length > 0 ? (
+                                    playlists.map((p) => (
+                                        <div
+                                            key={p.id}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleAddToPlaylist(track, p.id);
+                                            }}
+                                            className="px-4 py-3 hover:bg-white/10 cursor-pointer text-sm
+                                                       flex items-center gap-3 transition mx-2 rounded-lg"
+                                        >
+                                            {/* Показване на картинката на плейлиста */}
+                                            <div className="w-9 h-9 flex-shrink-0 bg-gray-800 rounded-md overflow-hidden flex items-center justify-center border border-white/5">
+                                                {(p.cover || p.image || p.cover_url) ? (
+                                                    <img 
+                                                        src={p.cover || p.image || p.cover_url} 
+                                                        className="w-full h-full object-cover" 
+                                                        alt={p.name}
+                                                    />
+                                                ) : (
+                                                    <span className="text-[10px] font-bold text-gray-600">PL</span>
+                                                )}
+                                            </div>
+                                            <span className="truncate text-gray-200 font-medium">{p.name}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="px-6 py-4 text-xs text-gray-500 italic text-center">
+                                        No playlists found
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>

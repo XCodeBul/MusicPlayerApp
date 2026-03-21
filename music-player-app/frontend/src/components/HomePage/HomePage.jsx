@@ -129,7 +129,7 @@ const HomePage = ({ t }) => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
           </span>
           <span className="text-[10px] font-black uppercase tracking-[0.5em] text-purple-300/90">
-            {"ЗВУКОВО ИЗЖИВЯВАНЕ"}
+            {"Музикално ИЗЖИВЯВАНЕ"}
           </span>
         </div>
 
