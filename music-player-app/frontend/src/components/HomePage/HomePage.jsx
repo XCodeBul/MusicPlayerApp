@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthUserContext } from "../../contexts/AuthUserContext.jsx";
 
@@ -12,7 +12,6 @@ const HomePage = ({ t }) => {
   const audioRef = useRef(new Audio());
   const [popularTracks, setPopularTracks] = useState([]);
 
-  
   const staticArtists = [
     { id: 1, name: 'Future', imageUrl: '/covers/future.webp', deezerId: '165930' },
     { id: 2, name: 'Kendrick Lamar', imageUrl: '/covers/kendrick.jpg', deezerId: '525046' },
@@ -20,14 +19,53 @@ const HomePage = ({ t }) => {
     { id: 4, name: 'Dua Lipa', imageUrl: '/covers/dualipa.webp', deezerId: '8706544' },
     { id: 5, name: 'Drake', imageUrl: '/covers/drake.jpg', deezerId: '246791' },
     { id: 6, name: 'Bruno Mars', imageUrl: '/covers/brunomars.jpeg', deezerId: '429675' },
-
     { id: 7, name: 'Travis Scott', imageUrl: '/covers/travis.jpg', deezerId: '4495513' },
-  { id: 8, name: 'Young Thug', imageUrl: '/covers/youngthug.jpg', deezerId: '1590752' },
-  { id: 9, name: 'Rihanna', imageUrl: '/covers/rihanna.jpg', deezerId: '564' },
-  { id: 10, name: '21 Savage', imageUrl: '/covers/21savage.jpg', deezerId: '6853403' },
-  { id: 11, name: 'Kanye West', imageUrl: '/covers/kanye.jpg', deezerId: '230' },
-  { id: 12, name: 'Lil Uzi Vert', imageUrl: '/covers/liluzivert.jpg', deezerId: '7101343' },
+    { id: 8, name: 'Young Thug', imageUrl: '/covers/youngthug.jpg', deezerId: '1590752' },
+    { id: 9, name: 'Rihanna', imageUrl: '/covers/rihanna.jpg', deezerId: '564' },
+    { id: 10, name: '21 Savage', imageUrl: '/covers/21savage.jpg', deezerId: '6853403' },
+    { id: 11, name: 'Kanye West', imageUrl: '/covers/kanye.jpg', deezerId: '230' },
+    { id: 12, name: 'Lil Uzi Vert', imageUrl: '/covers/liluzivert.jpg', deezerId: '7101343' },
   ];
+
+  
+  const playTrack = (trackList, index = 0) => {
+    if (!trackList || index >= trackList.length) return;
+
+    const track = trackList[index];
+    const audio = audioRef.current;
+
+    const trackData = {
+      title: track.title,
+      artist: track.artist.name || track.artist,
+      audioUrl: track.preview,
+      cover: track.album?.cover_medium || track.cover,
+    };
+
+    
+    audio.pause();
+    audio.oncanplaythrough = null;
+    audio.onerror = null;
+
+    audio.src = trackData.audioUrl;
+    audio.load();
+
+  
+    audio.oncanplaythrough = () => {
+      audio.play()
+        .then(() => {
+          setCurrentTrack(trackData);
+          setIsPlaying(true);
+          setGlowColor("rgba(168, 85, 247, 0.4)");
+        })
+        .catch(() => playTrack(trackList, index + 1));
+    };
+
+  
+    audio.onerror = () => {
+      console.warn(`Проблем с "${trackData.title}". Прескачам на следващата...`);
+      playTrack(trackList, index + 1);
+    };
+  };
 
   const handleStartClick = () => {
     user ? navigate('/player') : navigate('/login');
@@ -38,83 +76,41 @@ const HomePage = ({ t }) => {
       const url = `https://api.deezer.com/artist/${artist.deezerId}/top?limit=15`;
       const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
       const data = await response.json();
-      const validTracks = data.data?.filter(track => track.preview && track.preview !== "") || [];
-      if (validTracks.length === 0) return;
-
+      const validTracks = data.data?.filter(t => t.preview) || [];
       
-      const attemptPlay = (index) => {
-        const track = validTracks[index];
-        const newTrack = {
-          title: track.title,
-          artist: track.artist.name,
-          audioUrl: track.preview,
-          cover: track.album.cover_medium,
-        };
-
-        audioRef.current.pause();
-        audioRef.current.src = newTrack.audioUrl;
-        audioRef.current.load();
-        audioRef.current.onerror = () => {
-          
-          attemptPlay(index + 1); 
-        };
-
-        
-        audioRef.current.oncanplay = () => {
-          audioRef.current.play()
-            .then(() => {
-              setCurrentTrack(newTrack);
-              setIsPlaying(true);
-              setGlowColor("rgba(168, 85, 247, 0.4)");
-              audioRef.current.onerror = null; 
-            })
-            .catch(() => attemptPlay(index + 1)); 
-        };
-      };
-
-     
-      const randomStart = Math.floor(Math.random() * Math.min(validTracks.length, 5));
-      attemptPlay(randomStart);
-
-    } catch (error) {
-      console.error("Грешка:", error);
-    }
-
+      if (validTracks.length > 0) {
     
-  };
-
-
-React.useEffect(() => {
-  const fetchTopTracks = async () => {
-    try {
-  
-      const promises = staticArtists.map(artist =>
-        fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/artist/${artist.deezerId}/top?limit=20`)}`)
-          .then(res => res.json())
-      );
-
-      const results = await Promise.all(promises);
-
-  
-      const allTracks = results.flatMap(data => data.data || []);
-
-  
-      const shuffled = [...allTracks] 
-        .filter(t => t.preview)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 20);
-
-      setPopularTracks(shuffled);
-      
-      console.log("Заредени песни:", shuffled.length); 
+        playTrack(validTracks, 0);
+      }
     } catch (error) {
-      console.error("Грешка при зареждане на хитовете:", error);
+      console.error("Грешка при артист:", error);
     }
   };
 
-  fetchTopTracks();
-}, []); 
+  useEffect(() => {
+    const fetchTopTracks = async () => {
+      try {
+        const promises = staticArtists.slice(0, 10).map(artist =>
+          fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/artist/${artist.deezerId}/top?limit=10`)}`)
+            .then(res => res.json())
+        );
 
+        const results = await Promise.all(promises);
+        const allTracks = results.flatMap(data => data.data || []).filter(t => t.preview);
+        
+      
+        const shuffled = allTracks
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 20);
+
+        setPopularTracks(shuffled);
+      } catch (error) {
+        console.error("Грешка при зареждане на хитовете:", error);
+      }
+    };
+
+    fetchTopTracks();
+  }, []);
   return (
     <div className="flex-1 w-full flex flex-col items-center relative px-6 overflow-y-auto pt-24 pb-32 custom-scrollbar">
       
