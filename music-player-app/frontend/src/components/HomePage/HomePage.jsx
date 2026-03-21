@@ -12,102 +12,75 @@ const HomePage = () => {
     const audioRef = useRef(new Audio())
     const [popularTracks, setPopularTracks] = useState([])
 
-    const staticArtists = [
-        {id: 1, name: 'Future', imageUrl: '/covers/future.webp', deezerId: '165930'},
-        {id: 2, name: 'Kendrick Lamar', imageUrl: '/covers/kendrick.jpg', deezerId: '525046'},
-        {id: 3, name: 'The Weeknd', imageUrl: '/covers/theweeknd.jpg', deezerId: '4050205'},
-        {id: 4, name: 'Dua Lipa', imageUrl: '/covers/dualipa.webp', deezerId: '8706544'},
-        {id: 5, name: 'Drake', imageUrl: '/covers/drake.jpg', deezerId: '246791'},
-        {id: 6, name: 'Bruno Mars', imageUrl: '/covers/brunomars.jpeg', deezerId: '429675'},
-        {id: 7, name: 'Travis Scott', imageUrl: '/covers/travis.jpg', deezerId: '4495513'},
-        {id: 8, name: 'Young Thug', imageUrl: '/covers/youngthug.jpg', deezerId: '1590752'},
-        {id: 9, name: 'Rihanna', imageUrl: '/covers/rihanna.jpg', deezerId: '564'},
-        {id: 10, name: '21 Savage', imageUrl: '/covers/21savage.jpg', deezerId: '6853403'},
-        {id: 11, name: 'Kanye West', imageUrl: '/covers/kanye.jpg', deezerId: '230'},
-        {id: 12, name: 'Lil Uzi Vert', imageUrl: '/covers/liluzivert.jpg', deezerId: '7101343'},
-    ]
+  const staticArtists = [
+    { id: 1, name: 'Future', imageUrl: '/covers/future.webp', deezerId: '165930' },
+    { id: 2, name: 'Kendrick Lamar', imageUrl: '/covers/kendrick.jpg', deezerId: '525046' },
+    { id: 3, name: 'The Weeknd', imageUrl: '/covers/theweeknd.jpg', deezerId: '4050205' },
+    { id: 4, name: 'Dua Lipa', imageUrl: '/covers/dualipa.webp', deezerId: '8706544' },
+    { id: 5, name: 'Drake', imageUrl: '/covers/drake.jpg', deezerId: '246791' },
+    { id: 6, name: 'Bruno Mars', imageUrl: '/covers/brunomars.jpeg', deezerId: '429675' },
+    { id: 7, name: 'Travis Scott', imageUrl: '/covers/travis.jpg', deezerId: '4495513' },
+    { id: 8, name: 'Young Thug', imageUrl: '/covers/youngthug.jpg', deezerId: '1590752' },
+    { id: 9, name: 'Rihanna', imageUrl: '/covers/rihanna.jpg', deezerId: '564' },
+    { id: 10, name: '21 Savage', imageUrl: '/covers/21savage.jpg', deezerId: '6853403' },
+    { id: 11, name: 'Kanye West', imageUrl: '/covers/kanye.jpg', deezerId: '230' },
+    { id: 12, name: 'Lil Uzi Vert', imageUrl: '/covers/liluzivert.jpg', deezerId: '7101343' },
+  ];
 
     const handleStartClick = () => user ? navigate('/player') : navigate('/login')
 
-    const handleArtistClick = async (artist) => {
-        try {
-            const url = `https://api.deezer.com/artist/${artist.deezerId}/top?limit=15`
-            const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`)
-            const data = await response.json()
-            const validTracks = data.data?.filter(track => track.preview && track.preview !== "") || []
-            if (validTracks.length === 0) return
+  const handleArtistClick = async (artist) => {
+    try {
+      const url = `https://api.deezer.com/artist/${artist.deezerId}/top?limit=15`;
+      const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+      const data = await response.json();
+      const validTracks = data.data?.filter(t => t.preview) || [];
 
-            const attemptPlay = (index) => {
-                const track = validTracks[index]
-                const newTrack = {
-                    title: track.title,
-                    artist: track.artist.name,
-                    audioUrl: track.preview,
-                    cover: track.album.cover_medium,
-                }
+      if (validTracks.length > 0) {
 
-                audioRef.current.pause();
-                audioRef.current.src = newTrack.audioUrl;
-                audioRef.current.load();
-                audioRef.current.onerror = () => attemptPlay(index + 1)
-
-                audioRef.current.oncanplay = () => {
-                    audioRef.current.play()
-                        .then(() => {
-                            setCurrentTrack(newTrack);
-                            setIsPlaying(true);
-                            setGlowColor("rgba(168, 85, 247, 0.4)");
-                            audioRef.current.onerror = null;
-                        })
-                        .catch(() => attemptPlay(index + 1))
-                }
-            }
-
-            const randomStart = Math.floor(Math.random() * Math.min(validTracks.length, 5))
-            attemptPlay(randomStart);
-
-        } catch (error) {
-            console.error("Грешка:", error)
-        }
+        playTrack(validTracks, 0);
+      }
+    } catch (error) {
+      console.error("Грешка при артист:", error);
     }
 
-    useEffect(() => {
-        fetchTopTracks()
-    }, [])
+    
+  };
 
+  useEffect(() => {
     const fetchTopTracks = async () => {
-        try {
-            const promises = staticArtists.map(artist =>
-                fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/artist/${artist.deezerId}/top?limit=20`)}`)
-                    .then(res => res.json())
-            )
+      try {
+        const promises = staticArtists.slice(0, 10).map(artist =>
+          fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/artist/${artist.deezerId}/top?limit=10`)}`)
+            .then(res => res.json())
+        );
 
-            const results = await Promise.all(promises)
-            const allTracks = results.flatMap(data => data.data || [])
-            const shuffled = [...allTracks]
-                .filter(t => t.preview)
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 20)
+        const results = await Promise.all(promises);
+        const allTracks = results.flatMap(data => data.data || []).filter(t => t.preview);
 
-            setPopularTracks(shuffled)
 
-            console.log("Заредени песни:", shuffled.length)
-        } catch (error) {
-            console.error("Грешка при зареждане на хитовете:", error)
-        }
-    }
+        const shuffled = allTracks
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 20);
 
-    return (
-        <div className="flex-1 w-full flex flex-col items-center relative px-6 overflow-y-auto pt-24 pb-32
-            custom-scrollbar">
-            <div
-                className="fixed inset-0 pointer-events-none flex items-center justify-center transition-colors
-                    duration-1000">
-                <div
-                    className="w-full max-w-[800px] h-[400px] rounded-full blur-[140px] transition-all duration-1000"
-                    style={{backgroundColor: glowColor}}
-                />
-            </div>
+        setPopularTracks(shuffled);
+      } catch (error) {
+        console.error("Грешка при зареждане на хитовете:", error);
+      }
+    };
+
+    fetchTopTracks();
+  }, []);
+  return (
+    <div className="flex-1 w-full flex flex-col items-center relative px-6 overflow-y-auto pt-24 pb-32 custom-scrollbar">
+      
+      
+      <div className="fixed inset-0 pointer-events-none flex items-center justify-center transition-colors duration-1000">
+        <div 
+          className="w-full max-w-[800px] h-[400px] rounded-full blur-[140px] transition-all duration-1000" 
+          style={{ backgroundColor: glowColor }}
+        />
+      </div>
 
             <div className="relative z-20 text-center flex flex-col items-center max-w-5xl mb-28 lg:mb-48">
                 <div className="mb-10 inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/[0.03] border

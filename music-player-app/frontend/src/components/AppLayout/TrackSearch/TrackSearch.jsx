@@ -3,9 +3,8 @@ import TrackItem from "./TrackItem/TrackItem.jsx";
 import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 import {getTracks} from "../../../services/playlist.js";
 
-const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
+const TrackSearch = ({isSearchFocused, setIsSearchFocused, searchQuery, setSearchQuery}) => {
     const {t} = useLocalizationContext()
-    const [searchQuery, setSearchQuery] = useState('')
     const [searchResults, setSearchResults] = useState([])
     const [searchLoading, setSearchLoading] = useState(false)
     const [showPlaylistPicker, setShowPlaylistPicker] = useState(null)
@@ -14,7 +13,7 @@ const TrackSearch = ({isSearchFocused, setIsSearchFocused}) => {
 
     useEffect(() => {
         const controller = new AbortController()
-        if (!searchQuery.trim()) {
+        if (!searchQuery || !searchQuery.trim()) {
             setSearchResults([])
             return
         }
