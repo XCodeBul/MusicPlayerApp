@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
     "@distube/ytdl-core": "^4.16.12",
     "axios": "^1.13.2",
     "cors": "^2.8.5",

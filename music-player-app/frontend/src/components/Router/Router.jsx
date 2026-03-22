@@ -2,7 +2,8 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Player from "../Player/Player.jsx";
 import AppLayout from "../AppLayout/AppLayout.jsx";
 import HomePage from "../HomePage/HomePage.jsx";
-import Login from "../Auth/Login/Login.jsx"; 
+import Login from "../Auth/Login/Login.jsx";
+import AIPlaylistPage from "../AIPlaylist/AIPlaylistPage.jsx";
 
 const Router = () => {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ const Router = () => {
             <Route element={<AppLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="player" element={<Player />} />
+                <Route path="ai-playlist" element={<AIPlaylistPage />} />
                 <Route path="login" element={<Login isOpen={true} onClose={() => navigate('/')} />} />
             </Route>
         </Routes>

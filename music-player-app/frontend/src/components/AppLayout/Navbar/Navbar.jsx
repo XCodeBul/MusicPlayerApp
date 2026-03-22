@@ -4,18 +4,20 @@ import Login from "../../Auth/Login/Login.jsx";
 import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 import Logout from "../../Auth/Logout/Logout.jsx";
 import {useAuthUserContext} from "../../../contexts/AuthUserContext.jsx";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const {user} = useAuthUserContext()
     const [showDropdown, setShowDropdown] = useState(false)
     const [isSearchFocused, setIsSearchFocused] = useState(false)
-    const [searchQuery, setSearchQuery] = useState("") 
+    const [searchQuery, setSearchQuery] = useState("")
     const [isAuthOpen, setIsAuthOpen] = useState(false)
     const dropdownRef = useRef(null)
     const inputRef = useRef(null)
     const location = useLocation();
+    const navigate = useNavigate();
     const isHomePage = location.pathname === "/";
+    const isAIPage = location.pathname === "/ai-playlist";
 
     const {t, language, changeLanguage} = useLocalizationContext()
 
@@ -56,6 +58,21 @@ export default function Navbar() {
                         </span>
                     </div>
                 </div>
+
+                {!isHomePage && (
+                    <button
+                        onClick={() => navigate(isAIPage ? "/player" : "/ai-playlist")}
+                        className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest
+                            transition-all duration-300 border
+                            ${isAIPage
+                                ? "bg-purple-600/20 border-purple-500/40 text-purple-300"
+                                : "bg-purple-500/5 border-purple-500/20 text-purple-400/60 hover:bg-purple-500/15 hover:text-purple-300 hover:border-purple-500/40"
+                            }`}
+                    >
+                        <span>✦</span>
+                        AI Playlist
+                    </button>
+                )}
 
               
                 <div className={`flex items-center gap-6 lg:gap-8 transition-all duration-500 ${isHomePage ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
