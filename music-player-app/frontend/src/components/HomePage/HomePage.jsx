@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthUserContext } from "../../contexts/AuthUserContext.jsx";
+import { useLocalizationContext } from "../../contexts/LocalizationContext.jsx";
 
-const HomePage = ({ t }) => {
+const HomePage = ({  }) => {
   const { user } = useAuthUserContext();
   const navigate = useNavigate();
+const { t } = useLocalizationContext(); 
+  const home = t?.home || {};
 
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -129,7 +132,7 @@ const HomePage = ({ t }) => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
           </span>
           <span className="text-[10px] font-black uppercase tracking-[0.5em] text-purple-300/90">
-            {"Музикално ИЗЖИВЯВАНЕ"}
+            {home.experience}
           </span>
         </div>
 
@@ -138,7 +141,7 @@ const HomePage = ({ t }) => {
         </h1>
         
         <p className="text-gray-400 font-medium text-base md:text-lg max-w-2xl mx-auto mb-14 opacity-80">
-          {"Потопи се в ритъма на най-новите хитове. Открий любимите си изпълнители и усети музиката навсякъде и по всяко време."}
+          {home.heroSubtitle}
         </p>
 
         <button 
@@ -146,7 +149,7 @@ const HomePage = ({ t }) => {
           className="group relative px-20 py-6 bg-white text-black font-black uppercase tracking-[0.4em] text-[11px] rounded-2xl transition-all duration-500 overflow-hidden hover:text-white hover:shadow-[0_0_50px_rgba(168,85,247,0.6)] active:scale-95"
         >
           <div className="absolute inset-0 bg-purple-600 translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-500" />
-          <span className="relative z-10 italic">{"Започни да слушаш"}</span>
+          <span className="relative z-10 italic">{home.startListening}</span>
         </button>
       </div>
 
@@ -154,7 +157,7 @@ const HomePage = ({ t }) => {
 
 <div className="relative z-20 w-full max-w-7xl px-4 animate-in fade-in slide-in-from-bottom-10 duration-1000">
   <h2 className="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter mb-8 border-b border-white/5 pb-4">
-    Популярни <span className="text-purple-500">Изпълнители</span>
+    {home.popularArtists} <span className="text-purple-500">{home.popularArtistsSpan}</span>
   </h2>
 
 
@@ -231,7 +234,7 @@ const HomePage = ({ t }) => {
 
 <div className="relative z-20 w-full max-w-7xl px-4 mt-32 mb-20">
   <h2 className="text-2xl md:text-4xl font-black italic text-white uppercase tracking-tighter mb-12 border-b border-white/5 pb-6">
-    Топ <span className="text-purple-500">Хитове</span>
+    {home.topHits}<span className="text-purple-500"> {home.topHitsSpan}</span>
   </h2>
 
   <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-4">

@@ -53,6 +53,18 @@ export const translations = {
         inTheWorld: "IN THE WORLD",
         followers: "FOLLOWERS",
         monthlyListenersTitle: "MONTHLY LISTENERS",
+
+        home: {
+        experience: "MUSICAL EXPERIENCE",
+        heroSubtitle: "Immerse yourself in the rhythm of the latest hits. Discover your favorite artists and feel the music anywhere, anytime.",
+        startListening: "Start Listening",
+        popularArtists: "Popular",
+        popularArtistsSpan: "Artists",
+        topHits: "Top",
+        topHitsSpan: "Hits"
+
+        }
+        
     },
     BG: {
         queue: "Твоята опашка",
@@ -108,5 +120,17 @@ export const translations = {
         inTheWorld: "В СВЕТА",
         followers: "ПОСЛЕДОВАТЕЛИ",
         monthlyListenersTitle: "МЕСЕЧНИ СЛУШАТЕЛИ",
+
+        home:{
+        experience: "МУЗИКАЛНО ИЗЖИВЯВАНЕ",
+        heroSubtitle: "Потопи се в ритъма на най-новите хитове. Открий любимите си изпълнители и усети музиката навсякъде и по всяко време.",
+        startListening: "Започни да слушаш",
+        popularArtists: "Популярни",
+        popularArtistsSpan: "Изпълнители",
+        topHits: "Топ",
+        topHitsSpan: "Хитове"
+
+        }
+      
     }
 };
