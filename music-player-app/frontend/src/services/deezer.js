@@ -3,7 +3,7 @@ import {CORSPROXY_URL, DEEZER_API_URL} from "../config/consts.js";
 
 export const getTopTracks = async () => {
     try {
-        const promises = staticArtists.map(artist =>
+        const promises = staticArtists.slice(0, 10).map(artist =>
             fetch(`${CORSPROXY_URL}?${encodeURIComponent(`${DEEZER_API_URL}/artist/${artist.deezerId}/top?limit=5`)}`)
                 .then(res => res.json())
         )
