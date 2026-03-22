@@ -1,20 +1,21 @@
-import { useEffect } from "react";
-import { useNavigate, Outlet } from "react-router-dom"; 
-import { supabase } from "../../supabaseClient.js";
-import { useAuthUserContext } from "../../contexts/AuthUserContext.jsx";
+import {useEffect} from "react";
+import {useNavigate, Outlet} from "react-router-dom";
+import {supabase} from "../../supabaseClient.js";
+import {useAuthUserContext} from "../../contexts/AuthUserContext.jsx";
 import Navbar from "./Navbar/Navbar.jsx";
 import Footer from "./Footer/Footer.jsx";
+import {PATHS} from "../../config/paths.js";
 
 const AppLayout = () => {
-    const { user, setAuthUser } = useAuthUserContext();
-    const navigate = useNavigate(); 
+    const {user, setAuthUser} = useAuthUserContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!user) {
-            initializeAuth();
+            initializeAuth()
         }
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        const {data: {subscription}} = supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                 if (session) {
                     const userData = {
@@ -23,26 +24,25 @@ const AppLayout = () => {
                         email: session.user.email,
                         avatar: session.user.user_metadata?.avatar_url,
                     };
-                    setAuthUser(userData);
+                    setAuthUser(userData)
 
-               
-                    navigate('/player'); 
+                    navigate(PATHS.player)
                 }
             } else if (event === 'SIGNED_OUT') {
-                setAuthUser(null);
-                navigate('/'); 
+                setAuthUser(null)
+                navigate(PATHS.home)
             }
         });
 
-        return () => subscription.unsubscribe();
-    }, [navigate, setAuthUser]); 
+        return () => subscription.unsubscribe()
+    }, [navigate, setAuthUser])
 
     const initializeAuth = async () => {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {data: {session}} = await supabase.auth.getSession()
         if (session) {
-            updateUserInfo(session.user);
+            updateUserInfo(session.user)
         }
-    };
+    }
 
     const updateUserInfo = (supabaseUser) => {
         setAuthUser({
@@ -54,10 +54,11 @@ const AppLayout = () => {
     };
 
     return (
-        <div className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white flex flex-col overflow-hidden font-sans">
-            <Navbar />
-            <Outlet />
-            <Footer />
+        <div
+            className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white flex flex-col overflow-hidden font-sans">
+            <Navbar/>
+            <Outlet/>
+            <Footer/>
         </div>
     );
 };

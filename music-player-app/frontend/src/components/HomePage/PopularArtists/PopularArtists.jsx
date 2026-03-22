@@ -1,24 +1,18 @@
 import {staticArtists} from "../../../config/topArtists.js";
 import React from "react";
 import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
+import {getArtistTracks} from "../../../services/deezer.js";
 
 const PopularArtists = ({playTrack}) => {
-    const { t } = useLocalizationContext()
+    const {t} = useLocalizationContext()
     const home = t?.home
 
     const handleArtistClick = async (artist) => {
-        try {
-            const url = `https://api.deezer.com/artist/${artist.deezerId}/top?limit=15`
-            const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`)
-            const data = await response.json()
-            const validTracks = data.data?.filter(t => t.preview) || []
-
-            if (validTracks.length > 0) {
-                playTrack(validTracks, 0)
+        getArtistTracks(artist.deezerId).then(tracks => {
+            if (tracks.length > 0) {
+                playTrack(tracks)
             }
-        } catch (error) {
-            console.error(error)
-        }
+        }).catch(err => console.log(err))
     }
 
     return (
@@ -30,7 +24,7 @@ const PopularArtists = ({playTrack}) => {
 
             <div className="flex overflow-x-auto gap-6 md:gap-[21px] py-6 px-2 -mx-2 custom-scrollbar-hide snap-x
                     snap-mandatory select-none">
-                {staticArtists.map((artist) => (
+                {staticArtists.map(artist => (
                     <div
                         key={artist.id}
                         onClick={() => handleArtistClick(artist)}
@@ -48,7 +42,6 @@ const PopularArtists = ({playTrack}) => {
                                 className="w-full h-full rounded-full object-cover grayscale-[20%]
                                     group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                             />
-
                             <div className="absolute inset-0 flex items-center justify-center opacity-0
                                     group-hover:opacity-100 transition-all bg-purple-900/20 backdrop-blur-[1px]">
                                 <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center

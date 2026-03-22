@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
-import {staticArtists} from "../../../config/topArtists.js";
+import {getTopTracks} from "../../../services/deezer.js";
 
 const TopHits = ({playTrack}) => {
     const { t } = useLocalizationContext()
@@ -8,27 +8,9 @@ const TopHits = ({playTrack}) => {
     const [popularTracks, setPopularTracks] = useState([])
 
     useEffect(() => {
-        fetchTopTracks()
+        getTopTracks().then(data => setPopularTracks(data))
+            .catch(err => console.log(err))
     }, [])
-
-    const fetchTopTracks = async () => {
-        try {
-            const promises = staticArtists.map(artist =>
-                fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/artist/${artist.deezerId}/top?limit=10`)}`)
-                    .then(res => res.json())
-            )
-            const results = await Promise.all(promises);
-            const allTracks = results.flatMap(data => data.data || []).filter(t => t.preview);
-
-            const shuffled = allTracks
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 20)
-
-            setPopularTracks(shuffled)
-        } catch (error) {
-            console.error(error)
-        }
-    }
 
     return (
         <div className="relative z-20 w-full max-w-7xl px-4 mt-32 mb-20">

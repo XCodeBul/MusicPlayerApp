@@ -39,7 +39,7 @@ export const updatePlaylist = async (playlistId, updatedData) => {
         .select();
 
     if (error) {
-        console.error("Грешка при обновяване на плейлиста:", error);
+        console.error("Update playlist error:", error);
         throw error;
     }
 
@@ -67,12 +67,11 @@ export const deleteUserPlaylist = async (playlistId) => {
 export const getArtistInfo = async (artistId) => {
     try {
         const response = await fetch(`${API_BASE_URL}/api/artist/${artistId}`);
-        return await response.json()
 
+        return await response.json()
     } catch (err) {
         console.error(err)
     }
-
 }
 
 export const getTracks = async (signal, searchQuery) => {
@@ -97,10 +96,10 @@ export const removeSongFromUserPlaylist = async (playlistId, songs) => {
     const { error } = await supabase
         .from("playlists")
         .update({ songs: songs }) 
-        .eq("id", playlistId);
+        .eq("id", playlistId)
 
     if (error) {
-        console.error("Грешка при обновяване на базата:", error);
-        throw error;
+        console.error("DB error:", error)
+        throw error
     }
 };

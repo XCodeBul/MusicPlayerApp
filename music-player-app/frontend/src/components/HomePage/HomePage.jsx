@@ -1,14 +1,15 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthUserContext } from "../../contexts/AuthUserContext.jsx";
-import { useLocalizationContext } from "../../contexts/LocalizationContext.jsx";
+import React, {useState, useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useAuthUserContext} from "../../contexts/AuthUserContext.jsx";
+import {useLocalizationContext} from "../../contexts/LocalizationContext.jsx";
 import PopularArtists from "./PopularArtists/PopularArtists.jsx";
 import TopHits from "./TopHits/TopHits.jsx";
 import TrackPlayer from "./TrackPlayer/TrackPlayer.jsx";
+import {PATHS} from "../../config/paths.js";
 
 const HomePage = () => {
-    const { user } = useAuthUserContext()
-    const { t } = useLocalizationContext()
+    const {user} = useAuthUserContext()
+    const {t} = useLocalizationContext()
     const navigate = useNavigate()
     const home = t?.home
     const [currentTrack, setCurrentTrack] = useState(null)
@@ -60,7 +61,7 @@ const HomePage = () => {
         setIsPlaying(!isPlaying)
     }
 
-    const handleStartClick = () => user ? navigate('/player') : navigate('/login')
+    const handleStartClick = () => navigate(user ? PATHS.player : PATHS.login)
 
     return (
         <div className="flex-1 w-full flex flex-col items-center relative px-6 overflow-y-auto pt-24 pb-32
@@ -69,7 +70,7 @@ const HomePage = () => {
                 duration-1000">
                 <div
                     className="w-full max-w-[800px] h-[400px] rounded-full blur-[140px] transition-all duration-1000"
-                    style={{ backgroundColor: isPlaying ? 'rgba(168, 85, 247, 0.4)' : 'rgba(168, 85, 247, 0.15)' }}
+                    style={{backgroundColor: isPlaying ? 'rgba(168, 85, 247, 0.4)' : 'rgba(168, 85, 247, 0.15)'}}
                 />
             </div>
 
@@ -102,7 +103,7 @@ const HomePage = () => {
                         hover:shadow-[0_0_50px_rgba(168,85,247,0.6)] active:scale-95"
                 >
                     <div className="absolute inset-0 bg-purple-600 translate-x-[-101%] group-hover:translate-x-0
-                        transition-transform duration-500" />
+                        transition-transform duration-500"/>
                     <span className="relative z-10 italic">{home.startListening}</span>
                 </button>
             </div>
