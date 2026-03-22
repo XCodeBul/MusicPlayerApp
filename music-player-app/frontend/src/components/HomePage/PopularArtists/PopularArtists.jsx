@@ -17,12 +17,12 @@ const PopularArtists = ({playTrack}) => {
 
     return (
         <div className="relative z-20 w-full max-w-7xl px-4 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-            <h2 className="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter mb-8 border-b
-                border-white/5 pb-4">
+            <h2 className="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter md:mb-8 border-b
+                border-white/5 md:pb-4">
                 {home.popularArtists} <span className="text-purple-500">{home.popularArtistsSpan}</span>
             </h2>
 
-            <div className="flex overflow-x-auto gap-6 md:gap-[21px] py-6 px-2 -mx-2 custom-scrollbar-hide snap-x
+            <div className="flex overflow-x-auto gap-2 md:gap-[21px] py-6 px-2 -mx-2 custom-scrollbar-hide snap-x
                     snap-mandatory select-none">
                 {staticArtists.map(artist => (
                     <div

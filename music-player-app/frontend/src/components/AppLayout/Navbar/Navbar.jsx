@@ -5,6 +5,7 @@ import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx"
 import Logout from "../../Auth/Logout/Logout.jsx";
 import {useAuthUserContext} from "../../../contexts/AuthUserContext.jsx";
 import { useLocation } from "react-router-dom";
+import {PATHS} from "../../../config/paths.js";
 
 export default function Navbar() {
     const {user} = useAuthUserContext()
@@ -15,7 +16,7 @@ export default function Navbar() {
     const dropdownRef = useRef(null)
     const inputRef = useRef(null)
     const location = useLocation();
-    const isHomePage = location.pathname === "/";
+    const isHomePage = location.pathname === PATHS.home;
 
     const {t, language, changeLanguage} = useLocalizationContext()
 
@@ -47,26 +48,28 @@ export default function Navbar() {
                         <span className="text-white text-2xl">♪</span>
                     </div>
                     <div className="flex flex-col">
-                        <span className="hidden md:inline text-2xl font-black tracking-tighter bg-gradient-to-r from-white via-purple-200
-                          to-purple-400 bg-clip-text text-transparent italic uppercase leading-none">
+                        <span className="hidden md:inline text-2xl font-black tracking-tighter bg-gradient-to-r
+                            from-white via-purple-200 to-purple-400 bg-clip-text text-transparent italic uppercase
+                            leading-none">
                           MusicNote
                         </span>
-                        <span className="hidden md:inline text-[10px] font-bold text-purple-400/60 uppercase tracking-[0.2em] mt-1 leading-none">
+                        <span className="hidden md:inline text-[10px] font-bold text-purple-400/60 uppercase
+                            tracking-[0.2em] mt-1 leading-none">
                             {t.slogan}
                         </span>
                     </div>
                 </div>
 
-              
-                <div className={`flex items-center gap-6 lg:gap-8 transition-all duration-500 ${isHomePage ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                    <div className="relative group" ref={inputRef}>
-                        <input
-                            type="text"
-                            value={searchQuery} 
-                            onChange={(e) => setSearchQuery(e.target.value)} 
-                            placeholder={t.searchPlaceholder}
-                            onFocus={() => setIsSearchFocused(true)}
-                            className={`w-[200px] bg-white/5 border border-purple-500/10 text-white rounded-2xl px-6
+                {!isHomePage && (
+                    <div className={`flex items-center gap-6 lg:gap-8 transition-all duration-500`}>
+                        <div className="relative group" ref={inputRef}>
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder={t.searchPlaceholder}
+                                onFocus={() => setIsSearchFocused(true)}
+                                className={`w-[200px] bg-white/5 border border-purple-500/10 text-white rounded-2xl px-6
                             py-3 pr-12 text-sm outline-none transition-all duration-500 placeholder-gray-600
                             font-medium
                                 ${isSearchFocused
@@ -74,22 +77,23 @@ export default function Navbar() {
                                     : "hover:bg-white/10 lg:w-[450px]"
                                 }
                             `}
-                        />
-                        <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors 
+                            />
+                            <div className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors 
                             duration-300 ${isSearchFocused ? 'text-purple-400' : 'text-gray-500'}`}>
-                            {searchQuery ? (
-                                <button onClick={() => setSearchQuery("")} className="hover:text-white transition-colors">✕</button>
-                            ) : (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                </svg>
-                            )}
+                                {searchQuery ? (
+                                    <button onClick={() => setSearchQuery("")} className="hover:text-white
+                                transition-colors">✕</button>
+                                ) : (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
 
-                
                 <div className="flex items-center gap-5">
                     <div className="relative" ref={dropdownRef}>
                         {user ? (
@@ -177,19 +181,22 @@ export default function Navbar() {
                         ) : (
                             <div className="flex items-center gap-4">
                                 {isHomePage && (
-                                    <div className="flex flex-col gap-1.5 p-2 rounded-2xl bg-purple-500/5 border border-purple-500/10">
-                                        <p className="text-[7px] font-black text-purple-400/60 uppercase tracking-[0.2em] ml-1">
-                                            {language === 'EN' ? 'Language' : 'Език'}
-                                        </p>
-                                        <div className="flex bg-black/40 p-1 rounded-xl border border-white/5 w-24">
+                                    <div className="flex flex-col gap-1.5 p-2 rounded-2xl border border-purple-500/10">
+                                        <div className="flex p-1 rounded-xl w-24">
                                             <button
                                                 onClick={() => changeLanguage('EN')}
-                                                className={`flex-1 py-1 rounded-lg text-[9px] font-black transition-all ${language === 'EN' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"}`}
-                                            >EN</button>
+                                                className={`flex-1 py-1 rounded-lg text-[9px] font-black transition-all 
+                                                ${language === 'EN' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"}`}
+                                            >
+                                                EN
+                                            </button>
                                             <button
                                                 onClick={() => changeLanguage('BG')}
-                                                className={`flex-1 py-1 rounded-lg text-[9px] font-black transition-all ${language === 'BG' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"}`}
-                                            >BG</button>
+                                                className={`flex-1 py-1 rounded-lg text-[9px] font-black transition-all 
+                                                ${language === 'BG' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"}`}
+                                            >
+                                                BG
+                                            </button>
                                         </div>
                                     </div>
                                 )}

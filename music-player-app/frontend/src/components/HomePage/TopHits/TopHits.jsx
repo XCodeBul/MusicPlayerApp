@@ -3,7 +3,7 @@ import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx"
 import {getTopTracks} from "../../../services/deezer.js";
 
 const TopHits = ({playTrack}) => {
-    const { t } = useLocalizationContext()
+    const {t} = useLocalizationContext()
     const home = t?.home
     const [popularTracks, setPopularTracks] = useState([])
 
@@ -13,7 +13,7 @@ const TopHits = ({playTrack}) => {
     }, [])
 
     return (
-        <div className="relative z-20 w-full max-w-7xl px-4 mt-32 mb-20">
+        <div className="relative z-20 w-full max-w-7xl px-4 mt-10 md:mt-32 mb-10 md:mb-0">
             <h2 className="text-2xl md:text-4xl font-black italic text-white uppercase tracking-tighter mb-12 border-b
                 border-white/5 pb-6">
                 {home.topHits}<span className="text-purple-500"> {home.topHitsSpan}</span>
@@ -26,12 +26,14 @@ const TopHits = ({playTrack}) => {
                         className="group flex items-center gap-4 p-2 rounded-2xl hover:bg-white/[0.03] transition-all
                             cursor-pointer border border-transparent hover:border-white/5"
                     >
-                            <span className="text-gray-700 font-black italic text-sm w-6 group-hover:text-purple-500">
-                              {(index + 1).toString().padStart(2, '0')}
-                            </span>
+                        <span className="text-gray-700 font-black italic text-sm w-6 group-hover:text-purple-500">
+                          {(index + 1).toString().padStart(2, '0')}
+                        </span>
+
                         <img src={track.album.cover_medium} alt=""
                              className="w-14 h-14 rounded-lg object-cover shadow-lg group-hover:scale-105
                                 transition-transform"/>
+
                         <div className="flex-1 min-w-0">
                             <h3 className="text-white text-[14px] font-black uppercase italic truncate">
                                 {track.title}
