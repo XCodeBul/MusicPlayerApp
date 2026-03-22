@@ -1,46 +1,48 @@
-import { createContext, useContext, useRef, useState } from "react";
-import { removeSongFromUserPlaylist } from "../services/playlist.js";
+import { createContext, useContext, useRef, useState } from "react"
+import { removeSongFromUserPlaylist } from "../services/playlist.js"
 
-export const PlayerContext = createContext({});
-export const usePlayerContext = () => useContext(PlayerContext);
+// eslint-disable-next-line react-refresh/only-export-components
+export const PlayerContext = createContext({})
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const usePlayerContext = () => useContext(PlayerContext)
 
 export function PlayerProvider({ children }) {
-    const musicAudioRef = useRef(null);
-    const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-    const [currentSong, setCurrentSong] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [progress, setProgress] = useState(0);
+    const musicAudioRef = useRef(null)
+    const [selectedPlaylist, setSelectedPlaylist] = useState(null)
+    const [currentSong, setCurrentSong] = useState(null)
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [progress, setProgress] = useState(0)
 
     const playSong = (song) => {
-        setCurrentSong(song);
-        setIsPlaying(true);
-        setProgress(0);
-    };
+        setCurrentSong(song)
+        setIsPlaying(true)
+        setProgress(0)
+    }
 
     const removeSongFromPlaylist = async (songId) => {
-        if (!selectedPlaylist) return;
+        if (!selectedPlaylist) return
 
         const updatedSongs = selectedPlaylist.songs.filter(
             (song) => String(song.id) !== String(songId)
-        );
+        )
 
         try {
-            await removeSongFromUserPlaylist(selectedPlaylist.id, updatedSongs);
+            await removeSongFromUserPlaylist(selectedPlaylist.id, updatedSongs)
             setSelectedPlaylist({
                 ...selectedPlaylist,
                 songs: updatedSongs
-            });
+            })
 
-            window.dispatchEvent(new Event("refresh-playlists"));
+            window.dispatchEvent(new Event("refresh-playlists"))
             if (String(currentSong?.id) === String(songId)) {
-                setIsPlaying(false);
-                setCurrentSong(null);
+                setIsPlaying(false)
+                setCurrentSong(null)
             }
-        } catch (error) {
-            console.error("Грешка при триене:", error);
-            alert("Неуспешно премахване от базата данни.");
+        } catch {
+            alert("Неуспешно премахване от базата данни.")
         }
-    };
+    }
 
     return (
         <PlayerContext.Provider
@@ -60,5 +62,5 @@ export function PlayerProvider({ children }) {
         >
             {children}
         </PlayerContext.Provider>
-    );
+    )
 }
