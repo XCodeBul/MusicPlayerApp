@@ -64,7 +64,7 @@ const HomePage = () => {
     const handleStartClick = () => navigate(user ? PATHS.player : PATHS.login)
 
     return (
-        <div className="flex-1 w-full flex flex-col items-center relative px-6 overflow-y-auto pt-5 md:pt-32 md:pb-32
+        <div className="flex-1 w-full flex flex-col items-center relative md:px-6 overflow-y-auto pt-5 md:pt-32 md:pb-32
             custom-scrollbar">
             <div className="fixed inset-0 pointer-events-none flex items-center justify-center transition-colors
                 duration-1000">

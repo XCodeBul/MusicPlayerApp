@@ -8,8 +8,7 @@ export const getTopTracks = async () => {
                 .then(res => res.json())
         )
         const results = await Promise.all(promises);
-        const allTracks = results.flatMap(data => data.data || []).filter(t => t.preview);
-        console.log(allTracks)
+        const allTracks = results.flatMap(data => data.data || []).filter(t => t.preview)
 
         return allTracks
             .sort(() => Math.random() - 0.5)

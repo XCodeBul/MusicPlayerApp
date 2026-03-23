@@ -22,7 +22,7 @@ const PopularArtists = ({playTrack}) => {
                 {home.popularArtists} <span className="text-purple-500">{home.popularArtistsSpan}</span>
             </h2>
 
-            <div className="flex overflow-x-auto gap-2 md:gap-[21px] py-6 px-2 -mx-2 custom-scrollbar-hide snap-x
+            <div className="flex overflow-x-auto gap-1 md:gap-[21px] py-6 px-2 -mx-2 custom-scrollbar-hide snap-x
                     snap-mandatory select-none">
                 {staticArtists.map(artist => (
                     <div
