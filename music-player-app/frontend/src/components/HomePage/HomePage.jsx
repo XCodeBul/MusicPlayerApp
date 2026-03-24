@@ -90,30 +90,56 @@ const { t } = useLocalizationContext();
     }
   };
 
-  useEffect(() => {
-    const fetchTopTracks = async () => {
-      try {
-        const promises = staticArtists.slice(0, 10).map(artist =>
-          fetch(`https://corsproxy.io/?${encodeURIComponent(`https://api.deezer.com/artist/${artist.deezerId}/top?limit=10`)}`)
-            .then(res => res.json())
-        );
-
-        const results = await Promise.all(promises);
-        const allTracks = results.flatMap(data => data.data || []).filter(t => t.preview);
-        
+useEffect(() => {
+  const fetchTopTracks = async () => {
+    try {
       
-        const shuffled = allTracks
+      const selectedArtists = staticArtists.slice(0, 4);
+
+      const promises = selectedArtists.map(async (artist) => {
+        try {
+          
+          const url = `https://api.deezer.com/artist/${artist.deezerId}/top?limit=10`;
+          const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+          
+          if (!res.ok) {
+            console.warn(`Грешка при артист ${artist.name}: Сървърът върна ${res.status}`);
+            return [];
+          }
+
+          const data = await res.json();
+          return data.data || [];
+        } catch (err) {
+          console.error(`Мрежова грешка за ${artist.name}:`, err);
+          return [];
+        }
+      });
+
+      
+      const results = await Promise.all(promises);
+      
+     
+      const allTracks = results.flat().filter(t => t.preview);
+
+      if (allTracks.length > 0) {
+        
+        const finalSelection = allTracks
           .sort(() => Math.random() - 0.5)
           .slice(0, 20);
 
-        setPopularTracks(shuffled);
-      } catch (error) {
-        console.error("Грешка при зареждане на хитовете:", error);
+        setPopularTracks(finalSelection);
+        console.log(`Заредени са ${finalSelection.length} песни от 4 артиста.`);
+      } else {
+        console.warn("Всички заявки се провалиха или са празни.");
       }
-    };
 
-    fetchTopTracks();
-  }, []);
+    } catch (error) {
+      console.error("Критична грешка в useEffect:", error);
+    }
+  };
+
+  fetchTopTracks();
+}, []);
   return (
     <div className="flex-1 w-full flex flex-col items-center relative px-6 overflow-y-auto pt-24 pb-32 custom-scrollbar">
       
