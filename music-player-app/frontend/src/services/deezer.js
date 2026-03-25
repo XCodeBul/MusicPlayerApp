@@ -3,12 +3,26 @@ import {CORSPROXY_URL, DEEZER_API_URL} from "../config/consts.js";
 
 export const getTopTracks = async () => {
     try {
-        const promises = staticArtists.slice(0, 10).map(artist =>
-            fetch(`${CORSPROXY_URL}?${encodeURIComponent(`${DEEZER_API_URL}/artist/${artist.deezerId}/top?limit=5`)}`)
-                .then(res => res.json())
-        )
-        const results = await Promise.all(promises);
-        const allTracks = results.flatMap(data => data.data || []).filter(t => t.preview)
+        const selectedArtists = staticArtists.slice(0, 4)
+        const promises = selectedArtists.map(async (artist) => {
+            try {
+                const url = `https://api.deezer.com/artist/${artist.deezerId}/top?limit=10`
+                const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`)
+
+                if (!res.ok) {
+                    console.log(`Artist error ${artist.name}: Status code: ${res.status}`)
+                    return []
+                }
+
+                const data = await res.json()
+                return data.data || []
+            } catch {
+                return []
+            }
+        })
+
+        const results = await Promise.all(promises)
+        const allTracks = results.flat().filter(t => t.preview)
 
         return allTracks
             .sort(() => Math.random() - 0.5)
