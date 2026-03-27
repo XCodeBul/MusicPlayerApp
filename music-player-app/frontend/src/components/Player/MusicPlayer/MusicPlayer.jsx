@@ -42,7 +42,7 @@ const MusicPlayer = forwardRef(
                 <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-600/10 blur-[50px] pointer-events-none" />
                 <div className="flex flex-col items-center gap-4 w-full relative z-10">
                     <img
-                        src={currentSong.albumArt || "https://via.placeholder.com/224"}
+                        src={currentSong.albumArt}
                         alt={currentSong.title}
                         className="w-16 h-16 md:w-[9rem] md:h-[9rem] object-cover rounded-2xl shadow-2xl border
                             border-white/5"

@@ -9,25 +9,24 @@ const {APP_PORT} = require("./config/app")
 
 const app = express()
 app.use(cors({
-  origin: process.env.FRONTEND_ORIGIN,
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+    origin: process.env.FRONTEND_ORIGIN,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 }))
 app.use(express.json())
 
 const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: "Too many requests, please try again later." },
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {error: "Too many requests, please try again later."},
 })
 
-app.use("/api", globalLimiter)
 
-app.use("/api", spotifyRoutes)
-app.use("/api/lyrics", lyricRoutes)
+app.use("/api", globalLimiter, spotifyRoutes)
+app.use("/api/lyrics", globalLimiter, lyricRoutes)
 
-app.listen(APP_PORT, () => {
-  console.log(`Music Player Backend running on http://localhost:${APP_PORT}`)
+app.listen(APP_PORT, '0.0.0.0', () => {
+    console.log(`Music Player Backend running on http://localhost:${APP_PORT}`)
 })
