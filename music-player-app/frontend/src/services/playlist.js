@@ -75,14 +75,25 @@ export const getArtistInfo = async (artistId) => {
 }
 
 export const getTracks = async (signal, searchQuery) => {
-    const res = await fetch(
-        `${API_BASE_URL}/api/search?q=${encodeURIComponent(searchQuery)}`,
-        {signal}
-    )
-    const data = await res.json()
-    return (data.tracks?.items || []).filter(
-        track => track.preview_url !== null
-    )
+    try {
+        const res = await fetch(
+            `${API_BASE_URL}/api/search?q=${encodeURIComponent(searchQuery)}`,
+            { signal }
+        );
+
+        const data = await res.json();
+        console.log("Данни от сървъра:", data); 
+
+ 
+        const rawTracks = data.data || (data.tracks && data.tracks.items) || data || [];
+
+
+        return rawTracks.filter(track => track.preview_url || track.preview);
+        
+    } catch (err) {
+        if (err.name !== 'AbortError') console.error("Грешка:", err);
+        return [];
+    }
 }
 
 export const getLyrics = async (currentSong) => {
