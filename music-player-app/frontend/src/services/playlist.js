@@ -2,15 +2,31 @@ import {supabase} from "../supabaseClient.js";
 import {API_BASE_URL} from "../config/app.js";
 
 export const getUserPlaylists = async (userId) => {
-    const {data, error} = await supabase
+    const { data: playlists, error } = await supabase
         .from('playlists')
         .select('*')
-        .eq('user_id', userId)
-        .order('created_at', {ascending: true})
+        .eq('user_id', userId);
+
+    if (!playlists) {
+        console.log('No playlists found');
+    } else {
+        const playlistsWithCount = await Promise.all(
+            playlists.map(async (playlist) => {
+                const { count } = await supabase
+                    .from('playlist_logs')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('playlist_id', playlist.id);
+                return {
+                    ...playlist,
+                    log_count: count || 0
+                };
+            })
+        );
+        playlistsWithCount.sort((a, b) => b.log_count - a.log_count);
+        return playlistsWithCount
+    }
 
     if (error) console.error("Playlist fetch error:", error)
-
-    return data
 }
 
 export const storeUserPlaylist = async (userId, name) => {
@@ -30,11 +46,13 @@ export const storeUserPlaylist = async (userId, name) => {
 
 
 export const updatePlaylist = async (playlistId, updatedData) => {
-    const { x, y, ...dataToSave } = updatedData;
+    delete updatedData.log_count
+    delete updatedData.x
+    delete updatedData.y
 
     const { data, error } = await supabase
         .from("playlists")
-        .update(dataToSave)
+        .update(updatedData)
         .eq("id", playlistId)
         .select();
 

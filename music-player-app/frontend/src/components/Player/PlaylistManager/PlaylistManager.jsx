@@ -6,7 +6,7 @@ import DeletePlaylist from "./DeletePlaylist/DeletePlaylist.jsx";
 import PlaylistManageTooltip from "./PlaylistManageTooltip/PlaylistManageTooltip.jsx";
 
 const PlaylistManager = () => {
-    const {playlists,logPlaylistView} = usePlaylistContext()
+    const {playlists, setPlaylistLogView} = usePlaylistContext()
     const {setSelectedPlaylist, setCurrentSong} = usePlayerContext()
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [tooltip, setTooltip] = useState(null)
@@ -31,7 +31,7 @@ const PlaylistManager = () => {
                             onClick={() => {
                                 setSelectedPlaylist(playlist);
                                 setCurrentSong(null);
-                                logPlaylistView(playlist.id);
+                                setPlaylistLogView(playlist.id);
                             }}
                             onMouseEnter={(e) => {
                                 const rect = e.currentTarget.getBoundingClientRect();

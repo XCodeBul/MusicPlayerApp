@@ -5,7 +5,10 @@ import { getUserPlaylists, updatePlaylist as updatePlaylistService } from "../se
 import { usePlayerContext } from "./PlayerContext.jsx";
 import { supabase } from "../supabaseClient.js"; 
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const PlaylistContext = createContext({})
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const usePlaylistContext = () => useContext(PlaylistContext)
 
 export function PlaylistProvider({ children }) {
@@ -13,13 +16,11 @@ export function PlaylistProvider({ children }) {
     const { user } = useAuthUserContext()
     const [playlists, setPlaylists] = useLocalStorageState('playlists', [])
 
-    const logPlaylistView = async (playlistId) => {
-
+    const setPlaylistLogView = async (playlistId) => {
         if (!user || !playlistId) return;
 
         const today = new Date().toISOString().split('T')[0];
         const storageKey = `logged_playlists_${user.id}`;
-        
 
         const localLogs = JSON.parse(localStorage.getItem(storageKey) || "{}");
         if (localLogs[playlistId] === today) {
@@ -28,7 +29,6 @@ export function PlaylistProvider({ children }) {
         }
 
         try {
-
             const { error } = await supabase
                 .from('playlist_logs')
                 .upsert({ 
@@ -38,7 +38,6 @@ export function PlaylistProvider({ children }) {
                 }, { onConflict: 'user_id, playlist_id, log_date' });
 
             if (!error) {
-
                 localLogs[playlistId] = today;
                 localStorage.setItem(storageKey, JSON.stringify(localLogs));
                 console.log(`Logged visit for playlist ${playlistId}`);
@@ -94,7 +93,7 @@ export function PlaylistProvider({ children }) {
                 playlistsReload,
                 setPlaylists,
                 updatePlaylist,
-                logPlaylistView 
+                setPlaylistLogView
             }}
         >
             {children}
