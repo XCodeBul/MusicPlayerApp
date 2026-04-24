@@ -6,7 +6,7 @@ export const getTopTracks = async () => {
         const selectedArtists = staticArtists.slice(0, 4)
         const promises = selectedArtists.map(async (artist) => {
             try {
-                const url = `https://api.deezer.com/artist/${artist.deezerId}/top?limit=10`
+                const url = `${DEEZER_API_URL}/artist/${artist.deezerId}/top?limit=10`
                 const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`)
 
                 if (!res.ok) {

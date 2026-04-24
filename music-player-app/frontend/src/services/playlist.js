@@ -44,7 +44,6 @@ export const storeUserPlaylist = async (userId, name) => {
     return data
 }
 
-
 export const updatePlaylist = async (playlistId, updatedData) => {
     delete updatedData.log_count
     delete updatedData.x
@@ -62,7 +61,7 @@ export const updatePlaylist = async (playlistId, updatedData) => {
     }
 
     return data;
-};
+}
 
 export const updateSongList = async (playlistId, songs) => {
     const {error} = await supabase
@@ -131,4 +130,4 @@ export const removeSongFromUserPlaylist = async (playlistId, songs) => {
         console.error("DB error:", error)
         throw error
     }
-};
+}

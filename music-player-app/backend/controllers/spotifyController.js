@@ -2,7 +2,7 @@ const {getSpotifyToken, getTracks, getArtistData} = require("../services/spotify
 const {getTrack} = require("../services/deezerService")
 
 /**
- * Search tracks in Spotify ans Deezer API
+ * Search tracks in Spotify and Deezer API
  *
  * @param req
  * @param res

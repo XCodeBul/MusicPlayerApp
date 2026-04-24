@@ -110,7 +110,7 @@ const TrackSearch = ({ isSearchFocused, setIsSearchFocused, searchQuery, setSear
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default TrackSearch;
+export default TrackSearch
