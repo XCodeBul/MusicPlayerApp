@@ -1,46 +1,55 @@
-import {useRef, useEffect, useState} from "react";
+import { useRef, useEffect, useState } from "react";
 import TrackSearch from "../TrackSearch/TrackSearch.jsx";
 import Login from "../../Auth/Login/Login.jsx";
-import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
+import { useLocalizationContext } from "../../../contexts/LocalizationContext.jsx";
 import Logout from "../../Auth/Logout/Logout.jsx";
-import {useAuthUserContext} from "../../../contexts/AuthUserContext.jsx";
+import { useAuthUserContext } from "../../../contexts/AuthUserContext.jsx";
 import { useLocation } from "react-router-dom";
-import {PATHS} from "../../../config/paths.js";
+import { PATHS } from "../../../config/paths.js";
 
 export default function Navbar() {
-    const {user} = useAuthUserContext()
-    const [showDropdown, setShowDropdown] = useState(false)
-    const [isSearchFocused, setIsSearchFocused] = useState(false)
-    const [searchQuery, setSearchQuery] = useState("") 
-    const [isAuthOpen, setIsAuthOpen] = useState(false)
-    const dropdownRef = useRef(null)
-    const inputRef = useRef(null)
+    const { user } = useAuthUserContext();
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isAuthOpen, setIsAuthOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const inputRef = useRef(null);
     const location = useLocation();
     const isHomePage = location.pathname === PATHS.home;
 
-    const {t, language, changeLanguage} = useLocalizationContext()
+    const { t, language, changeLanguage } = useLocalizationContext();
+
+
+    const displayName = 
+        user?.user_metadata?.full_name || 
+        user?.user_metadata?.display_name || 
+        user?.email?.split('@')[0] || 
+        "User";
+    
+    const avatarUrl = user?.user_metadata?.avatar_url;
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            const inputEl = inputRef.current
-            if (inputEl && inputEl.contains(e.target)) return
+            const inputEl = inputRef.current;
+            if (inputEl && inputEl.contains(e.target)) return;
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setShowDropdown(false)
+                setShowDropdown(false);
             }
-    
             if (inputEl && !inputEl.contains(e.target)) {
-                setIsSearchFocused(false)
+                setIsSearchFocused(false);
             }
-        }
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [])
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
         <>
             <nav className="w-full bg-black/20 backdrop-blur-xl px-4 lg:px-8 py-4 flex items-center justify-between
                 sticky top-0 z-50 border-b border-purple-500/10 shadow-2xl">
                 
+                {/* Logo Section */}
                 <div className="flex items-center gap-3 group cursor-pointer">
                     <div className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center
                         shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:rotate-12 transition-transform duration-300
@@ -60,6 +69,7 @@ export default function Navbar() {
                     </div>
                 </div>
 
+                {/* Search Section */}
                 {!isHomePage && (
                     <div className={`flex items-center gap-6 lg:gap-8 transition-all duration-500`}>
                         <div className="relative group" ref={inputRef}>
@@ -94,6 +104,7 @@ export default function Navbar() {
                     </div>
                 )}
 
+                
                 <div className="flex items-center gap-5">
                     <div className="relative" ref={dropdownRef}>
                         {user ? (
@@ -104,16 +115,20 @@ export default function Navbar() {
                                     lg:pr-5 rounded-full border border-purple-500/20 transition-all group"
                                 >
                                     <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center
-                                            justify-center font-black text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]
-                                            group-hover:scale-105 transition-transform duration-300 border
-                                            border-purple-400/30">
-                                        {user.name?.charAt(0) || 'U'}
+                                        justify-center font-black text-white shadow-[0_0_10px_rgba(168,85,247,0.3)]
+                                        group-hover:scale-105 transition-transform duration-300 border
+                                        border-purple-400/30 overflow-hidden">
+                                        {avatarUrl ? (
+                                            <img src={avatarUrl} alt="profile" className="w-full h-full object-cover" />
+                                        ) : (
+                                            displayName.charAt(0).toUpperCase()
+                                        )}
                                     </div>
                                     <div className="text-left hidden md:block">
                                         <p className="text-[9px] text-purple-400 font-black uppercase tracking-[0.2em]
                                             leading-none mb-1">PRO_DATA</p>
                                         <p className="text-sm font-black text-white leading-none uppercase
-                                            tracking-tight">{user.name}</p>
+                                            tracking-tight">{displayName}</p>
                                     </div>
                                 </button>
 
@@ -126,12 +141,16 @@ export default function Navbar() {
                                             <div className="flex items-center gap-4 mb-1">
                                                 <div className="w-12 h-12 rounded-2xl bg-purple-600 flex items-center
                                                     justify-center text-xl font-black text-white
-                                                    shadow-[0_0_15px_rgba(168,85,247,0.4)] border border-purple-400/30">
-                                                    {user.name?.charAt(0)}
+                                                    shadow-[0_0_15px_rgba(168,85,247,0.4)] border border-purple-400/30 overflow-hidden">
+                                                    {avatarUrl ? (
+                                                        <img src={avatarUrl} alt="profile" className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        displayName.charAt(0).toUpperCase()
+                                                    )}
                                                 </div>
                                                 <div className="min-w-0">
                                                     <p className="text-sm font-black text-white truncate uppercase tracking-tight italic">
-                                                        {user.name}
+                                                        {displayName}
                                                     </p>
                                                     <p className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">
                                                         {t.premiumMember}
@@ -187,16 +206,12 @@ export default function Navbar() {
                                                 onClick={() => changeLanguage('EN')}
                                                 className={`flex-1 py-1 rounded-lg text-[9px] font-black transition-all 
                                                 ${language === 'EN' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"}`}
-                                            >
-                                                EN
-                                            </button>
+                                            >EN</button>
                                             <button
                                                 onClick={() => changeLanguage('BG')}
                                                 className={`flex-1 py-1 rounded-lg text-[9px] font-black transition-all 
                                                 ${language === 'BG' ? "bg-purple-600 text-white shadow-lg" : "text-gray-500 hover:text-white"}`}
-                                            >
-                                                BG
-                                            </button>
+                                            >BG</button>
                                         </div>
                                     </div>
                                 )}
@@ -212,17 +227,16 @@ export default function Navbar() {
                 </div>
             </nav>
 
-         
             <div className={isHomePage ? "hidden" : "block"}>
                 <TrackSearch 
                     isSearchFocused={isSearchFocused} 
                     setIsSearchFocused={setIsSearchFocused}
-                     searchQuery={searchQuery} 
+                    searchQuery={searchQuery} 
                     setSearchQuery={setSearchQuery}
                 />
             </div>
 
             <Login isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
         </>
-    )
+    );
 }
