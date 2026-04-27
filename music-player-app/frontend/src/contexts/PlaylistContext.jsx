@@ -5,26 +5,24 @@ import { getUserPlaylists, updatePlaylist as updatePlaylistService } from "../se
 import { usePlayerContext } from "./PlayerContext.jsx";
 import { supabase } from "../supabaseClient.js"; 
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const PlaylistContext = createContext({})
-
-// eslint-disable-next-line react-refresh/only-export-components
 export const usePlaylistContext = () => useContext(PlaylistContext)
 
 export function PlaylistProvider({ children }) {
     const { selectedPlaylist, setSelectedPlaylist } = usePlayerContext()
     const { user } = useAuthUserContext()
+    
+    
     const [playlists, setPlaylists] = useLocalStorageState('playlists', [])
 
-    const setPlaylistLogView = async (playlistId) => {
+    const logPlaylistView = async (playlistId) => {
         if (!user || !playlistId) return;
 
         const today = new Date().toISOString().split('T')[0];
         const storageKey = `logged_playlists_${user.id}`;
-
+        
         const localLogs = JSON.parse(localStorage.getItem(storageKey) || "{}");
         if (localLogs[playlistId] === today) {
-            console.log("Вече е логнато локално за днес.");
             return;
         }
 
@@ -40,9 +38,6 @@ export function PlaylistProvider({ children }) {
             if (!error) {
                 localLogs[playlistId] = today;
                 localStorage.setItem(storageKey, JSON.stringify(localLogs));
-                console.log(`Logged visit for playlist ${playlistId}`);
-            } else {
-                console.error("Supabase error:", error.message);
             }
         } catch (err) {
             console.error("Грешка при логване на плейлист:", err);
@@ -50,16 +45,22 @@ export function PlaylistProvider({ children }) {
     };
 
     const setPlaylistData = () => {
-        if (!user) return Promise.resolve()
+        if (!user) return Promise.resolve([])
 
         return getUserPlaylists(user.id).then(data => {
-            setPlaylists(data)
+            
+            const safeData = data || [];
+            setPlaylists(safeData)
+            
             if (selectedPlaylist) {
-                const updated = data.find(p => p.id === selectedPlaylist.id);
+                const updated = safeData.find(p => p.id === selectedPlaylist.id);
                 if (updated) setSelectedPlaylist(updated)
             }
-            return data;
-        }).catch(err => console.error("Грешка при зареждане на плейлисти:", err))
+            return safeData;
+        }).catch(err => {
+            console.error("Грешка при зареждане на плейлисти:", err);
+            return [];
+        })
     };
 
     const updatePlaylist = async (id, updatedData) => {
@@ -79,7 +80,8 @@ export function PlaylistProvider({ children }) {
     }, [user, selectedPlaylist])
 
     useEffect(() => {
-        if (user && !playlists.length) {
+        
+        if (user && playlists?.length === 0) {
             setPlaylistData()
         }
     }, [user])
@@ -89,11 +91,11 @@ export function PlaylistProvider({ children }) {
     return (
         <PlaylistContext.Provider
             value={{
-                playlists,
+                playlists: playlists || [], 
                 playlistsReload,
                 setPlaylists,
                 updatePlaylist,
-                setPlaylistLogView
+                logPlaylistView 
             }}
         >
             {children}

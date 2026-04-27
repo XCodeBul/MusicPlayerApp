@@ -1,30 +1,53 @@
+import { useEffect } from 'react';
 import DeletePlaylist from "../DeletePlaylist/DeletePlaylist.jsx";
-import {usePlaylistContext} from "../../../../contexts/PlaylistContext.jsx";
+import { usePlaylistContext } from "../../../../contexts/PlaylistContext.jsx";
 
-const PlaylistManageTooltip = ({tooltip, setTooltip}) => {
-    const {updatePlaylist} = usePlaylistContext()
+const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
+    const { updatePlaylist } = usePlaylistContext();
+
+   
+    useEffect(() => {
+        if (!tooltip) return;
+
+        const handleGlobalMouseMove = (e) => {
+            const distance = Math.sqrt(
+                Math.pow(e.clientX - tooltip.x, 2) + 
+                Math.pow(e.clientY - tooltip.y, 2)
+            );
+            
+            
+            if (distance > 150) {
+                setTooltip(null);
+            }
+        };
+
+        window.addEventListener('mousemove', handleGlobalMouseMove);
+        return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
+    }, [tooltip, setTooltip]);
 
     const handleOnChangeImageInput = (e) => {
-        const file = e.target.files?.[0]
+        const file = e.target.files?.[0];
         if (file) {
-            const reader = new FileReader()
+            const reader = new FileReader();
             reader.onload = async () => {
-                const base64Image = reader.result
+                const base64Image = reader.result;
                 try {
                     await updatePlaylist(tooltip.id, {
                         ...tooltip,
                         cover_url: base64Image
-                    })
-                    setTooltip(null)
+                    });
+                    setTooltip(null);
                 } catch (error) {
-                    console.error("Failed to update cover:", error)
+                    console.error("Failed to update cover:", error);
                 }
-            }
-            reader.readAsDataURL(file)
+            };
+            reader.readAsDataURL(file);
         }
-    }
+    };
 
-    return tooltip && (
+    if (!tooltip) return null;
+
+    return (
         <div
             className="fixed z-[100000]
                 bg-white/[0.03] backdrop-blur-2xl
@@ -33,12 +56,11 @@ const PlaylistManageTooltip = ({tooltip, setTooltip}) => {
                 shadow-[0_20px_50px_rgba(0,0,0,0.4),0_0_20px_rgba(168,85,247,0.1)]
                 -translate-y-1/2 flex flex-col gap-3
                 animate-in fade-in zoom-in-95 slide-in-from-left-4 duration-300"
-            style={{left: tooltip.x, top: tooltip.y}}
+            style={{ left: tooltip.x, top: tooltip.y }}
             onMouseLeave={() => setTooltip(null)}
         >
             <div className="flex flex-col px-1">
-                <span
-                    className="text-[8px] text-purple-400 font-black uppercase tracking-[0.4em] mb-1 opacity-70">
+                <span className="text-[8px] text-purple-400 font-black uppercase tracking-[0.4em] mb-1 opacity-70">
                     Playlist
                 </span>
                 <span className="text-white text-[13px] font-semibold tracking-tight whitespace-nowrap">
@@ -48,7 +70,7 @@ const PlaylistManageTooltip = ({tooltip, setTooltip}) => {
 
             <div className="flex items-center gap-2 mt-1 pt-3 border-t border-white/5">
                 <div className="hover:scale-105 transition-transform active:scale-95">
-                    <DeletePlaylist playlist={tooltip}/>
+                    <DeletePlaylist playlist={tooltip} />
                 </div>
                 <label
                     htmlFor={`edit-cover-${tooltip.id}`}
@@ -77,9 +99,9 @@ const PlaylistManageTooltip = ({tooltip, setTooltip}) => {
                     />
                 </label>
             </div>
-            <div className="absolute top-0 right-0 w-12 h-12 bg-purple-500/10 blur-[20px] rounded-full -z-10"/>
+            <div className="absolute top-0 right-0 w-12 h-12 bg-purple-500/10 blur-[20px] rounded-full -z-10" />
         </div>
-    )
-}
+    );
+};
 
-export default PlaylistManageTooltip
+export default PlaylistManageTooltip;

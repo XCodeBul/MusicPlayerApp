@@ -11,7 +11,7 @@ const TrackSearch = ({ isSearchFocused, setIsSearchFocused, searchQuery, setSear
 
     const searchPanelRef = useRef(null);
 
-    // Търсене с Debounce и AbortController
+    
     useEffect(() => {
         const controller = new AbortController();
         if (!searchQuery || !searchQuery.trim()) {
@@ -35,16 +35,16 @@ const TrackSearch = ({ isSearchFocused, setIsSearchFocused, searchQuery, setSear
         };
     }, [searchQuery]);
 
-    // Ако търсачката не е на фокус, не рендираме нищо
+    
     if (!isSearchFocused) return null;
 
     return (
         <div 
             className="fixed inset-0 z-[999999] flex justify-center items-start pt-28"
-            // Спираме кликовете от тук нагоре към Navbar/App
+           
             onClick={(e) => e.stopPropagation()} 
         >
-            {/* 1. Backdrop (Фонът) - само той затваря при клик */}
+          
             <div
                 className="absolute inset-0 bg-black/40 backdrop-blur-sm -z-10"
                 onMouseDown={(e) => {
@@ -53,15 +53,15 @@ const TrackSearch = ({ isSearchFocused, setIsSearchFocused, searchQuery, setSear
                 }}
             />
 
-            {/* 2. Самият панел на търсачката */}
+          
             <div
                 ref={searchPanelRef}
-                onMouseDown={(e) => e.stopPropagation()} // Важно: клик вътре в панела не затваря
+                onMouseDown={(e) => e.stopPropagation()} 
                 className="lg:w-full w-[90%] max-w-2xl bg-gray-900/95 backdrop-blur-3xl 
                            rounded-3xl shadow-2xl border border-gray-700/50 
                            overflow-hidden animate-in slide-in-from-top-4 duration-300"
             >
-                {/* Header с Input */}
+             
                 <div className="flex items-center gap-4 px-8 py-6 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-b border-gray-700/50">
                     <input
                         type="text"
@@ -85,7 +85,7 @@ const TrackSearch = ({ isSearchFocused, setIsSearchFocused, searchQuery, setSear
                     )}
                 </div>
 
-                {/* Резултати */}
+        
                 <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
                     {searchLoading ? (
                         <div className="py-20 text-center">
