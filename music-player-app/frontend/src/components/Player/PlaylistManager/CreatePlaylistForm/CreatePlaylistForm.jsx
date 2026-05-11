@@ -51,7 +51,7 @@ const CreatePlaylistForm = ({isCreateModalOpen, setIsCreateModalOpen}) => {
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder={language === 'BG' ? "Въведи име..." : "Enter name..."}
+                            placeholder={t.playlistPlaceholder}
                             className="w-full bg-white/5 border border-purple-500/20 rounded-2xl px-5 py-4 text-white outline-none focus:border-purple-500 focus:bg-white/10 transition-all mb-8 placeholder-gray-600"
                             autoFocus
                             onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
@@ -63,14 +63,14 @@ const CreatePlaylistForm = ({isCreateModalOpen, setIsCreateModalOpen}) => {
                                 onClick={handleOnClose}
                                 className="flex-1 px-4 py-4 rounded-2xl bg-white/5 text-gray-500 hover:text-white hover:bg-white/10 transition-all uppercase text-[10px] font-black tracking-widest"
                             >
-                                {language === 'BG' ? "Отказ" : "Cancel"}
+                                {t.cancelBtn}
                             </button>
                             
                             <button
                                 onClick={handleCreate}
                                 className="flex-1 px-4 py-4 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white transition-all uppercase text-[10px] font-black tracking-widest shadow-lg shadow-purple-500/20"
                             >
-                                {language === 'BG' ? "Потвърди" : "Confirm"}
+                                {t.confirmBtn}
                             </button>
                         </div>
                     </div>

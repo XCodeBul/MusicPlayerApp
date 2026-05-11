@@ -31,12 +31,12 @@ export default function Login({ isOpen, onClose }) {
     const handleEmailAuth = async () => {
         // Базова валидация
         if (!email || !password) {
-            alert(language === 'BG' ? "Моля, попълнете всички полета!" : "Please fill all fields!");
+            alert(t.fillFieldsError);
             return;
         }
 
         if (!isLogin && password !== confirmPassword) {
-            alert(language === 'BG' ? "Паролите не съвпадат!" : "Passwords do not match!");
+            alert(t.passMismatchError);
             return;
         }
 
@@ -52,9 +52,7 @@ export default function Login({ isOpen, onClose }) {
                 
                 // Ако в Supabase е включено потвърждение по имейл
                 if (!userData) {
-                    alert(language === 'BG' 
-                        ? "Проверете имейла си за потвърждение!" 
-                        : "Please check your email for a confirmation link!");
+                    alert(t.checkEmailAlert);
                 }
             }
 
@@ -136,7 +134,7 @@ export default function Login({ isOpen, onClose }) {
                                 type="password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                placeholder={language === 'BG' ? "Потвърди парола" : "Confirm Password"}
+                                placeholder={t.confirmPassPlaceholder}
                                 className="w-full bg-white/5 border border-purple-500/10 rounded-2xl px-6 py-4 text-white
                                     outline-none focus:bg-purple-900/10 focus:border-purple-500/50 transition-all
                                     duration-300 placeholder-purple-900 font-mono text-sm"
@@ -152,7 +150,7 @@ export default function Login({ isOpen, onClose }) {
                             transition-all active:scale-95 uppercase text-xs tracking-[0.3em] disabled:opacity-50"
                     >
                         {loading ? (
-                            <span className="animate-pulse">Processing...</span>
+                            <span className="animate-pulse">{t.processing}</span>
                         ) : (
                             isLogin ? t.executeEntry : t.finalizeConfig
                         )}

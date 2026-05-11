@@ -27,7 +27,7 @@ export default function Navbar() {
         user?.user_metadata?.full_name || 
         user?.user_metadata?.display_name || 
         user?.email?.split('@')[0] || 
-        "User";
+        t.guestUser;
     
     const avatarUrl = 
     user?.user_metadata?.avatar_url || 
@@ -180,7 +180,7 @@ export default function Navbar() {
                                             {/* Превключвател за езика на интерфейса */}
                                             <div className="w-full flex flex-col gap-2 px-4 py-3 rounded-[1.8rem] bg-purple-500/5 border border-purple-500/10">
                                                 <p className="text-[9px] font-black text-purple-400/60 uppercase tracking-[0.2em] ml-1">
-                                                    {language === 'EN' ? 'System Language' : 'Системен език'}
+                                                    {t.systemLanguage}
                                                 </p>
                                                 <div className="flex bg-black/40 p-1 rounded-xl border border-white/5">
                                                     <button

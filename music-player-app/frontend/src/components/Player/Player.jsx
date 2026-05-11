@@ -162,10 +162,10 @@ const Player = () => {
                                         <div className="flex flex-col items-center gap-2">
                                             <p className="text-purple-500/40 text-[10px] font-black uppercase
                                                 tracking-[0.4em]">
-                                                {language === 'EN' ? 'System Standby' : 'Системен режим на готовност'}
+                                               {t.systemStandby}
                                             </p>
                                             <p className="text-gray-600 font-bold tracking-widest text-xs">
-                                                {language === 'EN' ? 'Lyrics Off-line' : 'Текстовете са офлайн'}
+                                                {t.lyricsOffline}
                                             </p>
                                         </div>
                                     </div>

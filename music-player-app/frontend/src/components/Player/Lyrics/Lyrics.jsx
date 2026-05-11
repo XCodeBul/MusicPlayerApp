@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from "react";
 import {getLyrics} from "../../../services/playlist.js";
+import { useLocalizationContext } from "../../../contexts/LocalizationContext.jsx"; 
 
 const Lyrics = ({currentSong}) => {
+    const { t } = useLocalizationContext();
     const [lyrics, setLyrics] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -10,10 +12,10 @@ const Lyrics = ({currentSong}) => {
     useEffect(() => {
         if (!currentSong?.title) return
         setLoading(true)
-        getLyrics(currentSong).then(data => setLyrics(data.lyrics || 'Lyrics not available'))
-            .catch(() => setLyrics("Could not load lyrics."))
+        getLyrics(currentSong).then(data => setLyrics(data.lyrics || t.lyricsNotAvailable))
+            .catch(() => setLyrics(t.lyricsLoadError))
             .finally(() => setLoading(false))
-    }, [currentSong])
+    }, [currentSong,t])
 
     // Превръщаме дългия текст в масив от отделни редове за по-красиво рендиране.
     const lines = lyrics ? lyrics.split('\n').filter(line => line.trim() !== "") : []
@@ -23,8 +25,8 @@ const Lyrics = ({currentSong}) => {
         return (
             <div
                 className="flex-1 flex items-center justify-center bg-gray-900/40 backdrop-blur-xl rounded-[2.5rem] border border-purple-500/20">
-                <p className="text-purple-500 font-black uppercase tracking-[0.4em] text-[10px] animate-pulse">Loading
-                    Transcript...</p>
+                <p className="text-purple-500 font-black uppercase tracking-[0.4em] text-[10px] animate-pulse">
+                   {t.loadingTranscript}</p>
             </div>
         )
     }
@@ -40,11 +42,11 @@ const Lyrics = ({currentSong}) => {
                         {currentSong?.title}
                     </h2>
                     <span className="text-sm font-bold text-purple-500/80 italic">
-                        by {currentSong?.artist}
+                        {t.byArtist} {currentSong?.artist}
                     </span>
                 </div>
                 <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">
-                    Lyrics
+                    {t.lyrics}
                 </span>
             </div>
 
@@ -64,7 +66,7 @@ const Lyrics = ({currentSong}) => {
                     ) : (
                         /* СЪОБЩЕНИЕ АКО НЯМА ТЕКСТ */
                         <div className="h-full flex items-center justify-center opacity-20">
-                            <p className="uppercase tracking-widest text-xs font-bold">No Data Available</p>
+                            <p className="uppercase tracking-widest text-xs font-bold">{t.noLyricsData}</p>
                         </div>
                     )}
                 </div>

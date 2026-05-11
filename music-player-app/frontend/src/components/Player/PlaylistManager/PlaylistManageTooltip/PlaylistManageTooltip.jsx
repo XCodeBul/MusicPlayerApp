@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import DeletePlaylist from "../DeletePlaylist/DeletePlaylist.jsx";
 import { usePlaylistContext } from "../../../../contexts/PlaylistContext.jsx";
+import { useLocalizationContext } from "../../../../contexts/LocalizationContext.jsx";
 
 const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
     const { updatePlaylist } = usePlaylistContext();
     const [isSelectingFile, setIsSelectingFile] = useState(false);
+    const { t } = useLocalizationContext();
 
     // ЕФЕКТ ЗА АВТОМАТИЧНО ЗАТВАРЯНЕ:
     // Използваме малко по-голям толеранс (250px), за да не е толкова чувствителен при кликване
@@ -68,7 +70,7 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
             {/* Информация за плейлиста */}
             <div className="flex flex-col px-1">
                 <span className="text-[8px] text-purple-400 font-black uppercase tracking-[0.4em] mb-1 opacity-70">
-                    Playlist
+                    {t.playlistType}
                 </span>
                 <span className="text-white text-[13px] font-semibold tracking-tight whitespace-nowrap">
                     {tooltip.name}
