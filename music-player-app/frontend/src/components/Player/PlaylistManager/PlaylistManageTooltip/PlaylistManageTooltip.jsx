@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DeletePlaylist from "../DeletePlaylist/DeletePlaylist.jsx";
 import { usePlaylistContext } from "../../../../contexts/PlaylistContext.jsx";
 
 const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
     const { updatePlaylist } = usePlaylistContext();
+    const [isSelectingFile, setIsSelectingFile] = useState(false);
 
     // ЕФЕКТ ЗА АВТОМАТИЧНО ЗАТВАРЯНЕ:
-    // Следи движението на мишката. Ако потребителят се отдалечи на повече от 150px от тултипа, той се затваря сам.
+    // Използваме малко по-голям толеранс (250px), за да не е толкова чувствителен при кликване
     useEffect(() => {
-        if (!tooltip) return;
+        if (!tooltip || isSelectingFile) return;
 
         const handleGlobalMouseMove = (e) => {
             const distance = Math.sqrt(
@@ -16,17 +17,16 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                 Math.pow(e.clientY - tooltip.y, 2)
             );
             
-            if (distance > 150) {
+            if (distance > 250) {
                 setTooltip(null);
             }
         };
 
         window.addEventListener('mousemove', handleGlobalMouseMove);
         return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
-    }, [tooltip, setTooltip]);
+    }, [tooltip, setTooltip, isSelectingFile]);
 
     // СМЯНА НА ОБЛОЖКАТА (Base64):
-    // Чете избрания файл, превръща го в Base64 стринг и обновява плейлиста в базата данни.
     const handleOnChangeImageInput = (e) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -38,12 +38,15 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                         ...tooltip,
                         cover_url: base64Image
                     });
-                    setTooltip(null); // Затваряме тултипа след успешен ъпдейт
+                    setTooltip(null);
                 } catch (error) {
                     console.error("Failed to update cover:", error);
+                    setIsSelectingFile(false);
                 }
             };
             reader.readAsDataURL(file);
+        } else {
+            setIsSelectingFile(false);
         }
     };
 
@@ -59,7 +62,8 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                 -translate-y-1/2 flex flex-col gap-3
                 animate-in fade-in zoom-in-95 slide-in-from-left-4 duration-300"
             style={{ left: tooltip.x, top: tooltip.y }}
-            onMouseLeave={() => setTooltip(null)}
+            // Спираме затварянето, ако мишката е вътре в тултипа
+            onMouseMove={(e) => e.stopPropagation()}
         >
             {/* Информация за плейлиста */}
             <div className="flex flex-col px-1">
@@ -73,14 +77,14 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
 
             {/* Контролен панел */}
             <div className="flex items-center gap-2 mt-1 pt-3 border-t border-white/5">
-                {/* Бутон за изтриване */}
                 <div className="hover:scale-105 transition-transform active:scale-95">
                     <DeletePlaylist playlist={tooltip} />
                 </div>
 
-                {/* Бутон за смяна на снимка (скрит input с label) */}
                 <label
                     htmlFor={`edit-cover-${tooltip.id}`}
+                    // Използваме onMouseDown, за да "заключим" състоянието преди кликът да е приключил
+                    onMouseDown={() => setIsSelectingFile(true)}
                     className="flex items-center justify-center w-9 h-9
                         bg-white/5 border border-white/10
                         rounded-xl cursor-pointer transition-all
@@ -107,7 +111,6 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                 </label>
             </div>
             
-            {/* Декоративно сияние зад тултипа */}
             <div className="absolute top-0 right-0 w-12 h-12 bg-purple-500/10 blur-[20px] rounded-full -z-10" />
         </div>
     );

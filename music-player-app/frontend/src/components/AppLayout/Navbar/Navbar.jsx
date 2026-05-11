@@ -29,7 +29,10 @@ export default function Navbar() {
         user?.email?.split('@')[0] || 
         "User";
     
-    const avatarUrl = user?.user_metadata?.avatar_url;
+    const avatarUrl = 
+    user?.user_metadata?.avatar_url || 
+    user?.user_metadata?.picture || // Google често използва 'picture'
+    user?.user_metadata?.avatar;    // Други доставчици ползват 'avatar'
 
     // СЕКЦИЯ: ИНТЕЛИГЕНТНО ЗАТВАРЯНЕ (Click Outside)
     // Тази част следи дали потребителят кликва извън търсачката или менюто, 
@@ -130,7 +133,7 @@ export default function Navbar() {
                                         group-hover:scale-105 transition-transform duration-300 border
                                         border-purple-400/30 overflow-hidden">
                                         {avatarUrl ? (
-                                            <img src={avatarUrl} alt="profile" className="w-full h-full object-cover" />
+                                            <img src={avatarUrl} alt="profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                                         ) : (
                                             displayName.charAt(0).toUpperCase()
                                         )}
