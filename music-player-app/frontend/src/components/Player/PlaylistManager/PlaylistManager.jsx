@@ -53,7 +53,6 @@ const PlaylistManager = () => {
                                     });
                                 }}
                             >
-                                
                                 {/* Пулсиращо сияние зад активния плейлист */}
                                 {isActive && (
                                     <div className="absolute -inset-1.5 bg-purple-500/30 blur-md rounded-2xl animate-pulse" />
