@@ -12,6 +12,7 @@ const TrackQueue = () => {
 
     return (
         <>
+            {/* ЗАГЛАВНА ЧАСТ: Показва името на плейлиста и броя на песните */}
             <div className="mb-2 lg:mb-8 py-3 md:py-0 flex items-center justify-between shrink-0">
                 <h3 className="text-lg md:text-2xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
                     <span className="text-purple-500 opacity-50">#</span>
@@ -22,6 +23,7 @@ const TrackQueue = () => {
                 </span>
             </div>
 
+            {/* СПИСЪК С ПЕСНИ (Scrollable area) */}
             <div className={'h-[270px] overflow-y-auto custom-scrollbar'}>
                 {selectedPlaylist && selectedPlaylist.songs.length > 0 ? (
                     <ul className="space-y-3 pr-1 lg:pr-2">
@@ -29,13 +31,13 @@ const TrackQueue = () => {
                             <li
                                 key={song.id}
                                 onClick={() => playSong(song)}
-                        
                                 className={`flex items-center gap-5 p-4 rounded-2xl cursor-pointer transition-all duration-300 group relative border ${
                                     currentSong?.id === song.id
                                         ? "bg-purple-600/20 border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.15)]"
                                         : "bg-white/5 border-transparent hover:bg-white/10 hover:border-purple-500/10"
                                 }`}
                             >
+                                {/* ОБЛОЖКА: Показва снимка или генерирана иконка */}
                                 <div className="relative">
                                     {song.albumArt ? (
                                         <img src={song.albumArt}
@@ -49,6 +51,7 @@ const TrackQueue = () => {
                                     )}
                                 </div>
 
+                                {/* ИНФОРМАЦИЯ: Име и изпълнител */}
                                 <div className="flex-1 min-w-0">
                                     <p className={`font-bold truncate transition-colors ${
                                         currentSong?.id === song.id ? "text-purple-300" : "text-gray-200 group-hover:text-purple-400"
@@ -58,35 +61,37 @@ const TrackQueue = () => {
                                     <p className="text-sm text-gray-500 font-medium truncate italic">{song.artist}</p>
                                 </div>
 
+                                {/* ИНТЕРАКТИВНИ ЕЛЕМЕНТИ (Анимация и бутон за изтриване) */}
                                 <div className="flex items-center gap-3">
+                                    {/* Анимиран "Audio Visualizer" – появява се само на активната песен */}
+                                    {currentSong?.id === song.id && (
+                                        <div className="flex gap-[2px] items-end h-3 mr-2">
+                                            <div className="w-[2px] bg-purple-500 animate-[bounce_1s_infinite_0.1s] h-full"></div>
+                                            <div className="w-[2px] bg-purple-500 animate-[bounce_1.2s_infinite_0.3s] h-2/3"></div>
+                                            <div className="w-[2px] bg-purple-500 animate-[bounce_0.8s_infinite_0.2s] h-1/2"></div>
+                                        </div>
+                                    )}
 
-    {currentSong?.id === song.id && (
-        <div className="flex gap-[2px] items-end h-3 mr-2">
-            <div className="w-[2px] bg-purple-500 animate-[bounce_1s_infinite_0.1s] h-full"></div>
-            <div className="w-[2px] bg-purple-500 animate-[bounce_1.2s_infinite_0.3s] h-2/3"></div>
-            <div className="w-[2px] bg-purple-500 animate-[bounce_0.8s_infinite_0.2s] h-1/2"></div>
-        </div>
-    )}
+                                    {/* Бутон за премахване от плейлиста */}
+                                    <button 
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Спираме пускането на песента при натискане на X
+                                            removeSongFromPlaylist(song.id);
+                                        }}
+                                        className="opacity-100 lg:opacity-0 group-hover:opacity-100 p-1.5 bg-red-500/10 lg:bg-transparent hover:bg-red-500/20 text-red-500 lg:text-gray-500 lg:hover:text-red-500 rounded-lg transition-all duration-200 z-10"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
 
-
-    <button 
-        onClick={(e) => {
-            e.stopPropagation(); 
-            removeSongFromPlaylist(song.id);
-        }}
-        className="opacity-100 lg:opacity-0 group-hover:opacity-100 p-1.5 bg-red-500/10 lg:bg-transparent hover:bg-red-500/20 text-red-500 lg:text-gray-500 lg:hover:text-red-500 rounded-lg transition-all duration-200 z-10"
-    >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-    </button>
-
-    <span className="text-[10px] text-purple-400 font-black tracking-widest opacity-50 uppercase">30s</span>
-</div>
+                                    <span className="text-[10px] text-purple-400 font-black tracking-widest opacity-50 uppercase">30s</span>
+                                </div>
                             </li>
                         ))}
                     </ul>
                 ) : (
+                    /* ПРАЗНО СЪСТОЯНИЕ: Когато няма песни в плейлиста */
                     <div className="text-center py-6 xl:py-10 lg:py-24 flex flex-col items-center justify-center opacity-40">
                         <div className="w-16 h-16 rounded-full border border-purple-500/20 flex items-center justify-center mb-4">
                             <span className="text-2xl grayscale">🎶</span>
@@ -101,6 +106,7 @@ const TrackQueue = () => {
                 )}
             </div>
 
+            {/* Декоративна градиентна линия в края на списъка */}
             <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"/>
         </>
     )

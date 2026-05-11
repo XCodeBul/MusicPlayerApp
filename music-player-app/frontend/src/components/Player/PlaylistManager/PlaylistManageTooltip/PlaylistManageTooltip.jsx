@@ -5,7 +5,8 @@ import { usePlaylistContext } from "../../../../contexts/PlaylistContext.jsx";
 const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
     const { updatePlaylist } = usePlaylistContext();
 
-   
+    // ЕФЕКТ ЗА АВТОМАТИЧНО ЗАТВАРЯНЕ:
+    // Следи движението на мишката. Ако потребителят се отдалечи на повече от 150px от тултипа, той се затваря сам.
     useEffect(() => {
         if (!tooltip) return;
 
@@ -14,7 +15,6 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                 Math.pow(e.clientX - tooltip.x, 2) + 
                 Math.pow(e.clientY - tooltip.y, 2)
             );
-            
             
             if (distance > 150) {
                 setTooltip(null);
@@ -25,6 +25,8 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
         return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
     }, [tooltip, setTooltip]);
 
+    // СМЯНА НА ОБЛОЖКАТА (Base64):
+    // Чете избрания файл, превръща го в Base64 стринг и обновява плейлиста в базата данни.
     const handleOnChangeImageInput = (e) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -36,7 +38,7 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                         ...tooltip,
                         cover_url: base64Image
                     });
-                    setTooltip(null);
+                    setTooltip(null); // Затваряме тултипа след успешен ъпдейт
                 } catch (error) {
                     console.error("Failed to update cover:", error);
                 }
@@ -59,6 +61,7 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
             style={{ left: tooltip.x, top: tooltip.y }}
             onMouseLeave={() => setTooltip(null)}
         >
+            {/* Информация за плейлиста */}
             <div className="flex flex-col px-1">
                 <span className="text-[8px] text-purple-400 font-black uppercase tracking-[0.4em] mb-1 opacity-70">
                     Playlist
@@ -68,10 +71,14 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                 </span>
             </div>
 
+            {/* Контролен панел */}
             <div className="flex items-center gap-2 mt-1 pt-3 border-t border-white/5">
+                {/* Бутон за изтриване */}
                 <div className="hover:scale-105 transition-transform active:scale-95">
                     <DeletePlaylist playlist={tooltip} />
                 </div>
+
+                {/* Бутон за смяна на снимка (скрит input с label) */}
                 <label
                     htmlFor={`edit-cover-${tooltip.id}`}
                     className="flex items-center justify-center w-9 h-9
@@ -99,6 +106,8 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
                     />
                 </label>
             </div>
+            
+            {/* Декоративно сияние зад тултипа */}
             <div className="absolute top-0 right-0 w-12 h-12 bg-purple-500/10 blur-[20px] rounded-full -z-10" />
         </div>
     );

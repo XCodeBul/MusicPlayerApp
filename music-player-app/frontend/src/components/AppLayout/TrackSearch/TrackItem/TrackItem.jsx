@@ -1,11 +1,13 @@
-import { useState } from 'react'; // Добави useState
+import { useState } from 'react'; 
 import { updateSongList } from "../../../../services/playlist.js";
 import { usePlaylistContext } from "../../../../contexts/PlaylistContext.jsx";
 
 const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker }) => {
     const { playlistsReload, playlists } = usePlaylistContext();
-    const [notification, setNotification] = useState(null); // Стейт за известието
+    const [notification, setNotification] = useState(null); 
 
+    // СЕКЦИЯ: ЛОГИКА ЗА ДОБАВЯНЕ В ПЛЕЙЛИСТ
+    // Подготвя обекта на песента и го изпраща към сървъра, след което показва потвърждение.
     const handleAddToPlaylist = async (track, playlistId) => {
         if (!track.preview_url) {
             alert(`"${track.name}" by ${track.artists[0].name} has no preview available`);
@@ -29,13 +31,13 @@ const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker })
             await updateSongList(playlistId, updatedSongs);
             playlistsReload();
             
-            // Показваме нотификацията
+            // Активира малкото съобщение (Toast) за успешно добавяне
             setNotification({
                 trackName: track.name,
                 playlistName: targetPlaylist.name
             });
 
-            // Скриваме я след 3 секунди
+            // Автоматично скрива съобщението след 3 секунди
             setTimeout(() => setNotification(null), 3000);
         } catch (error) {
             console.error("Failed to add song:", error);
@@ -44,6 +46,8 @@ const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker })
         setShowPlaylistPicker(null);
     };
 
+    // СЕКЦИЯ: ПОМОЩНА ФУНКЦИЯ ЗА ВРЕМЕ
+    // Превръща милисекундите от Spotify API във формат Минути:Секунди.
     const formatDuration = (ms) => {
         const mins = Math.floor(ms / 60000);
         const secs = ((ms % 60000) / 1000).toFixed(0).padStart(2, "0");
@@ -53,7 +57,8 @@ const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker })
     return (
         <div className="p-4 space-y-2 relative">
             
-            {/* --- TOAST NOTIFICATION --- */}
+            {/* СЕКЦИЯ: ИЗВЕСТИЕ (TOAST) */}
+            {/* Визуален компонент, който изскача отдолу, за да потвърди действието на потребителя. */}
             {notification && (
                 <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[1000000] 
                                 bg-emerald-500/90 backdrop-blur-md px-6 py-3 rounded-2xl 
@@ -71,12 +76,14 @@ const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker })
                 </div>
             )}
 
+            {/* СЕКЦИЯ: СПИСЪК С РЕЗУЛТАТИ */}
+            {/* Обхожда намерените песни и ги рендира като картички с информация и бутон "Плюс". */}
             {searchResults.map(track => (
                 <div
                     key={track.id}
                     className="relative group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition-all duration-200 cursor-default"
                 >
-                    {/* Твоето съществуващо рендиране на песента... */}
+                    {/* Обложка на албума */}
                     {track.album.images[2]?.url ? (
                         <img src={track.album.images[2].url} alt=""
                              className="w-14 h-14 rounded-xl shadow-lg flex-shrink-0 object-cover"/>
@@ -86,6 +93,7 @@ const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker })
                         </div>
                     )}
 
+                    {/* Информация за песента (Заглавие и Изпълнител) */}
                     <div className="flex-1 min-w-0">
                         <p className="font-semibold text-white truncate">{track.name}</p>
                         <p className="text-sm text-gray-400 truncate">
@@ -95,6 +103,7 @@ const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker })
 
                     <span className="text-sm text-gray-500 px-3">{formatDuration(track.duration_ms)}</span>
 
+                    {/* Бутон за отваряне на списъка с плейлисти */}
                     <button
                         onMouseDown={(e) => {
                             e.stopPropagation();
@@ -108,7 +117,8 @@ const TrackItem = ({ searchResults, showPlaylistPicker, setShowPlaylistPicker })
                         <i className="fa fa-plus"/>
                     </button>
 
-                    {/* Playlist Picker UI */}
+                    {/* СЕКЦИЯ: ИЗБОР НА ПЛЕЙЛИСТ (PICKER) */}
+                    {/* Появява се при натискане на Плюс-а и показва всички плейлисти на потребителя. */}
                     {showPlaylistPicker === track.id && (
                         <div
                             onClick={(e) => e.stopPropagation()}

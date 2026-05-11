@@ -7,6 +7,8 @@ const TopHits = ({playTrack}) => {
     const home = t?.home
     const [popularTracks, setPopularTracks] = useState([])
 
+    // ЗАРЕЖДАНЕ НА КЛАСАЦИЯТА:
+    // Веднага щом страницата се отвори, взимаме най-популярните песни в момента.
     useEffect(() => {
         getTopTracks().then(data => setPopularTracks(data))
             .catch(err => console.log(err))
@@ -14,26 +16,33 @@ const TopHits = ({playTrack}) => {
 
     return (
         <div className="relative z-20 w-full max-w-7xl px-4 mt-10 md:mt-32 mb-10 md:mb-0">
+            {/* ЗАГЛАВИЕ: Показва "Топ Хитове" с превод */}
             <h2 className="text-2xl md:text-4xl font-black italic text-white uppercase tracking-tighter mb-12 border-b
                 border-white/5 pb-6">
                 {home.topHits}<span className="text-purple-500"> {home.topHitsSpan}</span>
             </h2>
+
+            {/* РЕШЕТКА С ПЕСНИ: 
+                Подреждаме песните в две колони на голям екран и в една колона на телефон. */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-4">
                 {popularTracks.map((track, index) => (
                     <div
                         key={`${track.id}-${index}`}
-                        onClick={() => playTrack([track])}
+                        onClick={() => playTrack([track])} // Пуска песента при клик
                         className="group flex items-center gap-4 p-2 rounded-2xl hover:bg-white/[0.03] transition-all
                             cursor-pointer border border-transparent hover:border-white/5"
                     >
+                        {/* НОМЕР В КЛАСАЦИЯТА: Добавя 0 отпред (01, 02 и т.н.) */}
                         <span className="text-gray-700 font-black italic text-sm w-6 group-hover:text-purple-500">
                           {(index + 1).toString().padStart(2, '0')}
                         </span>
 
+                        {/* ОБЛОЖКА НА АЛБУМА */}
                         <img src={track.album.cover_medium} alt=""
-                             className="w-14 h-14 rounded-lg object-cover shadow-lg group-hover:scale-105
+                               className="w-14 h-14 rounded-lg object-cover shadow-lg group-hover:scale-105
                                 transition-transform"/>
 
+                        {/* ИНФОРМАЦИЯ: Име на песента и изпълнител */}
                         <div className="flex-1 min-w-0">
                             <h3 className="text-white text-[14px] font-black uppercase italic truncate">
                                 {track.title}
@@ -43,6 +52,7 @@ const TopHits = ({playTrack}) => {
                             </p>
                         </div>
 
+                        {/* ВРЕМЕТРАЕНЕ: Превръща секунди в минути (напр. 3:45) */}
                         <div className="text-[10px] font-bold text-gray-600 tabular-nums">
                             {Math.floor(track.duration / 60)}:{(track.duration % 60).toString().padStart(2, '0')}
                         </div>

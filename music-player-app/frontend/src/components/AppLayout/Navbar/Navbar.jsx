@@ -20,7 +20,9 @@ export default function Navbar() {
 
     const { t, language, changeLanguage } = useLocalizationContext();
 
-
+    // СЕКЦИЯ: ИДЕНТИФИКАЦИЯ НА ПОТРЕБИТЕЛЯ
+    // Тук системата преценява кое име да покаже (от метаданни, имейл или "User"), 
+    // за да може интерфейсът да е персонализиран.
     const displayName = 
         user?.user_metadata?.full_name || 
         user?.user_metadata?.display_name || 
@@ -29,6 +31,9 @@ export default function Navbar() {
     
     const avatarUrl = user?.user_metadata?.avatar_url;
 
+    // СЕКЦИЯ: ИНТЕЛИГЕНТНО ЗАТВАРЯНЕ (Click Outside)
+    // Тази част следи дали потребителят кликва извън търсачката или менюто, 
+    // за да ги затвори автоматично и да "изчисти" екрана.
     useEffect(() => {
         const handleClickOutside = (e) => {
             const inputEl = inputRef.current;
@@ -49,7 +54,9 @@ export default function Navbar() {
             <nav className="w-full bg-black/20 backdrop-blur-xl px-4 lg:px-8 py-4 flex items-center justify-between
                 sticky top-0 z-50 border-b border-purple-500/10 shadow-2xl">
                 
-                {/* Logo Section */}
+                {/* СЕКЦИЯ: ЛОГО И БРАНДИНГ */}
+                {/* Показва името на приложението и слогана, като добавя лека анимация 
+                    на нотата при посочване с мишката. */}
                 <div className="flex items-center gap-3 group cursor-pointer">
                     <div className="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center
                         shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:rotate-12 transition-transform duration-300
@@ -69,7 +76,9 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Search Section */}
+                {/* СЕКЦИЯ: ИНТЕРАКТИВНО ТЪРСЕНЕ */}
+                {/* Тази лента се разширява автоматично (от 200px на 500px), когато потребителят 
+                    кликне в нея, за да е по-удобно писането на заглавия. */}
                 {!isHomePage && (
                     <div className={`flex items-center gap-6 lg:gap-8 transition-all duration-500`}>
                         <div className="relative group" ref={inputRef}>
@@ -104,11 +113,13 @@ export default function Navbar() {
                     </div>
                 )}
 
-                
                 <div className="flex items-center gap-5">
                     <div className="relative" ref={dropdownRef}>
                         {user ? (
                             <>
+                                {/* СЕКЦИЯ: ПРОФИЛЕН БУТОН */}
+                                {/* Показва аватара и името на логнатия потребител. При клик 
+                                    отваря разширеното меню с настройки. */}
                                 <button
                                     onClick={() => setShowDropdown(!showDropdown)}
                                     className="flex items-center gap-3 bg-purple-500/5 hover:bg-purple-500/10 p-1
@@ -133,6 +144,9 @@ export default function Navbar() {
                                 </button>
 
                                 {showDropdown && (
+                                    /* СЕКЦИЯ: ПАДАЩО МЕНЮ (Settings & Language) */
+                                    /* Тук са събрани опциите за смяна на език (BG/EN), 
+                                       теми (Appearance) и бутонът за излизане. */
                                     <div className="absolute right-0 mt-4 w-72 bg-gray-900/95 backdrop-blur-2xl
                                         rounded-[2.5rem] border border-purple-500/20
                                         shadow-[0_25px_70px_rgba(0,0,0,0.6)] overflow-hidden animate-in fade-in
@@ -160,6 +174,7 @@ export default function Navbar() {
                                         </div>
 
                                         <div className="p-3 space-y-2">
+                                            {/* Превключвател за езика на интерфейса */}
                                             <div className="w-full flex flex-col gap-2 px-4 py-3 rounded-[1.8rem] bg-purple-500/5 border border-purple-500/10">
                                                 <p className="text-[9px] font-black text-purple-400/60 uppercase tracking-[0.2em] ml-1">
                                                     {language === 'EN' ? 'System Language' : 'Системен език'}
@@ -176,28 +191,14 @@ export default function Navbar() {
                                                 </div>
                                             </div>
 
-                                            <button className="w-full group flex items-center gap-4 px-4 py-4 rounded-[1.8rem] text-gray-400 hover:text-white hover:bg-white/5 transition-all duration-300 text-left">
-                                                <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors border border-purple-500/10">
-                                                    <span className="text-lg">✨</span>
-                                                </div>
-                                                <div className="flex-1">
-                                                    <p className="text-xs font-black uppercase tracking-widest">{t.appearance}</p>
-                                                    <p className="text-[10px] text-gray-500">{t.changeTheme}</p>
-                                                </div>
-                                                <span className="text-[9px] bg-purple-500/20 text-purple-400 px-2 py-1 rounded-lg font-black tracking-tighter">SOON</span>
-                                            </button>
-                                            
                                             <Logout setShowDropdown={setShowDropdown}/>
-                                        </div>
-
-                                        <div className="px-6 py-4 bg-purple-900/20 flex justify-between items-center border-t border-purple-500/10">
-                                            <span className="text-[9px] font-bold text-purple-300/40 uppercase tracking-widest">MusicNote v1.0</span>
-                                            <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.8)]"/>
                                         </div>
                                     </div>
                                 )}
                             </>
                         ) : (
+                            /* СЕКЦИЯ: БУТОНИ ПРИ НЕЛОГНАТ ПОТРЕБИТЕЛ */
+                            /* Показва само бутона за вход (Login), за да подкани потребителя да се идентифицира. */
                             <div className="flex items-center gap-4">
                                 {isHomePage && (
                                     <div className="flex flex-col gap-1.5 p-2 rounded-2xl border border-purple-500/10">
@@ -227,6 +228,8 @@ export default function Navbar() {
                 </div>
             </nav>
 
+            {/* СЕКЦИЯ: РЕЗУЛТАТИ ОТ ТЪРСЕНЕТО */}
+            {/* Този компонент се активира под Navbar-а, когато потребителят започне да пише в търсачката. */}
             <div className={isHomePage ? "hidden" : "block"}>
                 <TrackSearch 
                     isSearchFocused={isSearchFocused} 
@@ -236,6 +239,7 @@ export default function Navbar() {
                 />
             </div>
 
+            {/* Модален прозорец за вход в системата */}
             <Login isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
         </>
     );

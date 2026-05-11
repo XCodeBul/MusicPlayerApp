@@ -5,6 +5,8 @@ const MusicPlayer = forwardRef(
     ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek}, ref) => {
         const {t} = useLocalizationContext()
 
+        // СИНХРОНИЗАЦИЯ НА PLAY/PAUSE:
+        // Използваме useEffect, за да кажем на браузъра кога да пусне или спре аудиото.
         useEffect(() => {
             if (!ref.current || !currentSong) return
             if (isPlaying) {
@@ -14,6 +16,8 @@ const MusicPlayer = forwardRef(
             }
         }, [isPlaying, currentSong, ref])
 
+        // СИНХРОНИЗАЦИЯ НА ПРОГРЕСА:
+        // Ако потребителят превърти песента ръчно, обновяваме времето на аудио обекта.
         useEffect(() => {
             if (ref.current && currentSong) {
                 if (Math.abs(ref.current.currentTime - progress) > 0.5) {
@@ -22,6 +26,8 @@ const MusicPlayer = forwardRef(
             }
         }, [progress, ref, currentSong])
 
+        // СЪСТОЯНИЕ "ПРАЗЕН ПЛЕЪР":
+        // Показва се, когато няма избрана песен.
         if (!currentSong)
             return (
                 <div className="bg-gray-900/40 h-[260px] lg:h-[334px] backdrop-blur-xl p-6 rounded-[2.5rem] border
@@ -36,11 +42,16 @@ const MusicPlayer = forwardRef(
                 </div>
             )
 
+        // АКТИВЕН ПЛЕЪР:
         return (
             <div className="bg-gray-900/40 backdrop-blur-xl p-6 rounded-[2.5rem] border border-purple-500/20 shadow-2xl
                 w-[96%] lg:w-[380px] flex flex-col text-center h-full relative overflow-hidden">
+                
+                {/* Декоративен светлинен ефект в ъгъла */}
                 <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-600/10 blur-[50px] pointer-events-none" />
+                
                 <div className="flex flex-col items-center gap-4 w-full relative z-10">
+                    {/* Обложка на албума */}
                     <img
                         src={currentSong.albumArt}
                         alt={currentSong.title}
@@ -48,6 +59,7 @@ const MusicPlayer = forwardRef(
                             border-white/5"
                     />
 
+                    {/* Заглавие и Изпълнител */}
                     <div className="space-y-1">
                         <h2 className="text-2xl font-black text-white uppercase tracking-tighter leading-tight">
                             {currentSong.title}
@@ -55,10 +67,11 @@ const MusicPlayer = forwardRef(
                         <p className="text-purple-400 font-bold italic text-sm">{currentSong.artist}</p>
                     </div>
 
+                    {/* Слайдър за прогреса на песента */}
                     <input
                         type="range"
                         min="0"
-                        max={30}
+                        max={30} // Повечето прегледи (previews) са 30 секунди
                         value={progress || 0}
                         onChange={(e) => {
                             const val = Number(e.target.value)
@@ -73,6 +86,7 @@ const MusicPlayer = forwardRef(
                     />
                 </div>
 
+                {/* Контролни бутони: Prev, Play/Pause, Next */}
                 <div className="mt-auto pt-6 flex items-center justify-center gap-6 relative z-10">
                     <button
                         onClick={onPrev}
@@ -102,14 +116,17 @@ const MusicPlayer = forwardRef(
                     </button>
                 </div>
 
+                {/* СКРИТИЯТ AUDIO ЕЛЕМЕНТ:
+                    Това е реалният "двигател", който свири музиката. */}
                 <audio
                     ref={ref}
                     src={currentSong.src}
                     crossOrigin="anonymous"
                     onTimeUpdate={(e) => onSeek(e.currentTarget.currentTime)}
-                    onEnded={onNext}
+                    onEnded={onNext} // Когато свърши, автоматично пускаме следващата
                 />
 
+                {/* Декоративна линия най-отдолу */}
                 <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent
                     via-purple-500/40 to-transparent" />
             </div>

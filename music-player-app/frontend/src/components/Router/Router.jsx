@@ -6,23 +6,29 @@ import Login from "../Auth/Login/Login.jsx";
 import {PATHS} from "../../config/paths.js";
 
 const Router = () => {
-    const navigate = useNavigate()
+    // Хук за програмна навигация между маршрутите
+    const navigate = useNavigate()
 
-    return (
-        <Routes>
-            <Route element={<AppLayout/>}>
-                <Route index element={<HomePage/>}/>
+    return (
+        <Routes>
+            {/* Обгръщащ Layout, който съдържа общите елементи на приложението */}
+            <Route element={<AppLayout/>}>
+                {/* Начална страница (index) */}
+                <Route index element={<HomePage/>}/>
 
-                <Route path={PATHS.player} element={<Player/>}/>
+                {/* Маршрут за музикалния плеър */}
+                <Route path={PATHS.player} element={<Player/>}/>
 
-                <Route path={PATHS.login} element={
-                    <Login isOpen={true} onClose={() => navigate(PATHS.home)}/>
-                }/>
-            </Route>
+                {/* Маршрут за вход - отваря модален прозорец и пренасочва при затваряне */}
+                <Route path={PATHS.login} element={
+                    <Login isOpen={true} onClose={() => navigate(PATHS.home)}/>
+                }/>
+            </Route>
 
-            <Route path="*" element={<>404</>}/> {/* TODO: Add error page 404 */}
-        </Routes>
-    )
+            {/* fallback за несъществуващи страници (404 Error) */}
+            <Route path="*" element={<>404</>}/>
+        </Routes>
+    )
 }
 
 export default Router

@@ -7,6 +7,9 @@ const PopularArtists = ({playTrack}) => {
     const {t} = useLocalizationContext()
     const home = t?.home
 
+    // КЛИК ВЪРХУ ИЗПЪЛНИТЕЛ:
+    // Когато избереш някого, програмата пита музикалната база данни за неговите песни.
+    // Ако намери песни, автоматично ги пуска в плеъра.
     const handleArtistClick = async (artist) => {
         getArtistTracks(artist.deezerId).then(tracks => {
             if (tracks.length > 0) {
@@ -17,11 +20,15 @@ const PopularArtists = ({playTrack}) => {
 
     return (
         <div className="relative z-20 w-full max-w-7xl px-4 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+            {/* ЗАГЛАВИЕ: Показва "Популярни Изпълнители" с превод */}
             <h2 className="text-xl md:text-3xl font-black italic text-white uppercase tracking-tighter md:mb-8 border-b
                 border-white/5 md:pb-4">
                 {home.popularArtists} <span className="text-purple-500">{home.popularArtistsSpan}</span>
             </h2>
 
+            {/* ХОРИЗОНТАЛЕН СПИСЪК:
+                Тук са подредени кръглите иконки на изпълнителите. 
+                Можеш да прелистваш наляво и надясно. */}
             <div className="flex overflow-x-auto gap-1 md:gap-[21px] py-6 px-2 -mx-2 custom-scrollbar-hide snap-x
                     snap-mandatory select-none">
                 {staticArtists.map(artist => (
@@ -31,6 +38,8 @@ const PopularArtists = ({playTrack}) => {
                         className="group flex flex-col items-center cursor-pointer transition-all duration-500
                             hover:-translate-y-2 shrink-0 snap-start"
                     >
+                        {/* КРЪГЛАТА СНИМКА: 
+                            Когато сложиш мишката отгоре, тя се оцветява и се появява бутон "Play". */}
                         <div
                             className="relative w-28 h-28 md:w-40 md:h-40 rounded-full bg-white/[0.03] border
                                 border-white/10 flex items-center justify-center group-hover:border-purple-500/50
@@ -42,6 +51,7 @@ const PopularArtists = ({playTrack}) => {
                                 className="w-full h-full rounded-full object-cover grayscale-[20%]
                                     group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                             />
+                            {/* ЕФЕКТ ПРИ ПОСОЧВАНЕ: Лилав кръг с иконка за пускане */}
                             <div className="absolute inset-0 flex items-center justify-center opacity-0
                                     group-hover:opacity-100 transition-all bg-purple-900/20 backdrop-blur-[1px]">
                                 <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center
@@ -53,6 +63,7 @@ const PopularArtists = ({playTrack}) => {
                                 </div>
                             </div>
                         </div>
+                        {/* ИМЕ НА ИЗПЪЛНИТЕЛЯ */}
                         <span className="mt-5 text-[11px] md:text-xs font-black text-white uppercase italic
                             group-hover:text-purple-400 transition-colors tracking-[0.15em]">
                            {artist.name}

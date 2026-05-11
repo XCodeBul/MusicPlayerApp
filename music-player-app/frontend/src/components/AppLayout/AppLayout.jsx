@@ -11,13 +11,16 @@ const AppLayout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Проверяваме дали вече има вписан човек, когато страницата се зареди
         if (!user) {
             initializeAuth()
         }
 
+        // Следим за промени: влизане, излизане или подновяване на достъпа
         const {data: {subscription}} = supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                 if (session) {
+                    // Когато потребителят е вътре, изваждаме данните му от сесията
                     const userData = {
                         id: session.user.id,
                         name: session.user.user_metadata?.full_name || "User",
@@ -26,17 +29,21 @@ const AppLayout = () => {
                     };
                     setAuthUser(userData)
 
+                    // Автоматично го пращаме към плеъра
                     navigate(PATHS.player)
                 }
             } else if (event === 'SIGNED_OUT') {
+                // Ако излезе, изчистваме данните и го връщаме в началото
                 setAuthUser(null)
                 navigate(PATHS.home)
             }
         });
 
+        // Спираме "слушалката", когато компонентът не се ползва
         return () => subscription.unsubscribe()
     }, [navigate, setAuthUser])
 
+    // Функция, която проверява дали има запомнена активна сесия
     const initializeAuth = async () => {
         const {data: {session}} = await supabase.auth.getSession()
         if (session) {
@@ -44,6 +51,7 @@ const AppLayout = () => {
         }
     }
 
+    // Функция, която подготвя и записва данните на потребителя
     const updateUserInfo = (supabaseUser) => {
         setAuthUser({
             id: supabaseUser.id,
@@ -57,6 +65,7 @@ const AppLayout = () => {
         <div
             className="h-screen w-full bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white flex flex-col overflow-hidden font-sans">
             <Navbar/>
+            {/* Тук се зареждат различните страници под навигацията */}
             <Outlet/>
             <Footer/>
         </div>

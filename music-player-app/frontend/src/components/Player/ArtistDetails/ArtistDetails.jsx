@@ -8,6 +8,7 @@ const ArtistDetails = ({currentSong}) => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        // Взимаме информация за изпълнителя при всяка смяна на песента
         if (!currentSong?.artistId) return
         setLoading(true)
         getArtistInfo(currentSong.artistId)
@@ -24,14 +25,17 @@ const ArtistDetails = ({currentSong}) => {
     )
     if (!artist) return null
 
+    // Форматиране на списъка с жанрове
     const genresList = artist.genres && artist.genres.length > 0
         ? artist.genres.slice(0, 3).map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(", ")
         : "Contemporary Music"
 
+    // Изчисляване на статистически данни (слушатели и ранг)
     const calculatedListeners = Math.floor(Math.pow(artist.popularity, 4.1) / 2.1)
     const monthlyListeners = calculatedListeners.toLocaleString()
     const worldRank = Math.floor(2200 - (Math.pow(artist.popularity, 1.7)))
 
+    // Подготовка на данните за градовете
     const topCities = [
         {name: t?.cityLondon || "London, GB", count: Math.floor(calculatedListeners * 0.021).toLocaleString()},
         {name: t?.cityChicago || "Chicago, US", count: Math.floor(calculatedListeners * 0.018).toLocaleString()},
@@ -43,6 +47,8 @@ const ArtistDetails = ({currentSong}) => {
     return (
         <div className="flex flex-row items-center w-full h-full px-[3%] gap-10 animate-in fade-in zoom-in-95
         duration-500 overflow-hidden">
+            
+            {/* Секция със снимка и индекс на популярност */}
             <div className="relative shrink-0">
                 <div
                     className="w-48 h-48 rounded-3xl overflow-hidden border-2 border-white/10
@@ -62,6 +68,7 @@ const ArtistDetails = ({currentSong}) => {
 
             <div className="w-[2px] h-40 bg-gradient-to-b from-transparent via-white/20 to-transparent shrink-0"></div>
 
+            {/* Основна информация и био */}
             <div className="flex flex-col justify-center flex-1 space-y-6 min-w-0">
                 <div className="flex items-center gap-4">
                     <h2 className="xl:text-4xl lg:text-6xl font-black text-white tracking-tighter leading-none truncate">
@@ -75,13 +82,13 @@ const ArtistDetails = ({currentSong}) => {
                                     d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7l-3.3-3.3 1.4-1.4 1.9 1.9 4.8-4.8 1.4 1.4-6.2 6.2z"/>
                             </svg>
                         </span>
-
                         <span className="text-gray-500 uppercase font-black text-xs tracking-[0.2em]">
                             Verified Artist
                         </span>
                     </div>
                 </div>
 
+                {/* Статистически блок (Ранг, Последователи, Слушатели) */}
                 <div className="flex items-start xl:gap-3 lg:gap-12">
                     <div className="space-y-1">
                         <p className="xl:text-2xl lg:text-4xl font-black text-white leading-none">#{worldRank}</p>
@@ -116,6 +123,7 @@ const ArtistDetails = ({currentSong}) => {
                     </p>
                 </div>
 
+                {/* Връзки към социални мрежи */}
                 <div className="flex gap-4 items-center">
                     <a
                         href={artist.external_urls.spotify}
@@ -134,6 +142,7 @@ const ArtistDetails = ({currentSong}) => {
                 </div>
             </div>
 
+            {/* Страничен панел с градове (само за големи екрани) */}
             <div className="hidden 2xl:flex w-80 h-[85%] shrink-0 bg-white/5 rounded-[2rem] p-6 border border-white/10
                     self-center flex-col justify-center">
                 <h4 className="text-[11px] text-gray-400 font-black uppercase tracking-[0.25em] mb-6 border-b
@@ -155,4 +164,4 @@ const ArtistDetails = ({currentSong}) => {
     )
 }
 
-export default ArtistDetails
+export default ArtistDetails;

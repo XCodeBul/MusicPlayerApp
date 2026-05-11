@@ -5,6 +5,8 @@ const Lyrics = ({currentSong}) => {
     const [lyrics, setLyrics] = useState("");
     const [loading, setLoading] = useState(false);
 
+    // ЗАРЕЖДАНЕ НА ТЕКСТА:
+    // Всеки път, когато песента се смени, търсим нейния текст в базата данни.
     useEffect(() => {
         if (!currentSong?.title) return
         setLoading(true)
@@ -13,8 +15,10 @@ const Lyrics = ({currentSong}) => {
             .finally(() => setLoading(false))
     }, [currentSong])
 
+    // Превръщаме дългия текст в масив от отделни редове за по-красиво рендиране.
     const lines = lyrics ? lyrics.split('\n').filter(line => line.trim() !== "") : []
 
+    // ИНДИКАТОР ПРИ ЗАРЕЖДАНЕ (Loading state)
     if (loading) {
         return (
             <div
@@ -28,6 +32,8 @@ const Lyrics = ({currentSong}) => {
     return (
         <div className="w-full h-full flex flex-col p-8 bg-gray-900/40 backdrop-blur-xl rounded-[2.5rem] border
             border-white/10 shadow-2xl overflow-hidden relative">
+            
+            {/* ГЛАВА: Показва името на песента и изпълнителя */}
             <div className="flex items-baseline justify-between mb-4 shrink-0 border-b border-white/5 pb-2">
                 <div className="flex items-baseline gap-3">
                     <h2 className="text-xl font-black text-white uppercase tracking-tighter">
@@ -42,6 +48,7 @@ const Lyrics = ({currentSong}) => {
                 </span>
             </div>
 
+            {/* ОСНОВНО СЪДЪРЖАНИЕ: Списъкът с редовете на текста */}
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-4">
                 <div className="py-2 space-y-2">
                     {!!lines && lines?.length ? (
@@ -55,6 +62,7 @@ const Lyrics = ({currentSong}) => {
                             </p>
                         ))
                     ) : (
+                        /* СЪОБЩЕНИЕ АКО НЯМА ТЕКСТ */
                         <div className="h-full flex items-center justify-center opacity-20">
                             <p className="uppercase tracking-widest text-xs font-bold">No Data Available</p>
                         </div>
@@ -62,6 +70,7 @@ const Lyrics = ({currentSong}) => {
                 </div>
             </div>
 
+            {/* Декоративна лилава линия най-отдолу */}
             <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent
                 via-purple-500/20 to-transparent"/>
         </div>
