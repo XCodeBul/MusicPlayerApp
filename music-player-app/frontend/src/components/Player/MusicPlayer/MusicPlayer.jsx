@@ -34,7 +34,19 @@ const MusicPlayer = forwardRef(
                     border-purple-500/20 shadow-2xl w-[100%] lg:w-[380px] flex flex-col items-center text-center gap-4">
                     <div className="w-56 h-56 mt-10 bg-purple-500/5 rounded-2xl flex items-center justify-center border
                         border-purple-500/10">
-                        <span className="text-purple-500/20 text-4xl grayscale">🎵</span>
+                        <span className="text-purple-500/20 text-4xl grayscale"><svg 
+  viewBox="0 0 24 24" 
+  fill="none" 
+  stroke="currentColor" 
+  className="w-6 h-6 text-white" 
+  strokeWidth="2.5" 
+  strokeLinecap="round" 
+  strokeLinejoin="round"
+>
+  <path d="M9 18V5l12-2v13" />
+  <circle cx="6" cy="18" r="3" />
+  <circle cx="18" cy="16" r="3" />
+</svg></span>
                     </div>
                     <p className="text-purple-500/40 font-black uppercase tracking-[0.3em] text-[10px]">
                         {t.selectTrack}

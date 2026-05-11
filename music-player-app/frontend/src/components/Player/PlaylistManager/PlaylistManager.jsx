@@ -60,7 +60,7 @@ const PlaylistManager = () => {
 
                                 {/* Обложка на плейлиста */}
                                 <img
-                                    src={playlist.cover_url || "https://pixsector.com/cache/8955ccde/avea0c6d1234636825bd6.png"}
+                                    src={playlist.cover_url || "/covers/image.png"}
                                     alt={playlist.name}
                                     className={`w-14 h-14 rounded-2xl object-cover shadow-lg relative z-10 transition-all duration-500 
                                         ${isActive 
