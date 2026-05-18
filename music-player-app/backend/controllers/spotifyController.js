@@ -2,27 +2,30 @@ const {getSpotifyToken, getTracks, getArtistData} = require("../services/spotify
 const {getTrack} = require("../services/deezerService")
 
 /**
- * Search tracks in Spotify ans Deezer API
- *
- * @param req
- * @param res
- * @returns {Promise<*>}
+ * Търсене на песни в Spotify и Deezer API
  */
 exports.searchTracks = async (req, res) => {
     const { q } = req.query
+    
+    // Проверка за празна търсачка
     if (!q) return res.json({ tracks: { items: [] } })
+    
     try {
+        // Търсене на песните първо в Spotify
         const result = await getTracks(q)
-
         const tracks = result.data
+        
+        // Цикъл за проверка на всяка намерена песен
         for (let track of tracks.tracks.items) {
+            // Ако Spotify няма 30-секундно аудио (preview), го търсим в Deezer
             if (!track.preview_url) {
                 try {
                     const dRes = await getTrack(track)
                     if (dRes.data.data[0]?.preview) {
+                        // Заменяме липсващото аудио с това от Deezer
                         track.preview_url = dRes.data.data[0].preview
                     }
-                } catch (e) {}
+                } catch (e) {} // Игнорираме грешка от Deezer, за да не спрем цялото търсене
             }
         }
 
@@ -33,11 +36,7 @@ exports.searchTracks = async (req, res) => {
 }
 
 /**
- * Get artist details
- *
- * @param req
- * @param res
- * @returns {Promise<void>}
+ * Вземане на детайли за изпълнител
  */
 exports.getArtist = async (req, res) => {
     try {
@@ -49,11 +48,7 @@ exports.getArtist = async (req, res) => {
 }
 
 /**
- * Get Spotify authentication token
- *
- * @param req
- * @param res
- * @returns {Promise<void>}
+ * Вземане на Spotify аутентикационен токен
  */
 exports.getToken = async (req, res) => {
     try {

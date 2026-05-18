@@ -3,13 +3,13 @@ const {SPOTIFY_API_URL, SPOTIFY_AUTH_API} = require("../config/consts")
 const {SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET} = require("../config/app")
 
 /**
- * Get Spotify authentication token
- *
- * @returns {Promise<any>}
+ * Вземане на Spotify токен за достъп (Authentication)
  */
 exports.getSpotifyToken = async () => {
+    // Кодиране на ID-то и Secret ключа в base64 формат за сигурност
     const auth = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString("base64")
     try {
+        // Изпращане на заявка за генериране на нов токен
         const res = await axios.post(SPOTIFY_AUTH_API, "grant_type=client_credentials", {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -23,13 +23,11 @@ exports.getSpotifyToken = async () => {
 }
 
 /**
- * Get Spotify track list
- *
- * @param q
- * @returns {Promise<axios.AxiosResponse<any>>}
+ * Търсене на списък с песни в Spotify
  */
 exports.getTracks = async (q) => {
     const spotifyToken = await this.getSpotifyToken()
+    // Заявка към търсачката на Spotify (връща максимум 10 песни)
     return await axios.get(`${SPOTIFY_API_URL}/search`, {
         params: {
             q,
@@ -43,10 +41,7 @@ exports.getTracks = async (q) => {
 }
 
 /**
- * Get artist details by artist id
- *
- * @param id
- * @returns {Promise<axios.AxiosResponse<any>>}
+ * Вземане на информация за изпълнител по ID от Spotify
  */
 exports.getArtistData = async (id) => {
     const spotifyToken = await this.getSpotifyToken()
