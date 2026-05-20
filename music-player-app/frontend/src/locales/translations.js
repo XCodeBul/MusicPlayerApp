@@ -1,5 +1,6 @@
 export const translations = {
     EN: {
+        //преводи
         queue: "Your Queue",
         tracks: "Tracks",
         signalOffline: "Signal Offline",

@@ -1,6 +1,6 @@
 import { supabase } from "../supabaseClient.js";
 
-// Google Login (вече го имаш)
+// Google Login 
 export const googleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -18,7 +18,7 @@ export const emailLogin = async (email, password) => {
         password,
     });
 
-    if (error) throw error; // Хвърляме грешката, за да я хванем в UI-а
+    if (error) throw error; 
     return data.user;
 };
 

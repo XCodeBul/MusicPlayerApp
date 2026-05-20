@@ -17,7 +17,6 @@ exports.searchTracks = async (req, res) => {
         
         // Цикъл за проверка на всяка намерена песен
         for (let track of tracks.tracks.items) {
-            // Ако Spotify няма 30-секундно аудио (preview), го търсим в Deezer
             if (!track.preview_url) {
                 try {
                     const dRes = await getTrack(track)

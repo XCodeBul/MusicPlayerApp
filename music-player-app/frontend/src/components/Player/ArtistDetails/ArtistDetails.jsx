@@ -3,6 +3,7 @@ import {getArtistInfo} from "../../../services/playlist.js";
 import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 
 const ArtistDetails = ({currentSong}) => {
+    //състояния на компонента
     const {t} = useLocalizationContext()
     const [artist, setArtist] = useState(null)
     const [loading, setLoading] = useState(false)

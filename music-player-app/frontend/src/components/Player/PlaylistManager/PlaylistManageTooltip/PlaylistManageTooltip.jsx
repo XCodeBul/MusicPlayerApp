@@ -8,7 +8,7 @@ const PlaylistManageTooltip = ({ tooltip, setTooltip }) => {
     const [isSelectingFile, setIsSelectingFile] = useState(false);
     const { t } = useLocalizationContext();
 
-    // ЕФЕКТ ЗА АВТОМАТИЧНО ЗАТВАРЯНЕ:
+    // ЕФЕКТ ЗА АВТОМАТИЧНО ЗАТВАРЯНЕ на tooltip:
     // Използваме малко по-голям толеранс (250px), за да не е толкова чувствителен при кликване
     useEffect(() => {
         if (!tooltip || isSelectingFile) return;

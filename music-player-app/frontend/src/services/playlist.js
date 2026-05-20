@@ -30,7 +30,7 @@ export const storeUserPlaylist = async (userId, name) => {
     return data
 }
 
-// Обновяване на метаданни на плейлист (име и др.), филтрирайки ненужни координати
+// Обновяване на метаданни на плейлист (име и др.)
 export const updatePlaylist = async (playlistId, updatedData) => {
     const { x, y, ...dataToSave } = updatedData;
 

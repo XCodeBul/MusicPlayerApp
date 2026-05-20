@@ -1,12 +1,13 @@
 import {forwardRef, useEffect} from "react";
 import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 
-const MusicPlayer = forwardRef(
+
+const MusicPlayer = forwardRef( // forwardRef е  вграден hook, който използваме на готово
     ({currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek}, ref) => {
         const {t} = useLocalizationContext()
 
         // СИНХРОНИЗАЦИЯ НА PLAY/PAUSE:
-        // Използваме useEffect, за да кажем на браузъра кога да пусне или спре аудиото.
+        // Използваме useEffect, за да кажем на браузъра кога да пусне или спре текущото аудио.
         useEffect(() => {
             if (!ref.current || !currentSong) return
             if (isPlaying) {

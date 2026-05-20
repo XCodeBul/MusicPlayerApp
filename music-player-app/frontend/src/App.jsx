@@ -8,6 +8,7 @@ import {LocalizationProvider} from "./contexts/LocalizationContext.jsx";
 
 const App = () => {
     return (
+        //зареждането на основните компоненти на приложението
         <BrowserRouter>
             <LocalizationProvider>
                 <AuthUserProvider>

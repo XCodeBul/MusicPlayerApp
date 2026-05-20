@@ -28,7 +28,7 @@ const globalLimiter = rateLimit({
     message: {error: "Too many requests, please try again later."},
 })
 
-// Свързване на маршрутите (рутерите) и прилагане на лимитера към тях
+// Групи routes
 app.use("/api", globalLimiter, spotifyRoutes)
 app.use("/api/lyrics", globalLimiter, lyricRoutes)
 
