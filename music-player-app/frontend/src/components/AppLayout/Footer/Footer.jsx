@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'; 
-import { useLocalizationContext } from "../../../contexts/LocalizationContext.jsx";
-import { usePlayerContext } from "../../../contexts/PlayerContext.jsx"; 
+import {useEffect, useState} from 'react';
+import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
+import {usePlayerContext} from "../../../contexts/PlayerContext.jsx";
 
-const Footer = () => { 
-    const { t } = useLocalizationContext();
-    const { isPlaying } = usePlayerContext(); 
+const Footer = () => {
+    const {t} = useLocalizationContext();
+    const {isPlaying} = usePlayerContext();
     const [time, setTime] = useState(new Date());
 
     // Тази секция обновява часа всяка секунда, за да работи часовникът в реално време.
@@ -14,17 +14,18 @@ const Footer = () => {
     }, []);
 
     return (
-        <footer className="hidden sm:flex bg-black/20 backdrop-blur-3xl px-12 py-5 border-t border-white/5 flex-shrink-0 relative transition-all duration-1000">
-            
+        <footer
+            className="hidden sm:flex bg-black/20 backdrop-blur-3xl px-12 py-5 border-t border-white/5
+                flex-shrink-0 relative transition-all duration-1000">
+
             {/* Тази секция добавя светеща лилава линия, когато музиката свири. */}
             <div className={`absolute top-0 left-0 right-0 h-[1px] transition-all duration-1000 ${
-                isPlaying 
-                ? "bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-100 shadow-[0_0_15px_#A855F7]" 
-                : "bg-white/5 opacity-50"
+                isPlaying
+                    ? "bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-100 shadow-[0_0_15px_#A855F7]"
+                    : "bg-white/5 opacity-50"
             }`}/>
 
             <div className="max-w-7xl mx-auto w-full flex items-center justify-between relative z-10">
-
                 <div className="flex items-center gap-6">
                     {/* Тази секция анимира малки стълбчета (еквалайзер), които подскачат при пусната песен. */}
                     <div className="flex items-end gap-[3px] h-5 w-8">
@@ -47,12 +48,14 @@ const Footer = () => {
 
                     {/* Тази секция показва текстови статус "Активен" или "В покой" спрямо плейъра. */}
                     <div className="flex flex-col">
-                        <span className={`text-[9px] font-black uppercase tracking-[0.4em] transition-all duration-700 ${
-                            isPlaying ? "text-purple-400" : "text-gray-600"
-                        }`}>
+                        <span
+                            className={`text-[9px] font-black uppercase tracking-[0.4em] transition-all duration-700 ${
+                                isPlaying ? "text-purple-400" : "text-gray-600"
+                            }`}>
                             {isPlaying ? t.signalActive : t.coreIdle}
                         </span>
-                        <span className="text-[7px] text-white/10 uppercase tracking-[0.2em] font-bold">System Status</span>
+                        <span
+                            className="text-[7px] text-white/10 uppercase tracking-[0.2em] font-bold">System Status</span>
                     </div>
                 </div>
 
@@ -78,7 +81,6 @@ const Footer = () => {
                         </span>
                     </div>
                 </div>
-
             </div>
         </footer>
     );

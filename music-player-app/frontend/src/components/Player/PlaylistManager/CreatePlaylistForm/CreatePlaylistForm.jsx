@@ -2,17 +2,15 @@ import {useState} from "react";
 import {storeUserPlaylist} from "../../../../services/playlist.js";
 import {useAuthUserContext} from "../../../../contexts/AuthUserContext.jsx";
 import {usePlaylistContext} from "../../../../contexts/PlaylistContext.jsx";
-import { useLocalizationContext } from "../../../../contexts/LocalizationContext.jsx";
-import { translations } from "../../../../locales/translations.js";
+import {useLocalizationContext} from "../../../../contexts/LocalizationContext.jsx";
+import {translations} from "../../../../locales/translations.js";
 
 const CreatePlaylistForm = ({isCreateModalOpen, setIsCreateModalOpen}) => {
     // Взимаме текущия потребител, функция за презареждане на плейлистите и езика
     const {user} = useAuthUserContext()
     const {playlistsReload} = usePlaylistContext()
-    const { language } = useLocalizationContext(); 
+    const {t} = useLocalizationContext();
     const [input, setInput] = useState('')
-
-    const t = translations[language];
 
     // Функция за създаване на плейлиста
     const handleCreate = () => {
@@ -21,7 +19,7 @@ const CreatePlaylistForm = ({isCreateModalOpen, setIsCreateModalOpen}) => {
                 // Извикваме презареждане на списъка, за да видим новия плейлист веднага
                 playlistsReload()
             }).catch(err => console.log(err))
-            
+
             // Зануляваме формата и затваряме модала
             setInput('')
             setIsCreateModalOpen(false)
@@ -37,11 +35,13 @@ const CreatePlaylistForm = ({isCreateModalOpen, setIsCreateModalOpen}) => {
         <>
             {isCreateModalOpen && (
                 /* Overlay (Фонът на модала) */
-                <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-                    
+                <div
+                    className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+
                     {/* Самото прозорче */}
-                    <div className="bg-gray-900 border border-purple-500/30 p-8 rounded-[2.5rem] w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-300">
-                        
+                    <div
+                        className="bg-gray-900 border border-purple-500/30 p-8 rounded-[2.5rem] w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-300">
+
                         <h3 className="text-xl font-black text-white mb-6 uppercase tracking-[0.2em] text-center">
                             {t.newplaylist}
                         </h3>
@@ -65,7 +65,7 @@ const CreatePlaylistForm = ({isCreateModalOpen, setIsCreateModalOpen}) => {
                             >
                                 {t.cancelBtn}
                             </button>
-                            
+
                             <button
                                 onClick={handleCreate}
                                 className="flex-1 px-4 py-4 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white transition-all uppercase text-[10px] font-black tracking-widest shadow-lg shadow-purple-500/20"

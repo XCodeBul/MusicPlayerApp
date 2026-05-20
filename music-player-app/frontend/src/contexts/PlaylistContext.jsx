@@ -5,13 +5,15 @@ import { getUserPlaylists, updatePlaylist as updatePlaylistService } from "../se
 import { usePlayerContext } from "./PlayerContext.jsx";
 import { supabase } from "../supabaseClient.js"; 
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const PlaylistContext = createContext({})
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const usePlaylistContext = () => useContext(PlaylistContext)
 
 export function PlaylistProvider({ children }) {
     const { selectedPlaylist, setSelectedPlaylist } = usePlayerContext()
     const { user } = useAuthUserContext()
-    
     
     const [playlists, setPlaylists] = useLocalStorageState('playlists', [])
 

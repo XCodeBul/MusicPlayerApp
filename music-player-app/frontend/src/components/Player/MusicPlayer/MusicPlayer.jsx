@@ -1,8 +1,8 @@
-import { forwardRef, useEffect } from "react";
+import {forwardRef, useEffect} from "react";
 import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
 
 const MusicPlayer = forwardRef(
-    ({ currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek}, ref) => {
+    ({currentSong, isPlaying, onPlayPause, onNext, onPrev, progress, onSeek}, ref) => {
         const {t} = useLocalizationContext()
 
         // СИНХРОНИЗАЦИЯ НА PLAY/PAUSE:
@@ -34,19 +34,21 @@ const MusicPlayer = forwardRef(
                     border-purple-500/20 shadow-2xl w-[100%] lg:w-[380px] flex flex-col items-center text-center gap-4">
                     <div className="w-56 h-56 mt-10 bg-purple-500/5 rounded-2xl flex items-center justify-center border
                         border-purple-500/10">
-                        <span className="text-purple-500/20 text-4xl grayscale"><svg 
-  viewBox="0 0 24 24" 
-  fill="none" 
-  stroke="currentColor" 
-  className="w-6 h-6 text-white" 
-  strokeWidth="2.5" 
-  strokeLinecap="round" 
-  strokeLinejoin="round"
->
-  <path d="M9 18V5l12-2v13" />
-  <circle cx="6" cy="18" r="3" />
-  <circle cx="18" cy="16" r="3" />
-</svg></span>
+                        <span className="text-purple-500/20 text-4xl grayscale">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                className="w-6 h-6 text-white"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                          <path d="M9 18V5l12-2v13"/>
+                          <circle cx="6" cy="18" r="3"/>
+                          <circle cx="18" cy="16" r="3"/>
+                        </svg>
+                        </span>
                     </div>
                     <p className="text-purple-500/40 font-black uppercase tracking-[0.3em] text-[10px]">
                         {t.selectTrack}
@@ -58,10 +60,10 @@ const MusicPlayer = forwardRef(
         return (
             <div className="bg-gray-900/40 backdrop-blur-xl p-6 rounded-[2.5rem] border border-purple-500/20 shadow-2xl
                 w-[96%] lg:w-[380px] flex flex-col text-center h-full relative overflow-hidden">
-                
+
                 {/* Декоративен светлинен ефект в ъгъла */}
-                <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-600/10 blur-[50px] pointer-events-none" />
-                
+                <div className="absolute -top-10 -left-10 w-32 h-32 bg-purple-600/10 blur-[50px] pointer-events-none"/>
+
                 <div className="flex flex-col items-center gap-4 w-full relative z-10">
                     {/* Обложка на албума */}
                     <img
@@ -93,7 +95,7 @@ const MusicPlayer = forwardRef(
                         className="w-full h-1.5 rounded-full cursor-pointer accent-purple-500 appearance-none
                             bg-white/10 transition-all"
                         style={{
-                            background: `linear-gradient(to right, #A855F7 ${ (progress / 30) * 100 }%, rgba(255,255,255,0.1) ${ (progress / 30) * 100 }%)`
+                            background: `linear-gradient(to right, #A855F7 ${(progress / 30) * 100}%, rgba(255,255,255,0.1) ${(progress / 30) * 100}%)`
                         }}
                     />
                 </div>
@@ -140,7 +142,7 @@ const MusicPlayer = forwardRef(
 
                 {/* Декоративна линия най-отдолу */}
                 <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent
-                    via-purple-500/40 to-transparent" />
+                    via-purple-500/40 to-transparent"/>
             </div>
         )
     }

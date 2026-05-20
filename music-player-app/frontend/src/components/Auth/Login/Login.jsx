@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { googleLogin, emailLogin, emailRegister } from "../../../services/auth.js";
-import { useLocalizationContext } from "../../../contexts/LocalizationContext.jsx";
-import { useAuthUserContext } from "../../../contexts/AuthUserContext.jsx";
+import {useState} from "react";
+import {googleLogin, emailLogin, emailRegister} from "../../../services/auth.js";
+import {useLocalizationContext} from "../../../contexts/LocalizationContext.jsx";
+import {useAuthUserContext} from "../../../contexts/AuthUserContext.jsx";
 
-export default function Login({ isOpen, onClose }) {
-    const { t, language } = useLocalizationContext();
-    const { setAuthUser } = useAuthUserContext();
-    
+export default function Login({isOpen, onClose}) {
+    const {t} = useLocalizationContext();
+    const {setAuthUser} = useAuthUserContext();
+
     // States
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
@@ -49,7 +49,7 @@ export default function Login({ isOpen, onClose }) {
             } else {
                 // Регистрация чрез Supabase
                 userData = await emailRegister(email, password);
-                
+
                 // Ако в Supabase е включено потвърждение по имейл
                 if (!userData) {
                     alert(t.checkEmailAlert);
@@ -72,7 +72,8 @@ export default function Login({ isOpen, onClose }) {
     if (isModal && !isOpen) return null;
 
     return (
-        <div className={isModal ? "fixed inset-0 z-[1000000] flex items-center justify-center p-4" : "flex-1 flex items-center justify-center p-4"}>
+        <div
+            className={isModal ? "fixed inset-0 z-[1000000] flex items-center justify-center p-4" : "flex-1 flex items-center justify-center p-4"}>
             {isModal && (
                 <div
                     className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-500"
@@ -82,9 +83,9 @@ export default function Login({ isOpen, onClose }) {
 
             <div className="relative w-full max-w-md bg-gray-950 border border-purple-500/20 rounded-[3rem]
                 p-12 shadow-[0_0_80px_-20px_rgba(168,85,247,0.2)] animate-in zoom-in-95 duration-300 overflow-hidden">
-                
+
                 {/* Декоративен фон */}
-                <div className="absolute -top-24 -left-24 w-48 h-48 bg-purple-600/10 blur-[100px] pointer-events-none" />
+                <div className="absolute -top-24 -left-24 w-48 h-48 bg-purple-600/10 blur-[100px] pointer-events-none"/>
 
                 <div className="text-center mb-10 relative z-10">
                     <div className="inline-flex w-16 h-16 bg-transparent border-2 border-purple-500/40 rounded-2xl
@@ -167,14 +168,17 @@ export default function Login({ isOpen, onClose }) {
 
                 {/* Social Logins */}
                 <div className="grid grid-cols-2 gap-4 relative z-10">
-                    <button className="flex items-center justify-center gap-3 bg-white/5 border border-purple-500/10 hover:border-purple-500/40 py-3 rounded-2xl transition-all group">
-                        <span className="text-xs font-black text-purple-300/40 group-hover:text-purple-400 uppercase tracking-widest transition-colors">Spotify</span>
+                    <button
+                        className="flex items-center justify-center gap-3 bg-white/5 border border-purple-500/10 hover:border-purple-500/40 py-3 rounded-2xl transition-all group">
+                        <span
+                            className="text-xs font-black text-purple-300/40 group-hover:text-purple-400 uppercase tracking-widest transition-colors">Spotify</span>
                     </button>
-                    <button 
-                        onClick={handleGoogleLogin} 
+                    <button
+                        onClick={handleGoogleLogin}
                         className="flex items-center justify-center gap-3 bg-white/5 border border-purple-500/10 hover:border-purple-500/40 py-3 rounded-2xl transition-all group"
                     >
-                        <span className="text-xs font-black text-purple-300/40 group-hover:text-purple-400 uppercase tracking-widest transition-colors">Google</span>
+                        <span
+                            className="text-xs font-black text-purple-300/40 group-hover:text-purple-400 uppercase tracking-widest transition-colors">Google</span>
                     </button>
                 </div>
 
@@ -189,10 +193,12 @@ export default function Login({ isOpen, onClose }) {
                         }}
                         className="group relative flex flex-col items-center gap-1 transition-all duration-300"
                     >
-                        <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-600 group-hover:text-purple-500 transition-colors">
+                        <span
+                            className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-600 group-hover:text-purple-500 transition-colors">
                             {isLogin ? t.needId : t.alreadyVerified}
                         </span>
-                        <span className="text-xs font-black uppercase tracking-[0.2em] text-white border-b border-purple-500/50 group-hover:border-purple-500 transition-all">
+                        <span
+                            className="text-xs font-black uppercase tracking-[0.2em] text-white border-b border-purple-500/50 group-hover:border-purple-500 transition-all">
                             {isLogin ? t.createAccount : t.returnLogin}
                         </span>
                     </button>

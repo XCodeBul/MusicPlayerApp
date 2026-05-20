@@ -7,6 +7,9 @@ import {useAuthUserContext} from "../../contexts/AuthUserContext.jsx";
 import ArtistDetails from "./ArtistDetails/ArtistDetails.jsx";
 import TrackQueue from "./TrackQueue/TrackQueue.jsx";
 import {useLocalizationContext} from "../../contexts/LocalizationContext.jsx";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {PATHS} from "../../config/paths.js";
 
 const Player = () => {
     // Извличане на състоянието и функциите от контекста на плеъра
@@ -22,6 +25,14 @@ const Player = () => {
     } = usePlayerContext()
     const {t} = useLocalizationContext()
     const {user} = useAuthUserContext()
+    const navigate = useNavigate()
+
+    // Пренасочване към началната страница ако потребителят не е логнат
+    useEffect(() => {
+        if (!user) {
+            navigate(PATHS.home)
+        }
+    }, [user]);
 
     // Функция за превключване между пускане и пауза
     const handlePlayPause = () => setIsPlaying((prev) => !prev)
@@ -82,18 +93,18 @@ const Player = () => {
                                         className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center
                                             justify-center text-3xl border border-purple-500/20 shadow-inner shrink-0
                                             grayscale opacity-40">
-                                        <svg 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    className="w-5 h-5" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round"
->
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-</svg>
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            className="w-5 h-5"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
                                     </div>
                                     <div className="text-left">
                                         <h3 className="text-purple-500/50 font-black text-[10px] uppercase

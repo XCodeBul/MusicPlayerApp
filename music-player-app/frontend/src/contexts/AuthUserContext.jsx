@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect } from "react";
 import useLocalStorageState from "../hooks/useLocalStorageState.js";
-import { supabase } from "../supabaseClient.js"; // Увери се, че пътят е верен
+import { supabase } from "../supabaseClient.js";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthUserContext = createContext({});
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthUserContext = () => useContext(AuthUserContext);
 
 export function AuthUserProvider({ children }) {
